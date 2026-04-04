@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // ============================================================
 // BRANDED TYPES — previenen mezclas accidentales de IDs/valores
 // ============================================================
@@ -56,32 +55,15 @@ export interface KPICard {
   change: string;
   trend: TrendDirection;
   chartData: readonly number[];
-=======
-export interface KPICard {
-  id: string;
-  label: string;
-  value: string;
-  change: string;
-  trend: 'up' | 'down';
-  chartData: number[];
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
   chartColor: string;
 }
 
 export interface User {
-<<<<<<< HEAD
   id: UserId;
   name: string;
   email: string;
   plan: string;
   status: UserStatus;
-=======
-  id: string;
-  name: string;
-  email: string;
-  plan: string;
-  status: 'Active' | 'Trial' | 'Cancelled' | 'Away';
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
   joinDate: string;
   avatar?: string;
   initials: string;
@@ -89,11 +71,7 @@ export interface User {
 
 export interface AcquisitionChannel {
   name: string;
-<<<<<<< HEAD
   percentage: Percentage;
-=======
-  percentage: number;
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
   opacity: number;
 }
 
@@ -102,7 +80,6 @@ export interface RevenueDataPoint {
   value: number;
 }
 
-<<<<<<< HEAD
 // ============================================================
 // API / RESPONSE TYPES
 // ============================================================
@@ -143,6 +120,3 @@ export type Result<T, E = Error> =
 
 export const ok = <T>(value: T): Result<T> => ({ ok: true, value });
 export const err = <E = Error>(error: E): Result<never, E> => ({ ok: false, error });
-=======
-export type Theme = 'light' | 'dark';
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
