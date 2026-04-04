@@ -1,25 +1,17 @@
 {
   "name": "flowboard-dashboard",
   "private": true,
-<<<<<<< HEAD
   "version": "1.1.0",
-=======
-  "version": "1.0.0",
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-<<<<<<< HEAD
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage"
-=======
-    "preview": "vite preview"
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.21",
@@ -33,11 +25,8 @@
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",
-<<<<<<< HEAD
     "@vitest/coverage-v8": "^2.1.9",
     "@vitest/ui": "^2.1.9",
-=======
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
     "autoprefixer": "^10.4.16",
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -45,11 +34,7 @@
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.2.2",
-<<<<<<< HEAD
     "vite": "^5.0.8",
     "vitest": "^2.1.9"
-=======
-    "vite": "^5.0.8"
->>>>>>> fb279e50ab6247b228f6933367130d45417f3991
   }
 }
