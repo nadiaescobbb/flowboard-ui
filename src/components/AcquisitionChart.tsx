@@ -6,151 +6,129 @@ interface AcquisitionChartProps {
   channels: AcquisitionChannel[];
 }
 
-// Componente de barra de progreso individual (memoizado)
-interface ProgressBarProps {
+interface ChannelRowProps {
   channel: AcquisitionChannel;
   index: number;
   labelClass: string;
   valueClass: string;
-  progressBg: string;
+  isLight: boolean;
 }
 
-const ProgressBar = memo(({ channel, index, labelClass, valueClass, progressBg }: ProgressBarProps) => {
+const ChannelRow = memo(({ channel, index, labelClass, valueClass, isLight }: ChannelRowProps) => {
   return (
-    <div 
-      className="group"
-      style={{ 
-        animationDelay: `${index * 100}ms`,
+    <div
+      className="grid grid-cols-[2.25rem_1fr_auto] items-center gap-3"
+      style={{
+        animationDelay: `${index * 90}ms`,
         animation: 'fadeInUp 0.5s ease-out forwards',
         opacity: 0,
       }}
+      role="listitem"
     >
-      <div className="flex justify-between items-center text-xs mb-2">
-        <span className={`${labelClass} font-medium truncate pr-2`}>
-          {channel.name}
-        </span>
-        <span 
-          className={`font-bold ${valueClass} tabular-nums flex-shrink-0`}
-          aria-label={`${channel.percentage} percent`}
-        >
-          {channel.percentage}%
-        </span>
-      </div>
-
-      {/* Progress Bar */}
-      <div 
-        className={`h-2 w-full rounded-full overflow-hidden ${progressBg} relative`}
-        role="progressbar"
-        aria-valuenow={channel.percentage}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={`${channel.name} acquisition percentage`}
-      >
+      <span className={`text-[11px] font-display font-semibold tabular-nums ${labelClass}`}>
+        {String(index + 1).padStart(2, '0')}
+      </span>
+      <div className="min-w-0">
+        <div className="flex items-center justify-between gap-3 text-xs mb-2">
+          <span className={`${labelClass} font-display font-semibold truncate pr-2`}>
+            {channel.name}
+          </span>
+          <span className={`font-display font-bold ${valueClass} tabular-nums flex-shrink-0`}>
+            {channel.percentage}%
+          </span>
+        </div>
         <div
-          className="h-full bg-primary rounded-full transition-all duration-700 ease-out relative overflow-hidden"
-          style={{
-            width: `${channel.percentage}%`,
-            opacity: channel.opacity,
-          }}
+          className={`h-1.5 w-full overflow-hidden rounded-full ${isLight ? 'bg-[#e8e6dc]' : 'bg-white/[0.08]'}`}
+          role="progressbar"
+          aria-valuenow={channel.percentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`${channel.name} acquisition percentage`}
         >
-          {/* Shimmer effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
+            style={{ width: `${channel.percentage}%`, opacity: Math.max(channel.opacity, 0.45) }}
+          />
         </div>
       </div>
     </div>
   );
 });
 
-ProgressBar.displayName = 'ProgressBar';
+ChannelRow.displayName = 'ChannelRow';
 
 export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
   const classes = useThemeClasses();
   const [showInsight, setShowInsight] = useState(false);
 
-  // Validar y ordenar canales por porcentaje
   const sortedChannels = useMemo(() => {
     if (!channels || channels.length === 0) return [];
-    
     return [...channels].sort((a, b) => b.percentage - a.percentage);
   }, [channels]);
 
-  // Calcular total para verificación
-  const totalPercentage = useMemo(() => {
-    return sortedChannels.reduce((sum, channel) => sum + channel.percentage, 0);
-  }, [sortedChannels]);
-
-  const progressBg = classes.isLight ? 'bg-gray-200' : 'bg-white/5';
+  const totalPercentage = useMemo(
+    () => sortedChannels.reduce((sum, channel) => sum + channel.percentage, 0),
+    [sortedChannels]
+  );
 
   if (sortedChannels.length === 0) {
     return (
-      <div 
-        className={`rounded-xl p-4 md:p-6 border flex items-center justify-center min-h-[300px] md:min-h-[400px] ${classes.surface}`}
+      <div
+        className={`rounded-md p-4 md:p-6 border flex items-center justify-center min-h-[300px] md:min-h-[400px] ${classes.surface}`}
         role="status"
         aria-label="No acquisition data available"
       >
         <div className="text-center">
-          <div className={`text-3xl md:text-4xl mb-3 ${classes.subtitle}`}>📊</div>
-          <p className={`text-sm font-medium ${classes.title}`}>No Data Available</p>
-          <p className={`text-xs mt-1 ${classes.subtitle}`}>
-            Acquisition sources will appear here
-          </p>
+          <p className={`text-sm font-display font-semibold ${classes.title}`}>No Data Available</p>
+          <p className={`text-xs mt-1 ${classes.subtitle}`}>Acquisition sources will appear here</p>
         </div>
       </div>
     );
   }
 
   return (
-    <article 
-      className={`rounded-xl p-4 md:p-6 border flex flex-col ${classes.surface}`}
+    <article
+      className={`rounded-md p-5 md:p-6 border flex flex-col ${classes.surface}`}
       aria-labelledby="acquisition-chart-title"
     >
-      
-      {/* Header */}
-      <header className="mb-6 md:mb-8">
-        <h3 
-          id="acquisition-chart-title"
-          className={`text-base md:text-lg font-semibold ${classes.title}`}
-        >
+      <header className="mb-7">
+        <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+          Channel mix
+        </p>
+        <h3 id="acquisition-chart-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
           Acquisition Sources
         </h3>
-        <p className={`text-xs mt-0.5 ${classes.subtitle}`}>
-          Top performing channels · {totalPercentage}% total
+        <p className={`text-xs mt-1 ${classes.subtitle}`}>
+          Ranked by contribution · {totalPercentage}% allocated
         </p>
       </header>
 
-      {/* Channels */}
       <div className="flex-1 flex flex-col justify-between">
-        <div 
-          className="space-y-5 md:space-y-6"
-          role="list"
-          aria-label="Acquisition channels breakdown"
-        >
+        <div className="space-y-6" role="list" aria-label="Acquisition channels breakdown">
           {sortedChannels.map((channel, index) => (
-            <ProgressBar
+            <ChannelRow
               key={channel.name}
               channel={channel}
               index={index}
               labelClass={classes.subtitle}
               valueClass={classes.title}
-              progressBg={progressBg}
+              isLight={classes.isLight}
             />
           ))}
         </div>
 
-        {/* Call to Action Button */}
         <button
           onClick={() => setShowInsight((current) => !current)}
-          className={`mt-6 md:mt-8 w-full py-2.5 border rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 active:scale-[0.98] touch-manipulation ${classes.button} hover:scale-[1.02]`}
+          className={`mt-7 w-full py-2.5 border rounded-md text-sm font-display font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-[0.98] touch-manipulation ${classes.button}`}
           aria-label="View detailed analytics for all acquisition sources"
           aria-expanded={showInsight}
         >
-          {showInsight ? 'Hide Channel Insight' : 'View Channel Insight'}
+          {showInsight ? 'Hide Insight' : 'Show Channel Insight'}
         </button>
 
         {showInsight && (
-          <div className="mt-3 rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-primary" role="status">
-            {sortedChannels[0].name} is currently the strongest acquisition source at{' '}
-            {sortedChannels[0].percentage}%.
+          <div className="mt-3 rounded-md border border-primary/20 bg-primary/10 p-3 text-xs text-primary" role="status">
+            {sortedChannels[0].name} is the strongest source at {sortedChannels[0].percentage}%.
           </div>
         )}
       </div>

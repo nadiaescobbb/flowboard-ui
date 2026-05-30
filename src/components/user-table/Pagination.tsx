@@ -24,7 +24,7 @@ export const Pagination = ({
   if (totalPages <= 1) return null;
 
   return (
-    <footer className="p-3 md:p-4 border-t flex flex-col sm:flex-row items-center justify-between gap-3">
+    <footer className="p-3 md:p-4 border-t border-border-light dark:border-border-dark flex flex-col sm:flex-row items-center justify-between gap-3">
       <p className={`text-xs md:text-sm ${subtitleClass}`}>
         Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
         {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}
@@ -34,7 +34,7 @@ export const Pagination = ({
         <button
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className={`p-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${buttonClass} hover:scale-105`}
+          className={`p-2 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed ${buttonClass}`}
           aria-label="Previous page"
         >
           <Icon name="chevron_left" aria-hidden="true" />
@@ -53,7 +53,7 @@ export const Pagination = ({
                 <button
                   key={page}
                   onClick={() => onPageChange(page)}
-                  className={`px-2 md:px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all ${
+                  className={`px-2 md:px-3 py-1.5 rounded-md text-xs md:text-sm font-display font-semibold transition-all ${
                     currentPage === page ? activeButtonClass : buttonClass
                   } hover:scale-105`}
                   aria-label={`Page ${page}`}
@@ -79,7 +79,7 @@ export const Pagination = ({
         <button
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className={`p-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${buttonClass} hover:scale-105`}
+          className={`p-2 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed ${buttonClass}`}
           aria-label="Next page"
         >
           <Icon name="chevron_right" aria-hidden="true" />

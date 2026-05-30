@@ -32,19 +32,17 @@ export const Dashboard = () => {
         <Header />
 
         <div className="p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8">
-          {/* KPI Cards */}
           <section aria-labelledby="kpi-section-title">
             <h2 id="kpi-section-title" className="sr-only">
               Key Performance Indicators
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80">
               {data.kpiCards.map((card) => (
                 <KPICard key={card.id} card={card} />
               ))}
             </div>
           </section>
 
-          {/* Charts */}
           <section aria-labelledby="charts-section-title">
             <h2 id="charts-section-title" className="sr-only">
               Analytics Charts
@@ -55,7 +53,6 @@ export const Dashboard = () => {
             </div>
           </section>
 
-          {/* Users Table */}
           <section aria-labelledby="users-section-title">
             <h2 id="users-section-title" className="sr-only">
               Recent Users

@@ -7,15 +7,17 @@ interface KPICardProps {
   card: KPICardType;
 }
 
-// Mapa de iconos por ID (más eficiente que condicionales)
 const ICON_MAP: Record<string, string> = {
-  '1': 'trending_up',
-  '2': 'group',
-  '3': 'speed',
-  '4': 'shopping_cart',
+  'kpi-revenue-light': 'payments',
+  'kpi-growth-light': 'trending_up',
+  'kpi-users-light': 'group',
+  'kpi-conversion-light': 'ads_click',
+  'kpi-revenue-dark': 'payments',
+  'kpi-users-dark': 'group',
+  'kpi-mrr-dark': 'query_stats',
+  'kpi-conversion-dark': 'ads_click',
 };
 
-// Componente separado para el sparkline (mejor separación de responsabilidades)
 interface SparklineSVGProps {
   data: readonly number[];
   color: string;
@@ -24,17 +26,17 @@ interface SparklineSVGProps {
 const SparklineSVG = memo(({ data, color }: SparklineSVGProps) => {
   const pathData = useMemo(() => {
     if (!data || data.length === 0) return '';
-    
+
     const points = data
       .map((val, i) => `L ${(i + 1) * (100 / data.length)} ${val}`)
       .join(' ');
-    
+
     return `M0 ${data[0]} ${points}`;
   }, [data]);
 
   return (
-    <svg 
-      className="w-full h-full" 
+    <svg
+      className="w-full h-full"
       viewBox="0 0 100 40"
       role="img"
       aria-label="Trend chart"
@@ -57,65 +59,49 @@ SparklineSVG.displayName = 'SparklineSVG';
 export const KPICard = memo(({ card }: KPICardProps) => {
   const classes = useThemeClasses();
   const isUp = card.trend === 'up';
-  
-  // Determinar el icono basado en el ID
   const iconName = ICON_MAP[card.id] || 'bar_chart';
-  
-  // Color del trend (memoizado para evitar re-cálculos)
+
   const trendColor = useMemo(
-    () => (isUp ? 'text-emerald-500' : 'text-rose-500'),
+    () => (isUp ? 'text-olive' : 'text-primary'),
     [isUp]
   );
 
   return (
-    <article 
-      className={`rounded-xl p-4 md:p-5 border transition-all group hover:border-primary/30 hover:shadow-lg ${classes.surface}`}
+    <article
+      className={`group border-y md:border-y-0 md:border-l first:md:border-l-0 border-border-light dark:border-border-dark px-4 py-4 md:px-5 ${classes.hover}`}
       aria-labelledby={`kpi-${card.id}-label`}
     >
-      
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3 md:mb-4">
-        <h3 
-          id={`kpi-${card.id}-label`}
-          className={`text-xs md:text-sm font-medium ${classes.subtitle}`}
-        >
-          {card.label}
-        </h3>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <Icon name={iconName} className={`!text-[18px] ${classes.subtitle}`} aria-hidden="true" />
+            <h3
+              id={`kpi-${card.id}-label`}
+              className={`text-[11px] font-display font-semibold uppercase tracking-[0.18em] ${classes.subtitle}`}
+            >
+              {card.label}
+            </h3>
+          </div>
 
-        <Icon
-          name={iconName}
-          className="text-primary !text-lg md:!text-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-          aria-hidden="true"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="flex items-end justify-between gap-3 md:gap-4">
-        <div className="flex-1 min-w-0">
-          <p 
-            className={`text-xl md:text-2xl font-bold tracking-tight ${classes.title}`}
+          <p
+            className={`mt-4 text-2xl md:text-3xl font-display font-bold tabular-nums tracking-tight ${classes.title}`}
             aria-label={`${card.label} value`}
           >
             {card.value}
           </p>
 
-          <div 
-            className={`${trendColor} text-xs font-semibold mt-1 flex items-center gap-1`}
+          <div
+            className={`${trendColor} text-xs font-display font-semibold mt-1 flex items-center gap-1`}
             role="status"
             aria-label={`${isUp ? 'Increased' : 'Decreased'} by ${card.change}`}
           >
-            <Icon
-              name={isUp ? 'north' : 'south'}
-              className="!text-xs"
-              aria-hidden="true"
-            />
+            <Icon name={isUp ? 'north_east' : 'south_east'} className="!text-xs" aria-hidden="true" />
             <span>{card.change}</span>
           </div>
         </div>
 
-        {/* Sparkline Chart */}
-        <div className="w-16 h-8 md:w-20 md:h-10 flex-shrink-0">
-          <SparklineSVG data={card.chartData} color={card.chartColor} />
+        <div className="hidden sm:block w-16 h-10 md:w-20 md:h-11 flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
+          <SparklineSVG data={card.chartData} color={isUp ? '#788c5d' : '#d97757'} />
         </div>
       </div>
     </article>

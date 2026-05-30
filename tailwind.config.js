@@ -8,29 +8,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#137fec",
+        primary: "#d97757",
+        blue: "#6a9bcc",
+        olive: "#788c5d",
 
-        // BACKGROUNDS
-        "background-light": "#f6f7f8",
-        "background-dark": "#050505",
+        "background-light": "#faf9f5",
+        "background-dark": "#141413",
 
-        // SURFACES (cards, sidebar)
-        "surface-light": "#ffffff",
-        "surface-dark": "#0f0f0f",
+        "surface-light": "#fffdf8",
+        "surface-dark": "#1b1a18",
 
-        // BORDERS
-        "border-light": "#e5e7eb",
-        "border-dark": "rgba(255,255,255,0.08)",
+        "border-light": "#e8e6dc",
+        "border-dark": "rgba(250,249,245,0.12)",
 
-        // TEXT
-        "text-primary-light": "#0f172a",
-        "text-secondary-light": "#64748b",
-        "text-primary-dark": "#ffffff",
-        "text-secondary-dark": "#94a3b8",
+        "text-primary-light": "#141413",
+        "text-secondary-light": "#7b786f",
+        "text-primary-dark": "#faf9f5",
+        "text-secondary-dark": "#b0aea5",
       },
 
       fontFamily: {
-        display: ["Inter", "sans-serif"],
+        display: ["Poppins", "Arial", "sans-serif"],
+        body: ["Lora", "Georgia", "serif"],
       },
 
       borderRadius: {

@@ -17,10 +17,10 @@ export const SortableHeader = ({
   sortDirection,
   onSort,
 }: SortableHeaderProps) => (
-  <th className="px-3 md:px-6 py-4">
+  <th className="px-3 md:px-6 py-3.5">
     <button
       onClick={() => onSort(field)}
-      className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest hover:text-primary transition-colors focus:outline-none focus:text-primary group"
+      className="flex items-center gap-2 text-[10px] font-display font-bold uppercase tracking-[0.22em] hover:text-primary transition-colors focus:outline-none focus:text-primary group"
       aria-label={`Sort by ${field}`}
     >
       <span>{children}</span>

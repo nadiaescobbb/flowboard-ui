@@ -53,28 +53,28 @@ export const UserTable = memo(({ users }: UserTableProps) => {
   const getStatusColor = useCallback((status: User['status']): string => {
     const colors: Record<User['status'], string> = {
       Active: classes.isLight
-        ? 'bg-emerald-100 text-emerald-600'
-        : 'bg-emerald-500/10 text-emerald-500',
+        ? 'bg-olive/15 text-olive'
+        : 'bg-olive/20 text-[#b6c297]',
       Trial: classes.isLight
-        ? 'bg-blue-100 text-primary'
-        : 'bg-primary/10 text-primary',
+        ? 'bg-blue/15 text-[#4d789e]'
+        : 'bg-blue/20 text-blue',
       Cancelled: classes.isLight
-        ? 'bg-rose-100 text-rose-600'
-        : 'bg-rose-500/10 text-rose-500',
+        ? 'bg-primary/15 text-primary'
+        : 'bg-primary/20 text-primary',
       Away: classes.isLight
-        ? 'bg-amber-100 text-amber-600'
-        : 'bg-amber-500/10 text-amber-500',
+        ? 'bg-[#d9b857]/18 text-[#9a7b27]'
+        : 'bg-[#d9b857]/20 text-[#d9b857]',
     };
     return colors[status];
   }, [classes.isLight]);
 
   const tableHeadClass = classes.isLight
-    ? 'bg-gray-50 text-text-secondary-light'
-    : 'bg-white/[0.02] text-slate-500';
+    ? 'bg-[#f6f1e7] text-text-secondary-light'
+    : 'bg-white/[0.03] text-text-secondary-dark';
 
   if (users.length === 0) {
     return (
-      <div className={`rounded-xl border overflow-hidden ${classes.surface}`}>
+      <div className={`rounded-md border overflow-hidden ${classes.surface}`}>
         <div className="p-12 text-center">
           <Icon name="group" className={`text-4xl mb-3 ${classes.subtitle}`} aria-hidden="true" />
           <p className={`text-sm font-medium ${classes.title}`}>No Users Yet</p>
@@ -83,7 +83,7 @@ export const UserTable = memo(({ users }: UserTableProps) => {
           </p>
           <button
             onClick={() => handleAction({ type: 'invite' })}
-            className="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary/90 transition-all"
+            className="mt-4 px-4 py-2 bg-primary text-[#fffdf8] rounded-md text-sm font-display font-semibold hover:bg-primary/90 transition-all"
           >
             Invite User
           </button>
@@ -94,23 +94,26 @@ export const UserTable = memo(({ users }: UserTableProps) => {
 
   return (
     <article
-      className={`rounded-xl border overflow-hidden ${classes.surface}`}
+      className={`rounded-md border overflow-hidden ${classes.surface}`}
       aria-labelledby="users-table-title"
     >
-      <header className="p-4 md:p-6 border-b">
+      <header className="p-4 md:p-5 border-b border-border-light dark:border-border-dark">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
           <div>
-            <h3 id="users-table-title" className={`text-base md:text-lg font-semibold ${classes.title}`}>
+            <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+              People
+            </p>
+            <h3 id="users-table-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
               Recent Users
             </h3>
-            <p className={`text-xs mt-0.5 ${classes.subtitle}`}>
+            <p className={`text-xs mt-1 ${classes.subtitle}`}>
               {filteredAndSortedUsers.length} of {users.length} users
             </p>
           </div>
 
           <button
             onClick={() => handleAction({ type: 'invite' })}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold transition-all hover:bg-primary/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-lg shadow-primary/20"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-[#fffdf8] rounded-md text-sm font-display font-semibold transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
           >
             <Icon name="add" className="!text-sm" aria-hidden="true" />
             <span>Invite User</span>
@@ -118,7 +121,7 @@ export const UserTable = memo(({ users }: UserTableProps) => {
         </div>
 
         {lastAction && (
-          <div className="mb-4 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-primary" role="status">
+          <div className="mb-4 rounded-md border border-primary/20 bg-primary/10 px-3 py-2 text-xs text-primary" role="status">
             {getUserActionMessage(lastAction.type, lastAction.user)}
           </div>
         )}
@@ -135,7 +138,7 @@ export const UserTable = memo(({ users }: UserTableProps) => {
               placeholder="Search users..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full rounded-lg pl-10 pr-4 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${classes.input}`}
+              className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
               aria-label="Search users"
             />
           </div>
@@ -143,7 +146,7 @@ export const UserTable = memo(({ users }: UserTableProps) => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-            className={`rounded-lg px-4 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${classes.input}`}
+            className={`rounded-md px-4 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -189,10 +192,10 @@ export const UserTable = memo(({ users }: UserTableProps) => {
             <tbody className={`divide-y ${classes.isLight ? 'divide-border-light' : 'divide-border-dark'}`}>
               {paginatedUsers.map((user) => (
                 <tr key={user.id} className={`transition-colors group ${classes.hover}`}>
-                  <td className="px-3 md:px-6 py-4">
+                  <td className="px-3 md:px-6 py-3.5">
                     <div className="flex items-center gap-3">
                       <div
-                        className={`size-9 rounded-full flex items-center justify-center overflow-hidden ${classes.isLight ? 'bg-slate-200' : 'bg-slate-800'} flex-shrink-0`}
+                        className={`size-9 rounded-md flex items-center justify-center overflow-hidden ${classes.isLight ? 'bg-[#ece7dc]' : 'bg-white/[0.08]'} flex-shrink-0`}
                         role="img"
                         aria-label={`${user.name} avatar`}
                       >
@@ -203,7 +206,7 @@ export const UserTable = memo(({ users }: UserTableProps) => {
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className={`text-sm font-medium truncate ${classes.title}`}>
+                        <p className={`text-sm font-display font-semibold truncate ${classes.title}`}>
                           {user.name}
                         </p>
                         <p className={`text-xs truncate ${classes.subtitle}`}>
@@ -213,9 +216,9 @@ export const UserTable = memo(({ users }: UserTableProps) => {
                     </div>
                   </td>
 
-                  <td className="px-3 md:px-6 py-4">
+                  <td className="px-3 md:px-6 py-3.5">
                     <span
-                      className={`inline-flex px-2.5 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider ${getStatusColor(user.status)}`}
+                      className={`inline-flex px-2.5 py-1 text-[10px] font-display font-bold rounded-md uppercase tracking-[0.14em] ${getStatusColor(user.status)}`}
                       role="status"
                       aria-label={`User status: ${user.status}`}
                     >
@@ -223,19 +226,19 @@ export const UserTable = memo(({ users }: UserTableProps) => {
                     </span>
                   </td>
 
-                  <td className="px-3 md:px-6 py-4">
+                  <td className="px-3 md:px-6 py-3.5">
                     <span className={`text-xs md:text-sm ${classes.subtitle}`}>
                       {user.plan}
                     </span>
                   </td>
 
-                  <td className="px-3 md:px-6 py-4">
+                  <td className="px-3 md:px-6 py-3.5">
                     <span className={`text-xs md:text-sm ${classes.subtitle}`}>
                       {user.joinDate}
                     </span>
                   </td>
 
-                  <td className="px-3 md:px-6 py-4 text-right">
+                  <td className="px-3 md:px-6 py-3.5 text-right">
                     <UserMenu
                       user={user}
                       onEdit={(selectedUser) => handleAction({ type: 'edit', user: selectedUser })}

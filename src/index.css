@@ -1,68 +1,102 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 🔧 RESET PARA MOBILE */
+:root {
+  --ink: #141413;
+  --paper: #faf9f5;
+  --paper-soft: #f1efe6;
+  --line: #e8e6dc;
+  --muted: #7b786f;
+  --accent: #d97757;
+  --blue: #6a9bcc;
+  --green: #788c5d;
+  --dark-surface: #1b1a18;
+  --dark-line: rgba(250, 249, 245, 0.12);
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
 
 html {
-  /* Prevenir scroll horizontal */
   overflow-x: hidden;
-  /* Mejorar renderizado en móviles */
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  font-family: 'Lora', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background:
+    radial-gradient(circle at top left, rgba(217, 119, 87, 0.12), transparent 32rem),
+    linear-gradient(135deg, var(--paper) 0%, #f6f1e7 100%);
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(217, 119, 87, 0.14), transparent 34rem),
+    radial-gradient(circle at bottom right, rgba(106, 155, 204, 0.08), transparent 30rem),
+    var(--ink);
 }
 
 #root {
-  overflow-x: hidden;
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+.font-display {
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 .active-nav {
-  background-color: rgba(19, 127, 236, 0.1);
-  color: #137fec;
+  background-color: rgba(217, 119, 87, 0.12);
+  color: var(--accent);
 }
 
 .glass-header {
-  background: rgba(5, 5, 5, 0.8);
-  backdrop-filter: blur(12px);
+  background: rgba(250, 249, 245, 0.78);
+  backdrop-filter: blur(18px);
 }
 
 .sidebar-item-active {
-  background: rgba(19, 127, 236, 0.1);
-  color: #137fec;
-  border-right: 2px solid #137fec;
+  background: rgba(217, 119, 87, 0.13);
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
 }
 
 .chart-glow {
-  filter: drop-shadow(0 0 8px rgba(19, 127, 236, 0.3));
+  filter: drop-shadow(0 10px 20px rgba(217, 119, 87, 0.18));
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
 }
-
 
 @keyframes fadeInUp {
   from {
@@ -75,11 +109,9 @@ input:focus {
   }
 }
 
-
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
-
 
 @media screen and (max-width: 768px) {
   input[type="text"],
@@ -93,13 +125,11 @@ input:focus {
   }
 }
 
-/* Smooth scrolling solo en desktop */
 @media (min-width: 1024px) {
   html {
     scroll-behavior: smooth;
   }
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -111,7 +141,6 @@ input:focus {
   }
 }
 
-/* Fix para safe area en iPhone con notch */
 @supports (padding: max(0px)) {
   body {
     padding-left: max(0px, env(safe-area-inset-left));
