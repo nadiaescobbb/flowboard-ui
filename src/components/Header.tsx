@@ -44,7 +44,7 @@ export const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 z-30 min-h-20 border-b backdrop-blur-xl ${classes.surface}`}
+      className={`sticky top-0 z-40 min-h-20 border-b backdrop-blur-xl ${classes.surface}`}
       role="banner"
     >
       <div className="px-4 md:px-8 py-4 flex items-center justify-between gap-4">
@@ -127,7 +127,7 @@ export const Header = () => {
 
             {showNotifications && (
               <div
-                className={`absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border shadow-lg overflow-hidden ${classes.surface}`}
+                className={`absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
                 role="menu"
                 aria-label="Notifications menu"
               >
@@ -192,7 +192,7 @@ export const Header = () => {
 
             {showUserMenu && (
               <div
-                className={`absolute right-0 mt-2 w-56 rounded-md border shadow-lg overflow-hidden ${classes.surface}`}
+                className={`absolute right-0 mt-2 w-56 rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
                 role="menu"
                 aria-label="User menu"
               >

@@ -25,7 +25,7 @@ export const Sidebar = () => {
     <>
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className={`md:hidden fixed top-4 left-4 z-50 p-2 rounded-md ${classes.surface} border shadow-lg`}
+        className={`md:hidden fixed top-4 left-4 z-[80] p-2 rounded-md ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'} border shadow-lg`}
         aria-label="Toggle menu"
         aria-expanded={mobileMenuOpen}
       >
@@ -34,7 +34,7 @@ export const Sidebar = () => {
 
       {mobileMenuOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          className="md:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60]"
           onClick={() => setMobileMenuOpen(false)}
           aria-hidden="true"
         />
@@ -47,8 +47,9 @@ export const Sidebar = () => {
           fixed md:sticky top-0 left-0 h-screen
           w-60 flex-shrink-0 flex-col border-r
           transition-transform duration-300 ease-in-out
-          z-40
-          ${classes.surface}
+          z-[70]
+          ${classes.isLight ? 'bg-surface-light border-border-light shadow-[24px_0_70px_rgba(20,20,19,0.16)]' : 'bg-[#141413] border-border-dark shadow-[24px_0_90px_rgba(0,0,0,0.75)]'}
+          overflow-y-auto
         `}
         role="navigation"
         aria-label="Main navigation"
