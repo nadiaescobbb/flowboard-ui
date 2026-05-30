@@ -1,8 +1,16 @@
-import { KPICard, User, AcquisitionChannel, RevenueDataPoint } from '../types';
+import {
+  KPICard,
+  User,
+  AcquisitionChannel,
+  RevenueDataPoint,
+  createKPIId,
+  createPercentage,
+  createUserId,
+} from '../types';
 
 export const kpiCardsLight: KPICard[] = [
   {
-    id: '1',
+    id: createKPIId('kpi-revenue-light'),
     label: 'Total Revenue',
     value: '$124,500',
     change: '12%',
@@ -11,7 +19,7 @@ export const kpiCardsLight: KPICard[] = [
     chartColor: '#10b981',
   },
   {
-    id: '2',
+    id: createKPIId('kpi-growth-light'),
     label: 'Monthly Growth',
     value: '+8.4%',
     change: '8.4%',
@@ -20,7 +28,7 @@ export const kpiCardsLight: KPICard[] = [
     chartColor: '#10b981',
   },
   {
-    id: '3',
+    id: createKPIId('kpi-users-light'),
     label: 'Active Users',
     value: '1,240',
     change: '5%',
@@ -29,7 +37,7 @@ export const kpiCardsLight: KPICard[] = [
     chartColor: '#137fec',
   },
   {
-    id: '4',
+    id: createKPIId('kpi-conversion-light'),
     label: 'Conversion Rate',
     value: '3.2%',
     change: '0.5%',
@@ -41,7 +49,7 @@ export const kpiCardsLight: KPICard[] = [
 
 export const kpiCardsDark: KPICard[] = [
   {
-    id: '1',
+    id: createKPIId('kpi-revenue-dark'),
     label: 'Total Revenue',
     value: '$124,592',
     change: '+12.5%',
@@ -50,7 +58,7 @@ export const kpiCardsDark: KPICard[] = [
     chartColor: '#137fec',
   },
   {
-    id: '2',
+    id: createKPIId('kpi-users-dark'),
     label: 'Active Users',
     value: '12,842',
     change: '+5.4%',
@@ -59,7 +67,7 @@ export const kpiCardsDark: KPICard[] = [
     chartColor: '#137fec',
   },
   {
-    id: '3',
+    id: createKPIId('kpi-mrr-dark'),
     label: 'MRR Growth',
     value: '24.3%',
     change: '+2.1%',
@@ -68,7 +76,7 @@ export const kpiCardsDark: KPICard[] = [
     chartColor: '#137fec',
   },
   {
-    id: '4',
+    id: createKPIId('kpi-conversion-dark'),
     label: 'Conversion Rate',
     value: '3.18%',
     change: '-0.4%',
@@ -80,7 +88,7 @@ export const kpiCardsDark: KPICard[] = [
 
 export const usersLight: User[] = [
   {
-    id: '1',
+    id: createUserId('user-sarah-koenig'),
     name: 'Sarah Koenig',
     email: 'sarah.k@flow.com',
     plan: 'Enterprise',
@@ -89,7 +97,7 @@ export const usersLight: User[] = [
     initials: 'SK',
   },
   {
-    id: '2',
+    id: createUserId('user-james-dalton'),
     name: 'James Dalton',
     email: 'j.dalton@startup.io',
     plan: 'Pro Monthly',
@@ -98,7 +106,7 @@ export const usersLight: User[] = [
     initials: 'JD',
   },
   {
-    id: '3',
+    id: createUserId('user-elena-loft'),
     name: 'Elena Loft',
     email: 'elena@design.com',
     plan: 'Free Tier',
@@ -107,7 +115,7 @@ export const usersLight: User[] = [
     initials: 'EL',
   },
   {
-    id: '4',
+    id: createUserId('user-marcus-brown'),
     name: 'Marcus Brown',
     email: 'marcus@tech.com',
     plan: 'Pro Yearly',
@@ -119,7 +127,7 @@ export const usersLight: User[] = [
 
 export const usersDark: User[] = [
   {
-    id: '1',
+    id: createUserId('user-sarah-jenkins'),
     name: 'Sarah Jenkins',
     email: 'sarah@acme.com',
     plan: 'Enterprise',
@@ -129,7 +137,7 @@ export const usersDark: User[] = [
     initials: 'SJ',
   },
   {
-    id: '2',
+    id: createUserId('user-michael-chen'),
     name: 'Michael Chen',
     email: 'm.chen@stripe.co',
     plan: 'Professional',
@@ -138,7 +146,7 @@ export const usersDark: User[] = [
     initials: 'MC',
   },
   {
-    id: '3',
+    id: createUserId('user-david-miller'),
     name: 'David Miller',
     email: 'david.miller@tech.io',
     plan: 'Free Tier',
@@ -150,17 +158,17 @@ export const usersDark: User[] = [
 ];
 
 export const acquisitionChannelsLight: AcquisitionChannel[] = [
-  { name: 'Organic Search', percentage: 42, opacity: 1 },
-  { name: 'Social Media', percentage: 28, opacity: 0.7 },
-  { name: 'Direct Visit', percentage: 18, opacity: 0.5 },
-  { name: 'Paid Ads', percentage: 12, opacity: 0.3 },
+  { name: 'Organic Search', percentage: createPercentage(42), opacity: 1 },
+  { name: 'Social Media', percentage: createPercentage(28), opacity: 0.7 },
+  { name: 'Direct Visit', percentage: createPercentage(18), opacity: 0.5 },
+  { name: 'Paid Ads', percentage: createPercentage(12), opacity: 0.3 },
 ];
 
 export const acquisitionChannelsDark: AcquisitionChannel[] = [
-  { name: 'Direct Search', percentage: 42, opacity: 1 },
-  { name: 'Social Media', percentage: 28, opacity: 0.6 },
-  { name: 'Paid Advertisements', percentage: 18, opacity: 0.4 },
-  { name: 'Referral Programs', percentage: 12, opacity: 0.2 },
+  { name: 'Direct Search', percentage: createPercentage(42), opacity: 1 },
+  { name: 'Social Media', percentage: createPercentage(28), opacity: 0.6 },
+  { name: 'Paid Advertisements', percentage: createPercentage(18), opacity: 0.4 },
+  { name: 'Referral Programs', percentage: createPercentage(12), opacity: 0.2 },
 ];
 
 export const revenueDataLight: RevenueDataPoint[] = [

@@ -5,19 +5,20 @@ import React, { useState } from 'react';
 export const Sidebar = () => {
   const classes = useThemeClasses();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('Dashboard');
 
   const navItems = [
-    { icon: 'dashboard', label: 'Dashboard', active: true },
-    { icon: 'bar_chart', label: 'Analytics', active: false },
-    { icon: 'group', label: 'Users', active: false },
-    { icon: 'payments', label: 'Revenue', active: false },
-    { icon: 'settings', label: 'Settings', active: false },
+    { icon: 'dashboard', label: 'Dashboard' },
+    { icon: 'bar_chart', label: 'Analytics' },
+    { icon: 'group', label: 'Users' },
+    { icon: 'payments', label: 'Revenue' },
+    { icon: 'settings', label: 'Settings' },
   ];
 
   // Cerrar menú al hacer click en un item (mobile)
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, label: string) => {
     e.preventDefault();
-    console.log(`Navigate to ${label}`);
+    setActiveSection(label);
     setMobileMenuOpen(false);
   };
 
@@ -83,7 +84,7 @@ export const Sidebar = () => {
               key={item.label}
               href="#"
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                item.active
+                activeSection === item.label
                   ? classes.isLight
                     ? 'bg-gray-100 text-primary'
                     : 'sidebar-item-active'
@@ -93,7 +94,7 @@ export const Sidebar = () => {
                         : 'hover:text-white hover:bg-white/5'
                     }`
               }`}
-              aria-current={item.active ? 'page' : undefined}
+              aria-current={activeSection === item.label ? 'page' : undefined}
               onClick={(e) => handleNavClick(e, item.label)}
             >
               <Icon name={item.icon} className="!text-[22px]" aria-hidden="true" />
@@ -115,7 +116,7 @@ export const Sidebar = () => {
             }`}
             onClick={(e) => {
               e.preventDefault();
-              console.log('Open support');
+              setActiveSection('Support');
               setMobileMenuOpen(false);
             }}
           >

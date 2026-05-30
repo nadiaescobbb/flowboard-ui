@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { AcquisitionChannel } from '../types';
 import { useThemeClasses } from '../hooks/useThemeClasses';
 
@@ -65,6 +65,7 @@ ProgressBar.displayName = 'ProgressBar';
 
 export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
   const classes = useThemeClasses();
+  const [showInsight, setShowInsight] = useState(false);
 
   // Validar y ordenar canales por porcentaje
   const sortedChannels = useMemo(() => {
@@ -138,12 +139,20 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
 
         {/* Call to Action Button */}
         <button
-          onClick={() => console.log('View full analytics', sortedChannels)}
+          onClick={() => setShowInsight((current) => !current)}
           className={`mt-6 md:mt-8 w-full py-2.5 border rounded-lg text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 active:scale-[0.98] touch-manipulation ${classes.button} hover:scale-[1.02]`}
           aria-label="View detailed analytics for all acquisition sources"
+          aria-expanded={showInsight}
         >
-          View Full Analytics
+          {showInsight ? 'Hide Channel Insight' : 'View Channel Insight'}
         </button>
+
+        {showInsight && (
+          <div className="mt-3 rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-primary" role="status">
+            {sortedChannels[0].name} is currently the strongest acquisition source at{' '}
+            {sortedChannels[0].percentage}%.
+          </div>
+        )}
       </div>
     </article>
   );

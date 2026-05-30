@@ -1,0 +1,40 @@
+import { ReactNode } from 'react';
+import { Icon } from '../Icon';
+import { SortDirection, SortField } from './types';
+
+interface SortableHeaderProps {
+  children: ReactNode;
+  field: SortField;
+  sortField: SortField;
+  sortDirection: SortDirection;
+  onSort: (field: SortField) => void;
+}
+
+export const SortableHeader = ({
+  children,
+  field,
+  sortField,
+  sortDirection,
+  onSort,
+}: SortableHeaderProps) => (
+  <th className="px-3 md:px-6 py-4">
+    <button
+      onClick={() => onSort(field)}
+      className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest hover:text-primary transition-colors focus:outline-none focus:text-primary group"
+      aria-label={`Sort by ${field}`}
+    >
+      <span>{children}</span>
+      <Icon
+        name={
+          sortField === field
+            ? sortDirection === 'asc'
+              ? 'arrow_upward'
+              : 'arrow_downward'
+            : 'unfold_more'
+        }
+        className="!text-xs opacity-50 group-hover:opacity-100 transition-opacity"
+        aria-hidden="true"
+      />
+    </button>
+  </th>
+);

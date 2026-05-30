@@ -17,7 +17,7 @@ import {
   isUserStatus,
   isTrendDirection,
 } from '../utils';
-import { ok, err, createPercentage, createUserId, createKPIId } from '../types';
+import { ok, err, createPercentage, createKPIId } from '../types';
 
 // ============================================================
 // TYPE GUARDS
@@ -370,7 +370,7 @@ describe('buildAreaPath', () => {
     const path = buildAreaPath('M 0 150 C 400 150, 400 100, 800 100', 300, 800);
     expect(path).toContain('L 800 300'); // goes to bottom-right
     expect(path).toContain('L 0 300');   // goes to bottom-left
-    expect(path).toEndWith('Z');         // closes path
+    expect(path).toMatch(/Z$/);          // closes path
   });
 });
 

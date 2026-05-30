@@ -3,7 +3,7 @@ import { Header } from '../components/Header';
 import { KPICard } from '../components/KPICard';
 import { RevenueChart } from '../components/RevenueChart';
 import { AcquisitionChart } from '../components/AcquisitionChart';
-import { UserTable } from '../components/UserTable';
+import { UserTable } from '../components/user-table';
 import { DashboardSkeleton } from '../components/DashboardSkeleton';
 import { ErrorState } from '../components/ErrorState';
 import { useDashboardData } from '../hooks/useDashboardData';

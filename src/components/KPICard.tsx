@@ -17,7 +17,7 @@ const ICON_MAP: Record<string, string> = {
 
 // Componente separado para el sparkline (mejor separación de responsabilidades)
 interface SparklineSVGProps {
-  data: number[];
+  data: readonly number[];
   color: string;
 }
 

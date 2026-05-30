@@ -8,6 +8,7 @@ export const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +30,18 @@ export const Header = () => {
   // Manejar búsqueda
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Searching for:', searchQuery);
+    const query = searchQuery.trim();
+    setActionMessage(
+      query
+        ? `Search submitted for "${query}". In production this would query dashboard entities.`
+        : 'Search is ready. Enter a term to find users, reports, or metrics.'
+    );
+  };
+
+  const handleMenuAction = (message: string) => {
+    setActionMessage(message);
+    setShowNotifications(false);
+    setShowUserMenu(false);
   };
 
   const notificationBorder = classes.isLight
@@ -126,7 +138,7 @@ export const Header = () => {
                   <button
                     key={notification.id}
                     className={`w-full p-4 text-left transition-colors border-b last:border-b-0 ${classes.hover} ${notification.unread ? 'bg-primary/5' : ''}`}
-                    onClick={() => console.log('Open notification', notification.id)}
+                    onClick={() => handleMenuAction(`Opened notification: ${notification.title}.`)}
                   >
                     <div className="flex items-start gap-3">
                       {notification.unread && (
@@ -147,7 +159,7 @@ export const Header = () => {
               <div className="p-3 border-t">
                 <button 
                   className="w-full text-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                  onClick={() => console.log('View all notifications')}
+                  onClick={() => handleMenuAction('Notifications overview selected.')}
                 >
                   View all notifications
                 </button>
@@ -203,13 +215,13 @@ export const Header = () => {
               
               <div className="py-2">
                 {[
-                  { icon: 'person', label: 'Profile', action: () => console.log('Profile') },
-                  { icon: 'settings', label: 'Settings', action: () => console.log('Settings') },
-                  { icon: 'help', label: 'Help & Support', action: () => console.log('Help') },
+                  { icon: 'person', label: 'Profile', message: 'Profile settings selected.' },
+                  { icon: 'settings', label: 'Settings', message: 'Workspace settings selected.' },
+                  { icon: 'help', label: 'Help & Support', message: 'Support center selected.' },
                 ].map((item) => (
                   <button
                     key={item.label}
-                    onClick={item.action}
+                    onClick={() => handleMenuAction(item.message)}
                     className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${classes.subtitle} ${classes.hover}`}
                     role="menuitem"
                   >
@@ -221,7 +233,7 @@ export const Header = () => {
 
               <div className="p-2 border-t">
                 <button 
-                  onClick={() => console.log('Logout')}
+                  onClick={() => handleMenuAction('Sign out flow selected.')}
                   className="w-full flex items-center gap-3 px-4 py-2 text-sm text-rose-600 dark:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors"
                   role="menuitem"
                 >
@@ -252,6 +264,15 @@ export const Header = () => {
               autoFocus
             />
           </form>
+        </div>
+      )}
+
+      {actionMessage && (
+        <div
+          className="absolute right-4 top-[4.5rem] max-w-sm rounded-lg border border-primary/20 bg-primary/10 px-3 py-2 text-xs text-primary shadow-sm"
+          role="status"
+        >
+          {actionMessage}
         </div>
       )}
     </header>
