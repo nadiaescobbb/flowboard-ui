@@ -9,7 +9,7 @@ interface RevenueChartProps {
 type TimeRange = 'weekly' | 'monthly';
 
 const chartWidth = 800;
-const chartHeight = 300;
+const chartHeight = 260;
 
 const generatePath = (data: RevenueDataPoint[], width: number, height: number): string => {
   if (!data || data.length === 0) return '';
@@ -119,7 +119,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
       className={`lg:col-span-2 rounded-md p-5 md:p-6 border flex flex-col ${classes.surface}`}
       aria-labelledby="revenue-chart-title"
     >
-      <header className="flex flex-col xl:flex-row xl:items-start justify-between gap-5 mb-7">
+      <header className="flex flex-col xl:flex-row xl:items-start justify-between gap-5 mb-5">
         <div>
           <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
             Operating signal
@@ -161,10 +161,10 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
         </div>
       </header>
 
-      <div className="flex-1 min-h-[300px] relative" id="revenue-chart-panel" role="tabpanel">
+      <div className="flex-1 min-h-[260px] relative" id="revenue-chart-panel" role="tabpanel">
         <svg
           ref={chartRef}
-          className="w-full h-[300px] cursor-crosshair"
+          className="w-full h-[260px] cursor-crosshair"
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
           preserveAspectRatio="none"
           onMouseMove={handleMouseMove}
@@ -247,7 +247,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
         )}
       </div>
 
-      <div className="flex justify-between mt-4 px-1">
+      <div className="flex justify-between mt-3 px-1">
         {data.map((point, index) => (
           <span
             key={point.month}
