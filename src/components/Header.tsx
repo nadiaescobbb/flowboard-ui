@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Icon } from './Icon';
 import { useThemeClasses } from '../hooks/useThemeClasses';
 
@@ -48,6 +49,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
   const [readNotificationIds, setReadNotificationIds] = useState<number[]>([3]);
   const notificationRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
 
   const unreadCount = useMemo(
     () => notifications.filter((notification) => !readNotificationIds.includes(notification.id)).length,
@@ -81,6 +83,18 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
+
+  useEffect(() => {
+    if (!activePanel) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    panelRef.current?.scrollTo({ top: 0, left: 0 });
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [activePanel]);
 
   const handleSearch = (event: FormEvent) => {
     event.preventDefault();
@@ -120,7 +134,132 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
     notifications: 'Notifications',
   }[activePanel ?? 'profile'];
 
+  const panel = activePanel ? (
+    <div
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="header-panel-title"
+      onMouseDown={() => setActivePanel(null)}
+    >
+      <section
+        key={activePanel}
+        ref={panelRef}
+        className={`w-full max-w-xl max-h-[min(720px,calc(100vh-2rem))] overflow-y-auto rounded-md border shadow-[0_28px_90px_rgba(0,0,0,0.45)] ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <div className={`sticky top-0 z-10 border-b px-5 py-5 md:px-6 ${classes.isLight ? 'bg-surface-light/95 border-border-light' : 'bg-[#1b1a18]/95 border-border-dark'} backdrop-blur-xl`}>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+                FlowBoard
+              </p>
+              <h2 id="header-panel-title" className={`mt-2 text-2xl font-display font-bold leading-tight ${classes.title}`}>
+                {panelTitle}
+              </h2>
+            </div>
+            <button
+              onClick={() => setActivePanel(null)}
+              className={`rounded-md p-2 transition-colors ${classes.subtitle} ${classes.hover}`}
+              aria-label="Close panel"
+            >
+              <Icon name="close" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <div className="p-5 md:p-6">
+          {activePanel === 'profile' && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-4 rounded-md border border-border-light dark:border-border-dark bg-primary/10 px-4 py-4">
+                <div className="relative size-12 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-sm font-bold">
+                  {currentUser.initials}
+                  <span className="absolute -right-1 -bottom-1 size-3.5 rounded-full border-2 border-[#1b1a18] bg-olive" aria-hidden="true"></span>
+                </div>
+                <div>
+                  <p className={`text-base font-display font-bold ${classes.title}`}>{currentUser.name}</p>
+                  <p className={`text-xs ${classes.subtitle}`}>Signed in user - {currentUser.status}</p>
+                </div>
+              </div>
+              {[
+                ['Name', currentUser.name],
+                ['Email', currentUser.email],
+                ['Role', currentUser.role],
+                ['Access', 'Revenue, Users, Settings'],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                  <p className={`text-[10px] uppercase tracking-[0.2em] ${classes.subtitle}`}>{label}</p>
+                  <p className={`mt-1 text-sm font-display font-semibold ${classes.title}`}>{value}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {activePanel === 'settings' && (
+            <form className="space-y-4" onSubmit={(event) => {
+              event.preventDefault();
+              setActionMessage('Workspace settings saved.');
+              setActivePanel(null);
+            }}>
+              {['Weekly digest', 'Payment alerts', 'New user alerts'].map((setting) => (
+                <label key={setting} className="flex items-center justify-between gap-4 rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                  <span className={`text-sm font-display font-semibold ${classes.title}`}>{setting}</span>
+                  <input type="checkbox" defaultChecked className="size-4 accent-primary" />
+                </label>
+              ))}
+              <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
+                Save Settings
+              </button>
+            </form>
+          )}
+
+          {activePanel === 'help' && (
+            <form className="space-y-4" onSubmit={(event) => {
+              event.preventDefault();
+              setActionMessage('Support ticket created.');
+              setActivePanel(null);
+            }}>
+              <label className="block">
+                <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Topic</span>
+                <select className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
+                  <option>Dashboard data issue</option>
+                  <option>Export request</option>
+                  <option>Access problem</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Message</span>
+                <textarea className={`mt-2 min-h-28 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`} defaultValue="Need help reviewing this week's dashboard." />
+              </label>
+              <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
+                Send Request
+              </button>
+            </form>
+          )}
+
+          {activePanel === 'notifications' && (
+            <div className="space-y-3">
+              <p className={`text-sm leading-6 ${classes.subtitle}`}>
+                Latest product and revenue operations updates for the active workspace.
+              </p>
+              {notifications.map((notification) => (
+                <article key={notification.id} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className={`text-sm font-display font-semibold ${classes.title}`}>{notification.title}</h3>
+                    <span className={`text-[11px] ${classes.subtitle}`}>{notification.time}</span>
+                  </div>
+                  <p className={`mt-2 text-sm leading-6 ${classes.subtitle}`}>{notification.detail}</p>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  ) : null;
+
   return (
+    <>
     <header
       className={`sticky top-0 z-40 min-h-20 border-b backdrop-blur-xl ${classes.surface}`}
       role="banner"
@@ -360,123 +499,8 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
         </div>
       )}
 
-      {activePanel && (
-        <div
-          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="header-panel-title"
-          onMouseDown={() => setActivePanel(null)}
-        >
-          <section
-            className={`w-full max-w-xl max-h-[min(720px,calc(100vh-2rem))] overflow-y-auto rounded-md border p-5 md:p-6 shadow-[0_28px_90px_rgba(0,0,0,0.45)] ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
-                  FlowBoard
-                </p>
-                <h2 id="header-panel-title" className={`mt-2 text-2xl font-display font-bold leading-tight ${classes.title}`}>
-                  {panelTitle}
-                </h2>
-              </div>
-              <button
-                onClick={() => setActivePanel(null)}
-                className={`rounded-md p-2 transition-colors ${classes.subtitle} ${classes.hover}`}
-                aria-label="Close panel"
-              >
-                <Icon name="close" aria-hidden="true" />
-              </button>
-            </div>
-
-            {activePanel === 'profile' && (
-              <div className="mt-6 space-y-4">
-                <div className="flex items-center gap-4 rounded-md border border-border-light dark:border-border-dark bg-primary/10 px-4 py-4">
-                  <div className="relative size-12 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-sm font-bold">
-                    {currentUser.initials}
-                    <span className="absolute -right-1 -bottom-1 size-3.5 rounded-full border-2 border-[#1b1a18] bg-olive" aria-hidden="true"></span>
-                  </div>
-                  <div>
-                    <p className={`text-base font-display font-bold ${classes.title}`}>{currentUser.name}</p>
-                    <p className={`text-xs ${classes.subtitle}`}>Signed in user · {currentUser.status}</p>
-                  </div>
-                </div>
-                {[
-                  ['Name', currentUser.name],
-                  ['Email', currentUser.email],
-                  ['Role', currentUser.role],
-                  ['Access', 'Revenue, Users, Settings'],
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
-                    <p className={`text-[10px] uppercase tracking-[0.2em] ${classes.subtitle}`}>{label}</p>
-                    <p className={`mt-1 text-sm font-display font-semibold ${classes.title}`}>{value}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {activePanel === 'settings' && (
-              <form className="mt-6 space-y-4" onSubmit={(event) => {
-                event.preventDefault();
-                setActionMessage('Workspace settings saved.');
-                setActivePanel(null);
-              }}>
-                {['Weekly digest', 'Payment alerts', 'New user alerts'].map((setting) => (
-                  <label key={setting} className="flex items-center justify-between gap-4 rounded-md border border-border-light dark:border-border-dark px-4 py-3">
-                    <span className={`text-sm font-display font-semibold ${classes.title}`}>{setting}</span>
-                    <input type="checkbox" defaultChecked className="size-4 accent-primary" />
-                  </label>
-                ))}
-                <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                  Save Settings
-                </button>
-              </form>
-            )}
-
-            {activePanel === 'help' && (
-              <form className="mt-6 space-y-4" onSubmit={(event) => {
-                event.preventDefault();
-                setActionMessage('Support ticket created.');
-                setActivePanel(null);
-              }}>
-                <label className="block">
-                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Topic</span>
-                  <select className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
-                    <option>Dashboard data issue</option>
-                    <option>Export request</option>
-                    <option>Access problem</option>
-                  </select>
-                </label>
-                <label className="block">
-                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Message</span>
-                  <textarea className={`mt-2 min-h-28 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`} defaultValue="Need help reviewing this week's dashboard." />
-                </label>
-                <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                  Send Request
-                </button>
-              </form>
-            )}
-
-            {activePanel === 'notifications' && (
-              <div className="mt-6 space-y-3">
-                <p className={`text-sm leading-6 ${classes.subtitle}`}>
-                  Latest product and revenue operations updates for the active workspace.
-                </p>
-                {notifications.map((notification) => (
-                  <article key={notification.id} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className={`text-sm font-display font-semibold ${classes.title}`}>{notification.title}</h3>
-                      <span className={`text-[11px] ${classes.subtitle}`}>{notification.time}</span>
-                    </div>
-                    <p className={`mt-2 text-sm leading-6 ${classes.subtitle}`}>{notification.detail}</p>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
-        </div>
-      )}
     </header>
+    {panel ? createPortal(panel, document.body) : null}
+    </>
   );
 };
