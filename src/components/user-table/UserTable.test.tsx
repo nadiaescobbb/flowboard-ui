@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { ThemeProvider } from '../../contexts/ThemeContext';
 import { createUserId, User } from '../../types';
@@ -91,25 +90,25 @@ describe('UserTable', () => {
     expect(screen.getByText('Clear the search or choose a different status to widen the list.')).toBeInTheDocument();
   });
 
-  it('filters users by status and resets pagination context', async () => {
-    const user = userEvent.setup();
+  it('filters users by status and resets pagination context', () => {
     renderUserTable();
 
-    await user.selectOptions(screen.getByRole('combobox', { name: /filter users by status/i }), 'Trial');
+    fireEvent.change(screen.getByRole('combobox', { name: /filter users by status/i }), {
+      target: { value: 'Trial' },
+    });
 
     expect(screen.getByText('Rafael Moreno')).toBeInTheDocument();
     expect(screen.queryByText('Martina Alvarez')).not.toBeInTheDocument();
     expect(screen.getByText('1 of 6 users')).toBeInTheDocument();
   });
 
-  it('paginates users with accessible page controls', async () => {
-    const user = userEvent.setup();
+  it('paginates users with accessible page controls', () => {
     renderUserTable();
 
     expect(screen.getByText('Showing 1 to 5 of 6')).toBeInTheDocument();
     expect(screen.queryByText('Martina Alvarez')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /show the next users page/i }));
+    fireEvent.click(screen.getByRole('button', { name: /show the next users page/i }));
 
     expect(screen.getByText('Showing 6 to 6 of 6')).toBeInTheDocument();
     expect(screen.getByText('Diego Silva')).toBeInTheDocument();
@@ -117,18 +116,19 @@ describe('UserTable', () => {
     expect(screen.getByRole('button', { name: /show users page 2/i })).toHaveAttribute('aria-current', 'page');
   });
 
-  it('shows visible feedback for demo actions instead of dead controls', async () => {
-    const user = userEvent.setup();
+  it('shows visible feedback for demo actions instead of dead controls', () => {
     renderUserTable();
 
-    await user.click(screen.getByRole('button', { name: /invite teammate/i }));
-    await user.type(screen.getByLabelText('Email'), 'new.user@company.com');
-    await user.click(screen.getByRole('button', { name: /prepare invite/i }));
+    fireEvent.click(screen.getByRole('button', { name: /invite teammate/i }));
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'new.user@company.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /prepare invite/i }));
 
     expect(screen.getByText('Invite prepared for a new workspace user. No email was sent because this is a demo flow.')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /open actions for martina alvarez/i }));
-    await user.click(screen.getByRole('menuitem', { name: /view profile/i }));
+    fireEvent.click(screen.getByRole('button', { name: /open actions for martina alvarez/i }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /view profile/i }));
 
     expect(screen.getByRole('dialog', { name: /user profile/i })).toBeInTheDocument();
   });
