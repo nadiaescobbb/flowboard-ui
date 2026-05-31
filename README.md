@@ -52,7 +52,7 @@ The practical problem it solves is not business analytics itself. The real probl
 - Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time.
 - Runtime validation guards invalid values before they enter the UI layer.
 - Custom SVG chart utilities expose the coordinate and path-generation logic instead of hiding it behind a chart library.
-- `AsyncState<T>` and Result helpers make success, loading, and failure states explicit.
+- Result helpers make API failures explicit before the hook adapts them to TanStack Query.
 - The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
 - Theme state lives in React context, with reusable class mapping for light and dark surfaces.
 - Vitest covers validators, formatters, Result helpers, chart math, and user table interactions. Coverage thresholds track the pure utility layer at 80%+.
@@ -124,7 +124,11 @@ The dashboard reads data through `fetchDashboardData()` instead of importing moc
 
 ### TanStack Query
 
-The app uses TanStack Query because dashboards almost always become server-state heavy. Even in this mock version, it demonstrates loading, error, retry, cache, and refetch behavior in one place.
+The app uses TanStack Query because dashboards almost always become server-state heavy. Even in this mock version, it owns runtime loading, error, retry, cache, and refetch behavior in one place.
+
+### Result-Based Data Fetching
+
+`fetchDashboardData()` returns a `Result<DashboardData>` instead of throwing directly. The `useDashboardData()` hook unwraps that result for TanStack Query, returning data on `ok` and throwing the error on `err` so retry and error UI still work through the query layer.
 
 ### Branded Types
 
@@ -136,7 +140,7 @@ Values such as `Percentage` are validated when they are created. Invalid domain 
 
 ### Discriminated Unions
 
-`AsyncState<T>` models idle, loading, success, and error states explicitly. That makes async UI states easier to audit and prevents silent fallthrough when a new state is introduced.
+`AsyncState<T>` is defined as a reusable utility type for explicit async state modeling. It is not the dashboard's runtime state layer because TanStack Query handles loading, retry, cache, and error states more effectively for this app.
 
 ### Custom SVG Utilities
 

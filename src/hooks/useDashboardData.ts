@@ -1,13 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import { useTheme } from '../contexts/ThemeContext';
 import { fetchDashboardData } from '../api/dashboard';
 
 export const useDashboardData = () => {
-  const { theme } = useTheme();
-
   return useQuery({
-    queryKey: ['dashboard', theme],
-    queryFn: () => fetchDashboardData(theme),
+    queryKey: ['dashboard'],
+    queryFn: async () => {
+      const result = await fetchDashboardData();
+
+      if (!result.ok) {
+        throw result.error;
+      }
+
+      return result.value;
+    },
     staleTime: 5 * 60 * 1000, // 5 minutos
     retry: 2,
   });

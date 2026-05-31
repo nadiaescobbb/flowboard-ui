@@ -4,13 +4,13 @@ import {
   acquisitionChannelsDark as acquisitionChannels,
   revenueDataDark as revenueData,
 } from '../data/mockData';
+import { err, ok, Result } from '../types';
 
 interface DashboardData {
   kpiCards: typeof kpiCards;
   users: typeof users;
   channels: typeof acquisitionChannels;
   revenueData: typeof revenueData;
-  theme: 'light' | 'dark';
 }
 
 interface FetchDashboardDataOptions {
@@ -19,22 +19,20 @@ interface FetchDashboardDataOptions {
 }
 
 export async function fetchDashboardData(
-  theme: 'light' | 'dark',
   options: FetchDashboardDataOptions = {}
-): Promise<DashboardData> {
+): Promise<Result<DashboardData>> {
   const { shouldFail = false, delayMs = 1500 } = options;
 
   await new Promise(resolve => setTimeout(resolve, delayMs));
 
   if (shouldFail) {
-    throw new Error('The dashboard service did not return weekly revenue data. Try loading it again.');
+    return err(new Error('The dashboard service did not return weekly revenue data. Try loading it again.'));
   }
 
-  return {
+  return ok({
     kpiCards,
     users,
     channels: acquisitionChannels,
     revenueData,
-    theme,
-  };
+  });
 }
