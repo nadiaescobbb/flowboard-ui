@@ -1,6 +1,6 @@
 # FlowBoard
 
-> A frontend architecture case study for a revenue dashboard designed to survive a backend swap.
+> A frontend architecture case study exploring how analytics dashboards can evolve from mock data to production APIs without rewriting the UI.
 
 [View the live demo](https://flowboard-rouge.vercel.app) | [Read the source code](https://github.com/nadiaescobbb/flowboard-dashboard)
 
