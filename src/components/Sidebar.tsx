@@ -31,7 +31,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         className={`md:hidden fixed top-4 left-4 z-[80] p-2 rounded-md ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'} border shadow-lg`}
-        aria-label="Toggle menu"
+        aria-label={mobileMenuOpen ? 'Close navigation and return to the dashboard' : 'Open navigation to choose a dashboard section'}
         aria-expanded={mobileMenuOpen}
       >
         <Icon name={mobileMenuOpen ? 'close' : 'menu'} />
@@ -64,7 +64,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
             <div
               className="size-9 rounded-md border border-primary/25 bg-primary/15 flex items-center justify-center text-primary"
               role="img"
-              aria-label="FlowBoard logo"
+              aria-label="FlowBoard revenue intelligence workspace"
             >
               <Icon name="insights" className="!text-xl" aria-hidden="true" />
             </div>

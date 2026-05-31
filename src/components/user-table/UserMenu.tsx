@@ -33,7 +33,7 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
       <button
         onClick={() => setIsOpen((open) => !open)}
         className={`p-1.5 rounded-md transition-colors ${classes.subtitle} hover:text-primary hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/40`}
-        aria-label={`Actions for ${user.name}`}
+        aria-label={`Open actions for ${user.name}`}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -54,7 +54,7 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
             role="menuitem"
           >
             <Icon name="person" className="!text-base" aria-hidden="true" />
-            <span>View Profile</span>
+            <span>View profile</span>
           </button>
           <button
             onClick={() => {
@@ -65,7 +65,7 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
             role="menuitem"
           >
             <Icon name="edit" className="!text-base" aria-hidden="true" />
-            <span>Edit User</span>
+            <span>Edit user</span>
           </button>
           <div className={`my-1 border-t ${classes.divider}`}></div>
           <button
@@ -77,7 +77,7 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
             role="menuitem"
           >
             <Icon name="delete" className="!text-base" aria-hidden="true" />
-            <span>Delete User</span>
+            <span>Delete user</span>
           </button>
         </div>
       )}

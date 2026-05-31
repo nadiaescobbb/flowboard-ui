@@ -21,7 +21,7 @@ export const SortableHeader = ({
     <button
       onClick={() => onSort(field)}
       className="flex items-center gap-2 text-[10px] font-display font-bold uppercase tracking-[0.22em] hover:text-primary transition-colors focus:outline-none focus:text-primary group"
-      aria-label={`Sort by ${field}`}
+      aria-label={`Sort users by ${field}`}
     >
       <span>{children}</span>
       <Icon

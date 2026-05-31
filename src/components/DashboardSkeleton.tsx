@@ -4,7 +4,10 @@ export function DashboardSkeleton() {
   const classes = useThemeClasses();
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen" role="status" aria-live="polite" aria-label="Loading weekly revenue dashboard data">
+      <span className="sr-only">
+        Loading KPI cards, revenue charts, acquisition sources, and users.
+      </span>
       {/* Sidebar Skeleton */}
       <aside className={`hidden md:flex w-64 flex-shrink-0 flex-col border-r ${classes.surface}`}>
         <div className="p-6 flex items-center gap-3">

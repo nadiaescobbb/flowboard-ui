@@ -107,7 +107,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
     onGlobalSearch(query);
     setShowMobileSearch(false);
-    setActionMessage(`Users filtered by "${query}".`);
+    setActionMessage(`User table filtered by "${query}".`);
   };
 
   useEffect(() => {
@@ -139,8 +139,8 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
   const panelTitle = {
     profile: 'Profile',
-    settings: 'Workspace Settings',
-    help: 'Help & Support',
+    settings: 'Workspace settings',
+    help: 'Help and support',
     notifications: 'Notifications',
   }[activePanel ?? 'profile'];
 
@@ -171,7 +171,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             <button
               onClick={() => setActivePanel(null)}
               className={`rounded-md p-2 transition-colors ${classes.subtitle} ${classes.hover}`}
-              aria-label="Close panel"
+              aria-label="Close this panel and return to the dashboard"
             >
               <Icon name="close" aria-hidden="true" />
             </button>
@@ -218,7 +218,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 </label>
               ))}
               <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                Save Settings
+                Save settings
               </button>
             </form>
           )}
@@ -242,7 +242,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 <textarea className={`mt-2 min-h-28 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`} defaultValue="Need help reviewing this week's dashboard." />
               </label>
               <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                Send Request
+                Send request
               </button>
             </form>
           )}
@@ -283,7 +283,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               Weekly brief
             </p>
             <h2 className={`text-lg md:text-2xl font-display font-bold leading-tight ${classes.title}`}>
-              Revenue Intelligence
+              Revenue intelligence
             </h2>
           </div>
 
@@ -293,7 +293,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             role="search"
           >
             <label htmlFor="global-search" className="sr-only">
-              Search dashboard
+              Filter users
             </label>
             <Icon
               name="search"
@@ -303,11 +303,11 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             <input
               id="global-search"
               type="search"
-              placeholder="Search metrics, people, segments..."
+              placeholder="martina@company.com"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
-              aria-label="Search dashboard"
+              aria-label="Filter the user table by name, email, plan, or status"
             />
           </form>
         </div>
@@ -316,7 +316,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
           <button
             onClick={() => setShowMobileSearch((isOpen) => !isOpen)}
             className={`lg:hidden p-2 rounded-md transition-colors ${classes.subtitle} hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50`}
-            aria-label="Search"
+            aria-label="Open mobile search to filter users"
             aria-expanded={showMobileSearch}
           >
             <Icon name="search" aria-hidden="true" />
@@ -345,7 +345,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             <button
               onClick={() => setShowNotifications((isOpen) => !isOpen)}
               className={`p-2 rounded-md transition-colors relative ${classes.subtitle} hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50`}
-              aria-label="Notifications"
+              aria-label="Open revenue operations notifications"
               aria-expanded={showNotifications}
               aria-haspopup="true"
             >
@@ -365,7 +365,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               <div
                 className={`absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
                 role="menu"
-                aria-label="Notifications menu"
+                aria-label="Recent revenue operations updates"
               >
                 <div className="p-4 border-b border-border-light dark:border-border-dark flex items-start justify-between gap-3">
                   <div>
@@ -378,7 +378,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                     onClick={() => openPanel('notifications')}
                     className="text-xs font-display font-semibold text-primary hover:text-primary/80"
                   >
-                    View all
+                    View all updates
                   </button>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
@@ -414,7 +414,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             <button
               onClick={() => setShowUserMenu((isOpen) => !isOpen)}
               className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-md p-1 -m-1"
-              aria-label="User menu"
+              aria-label="Open profile and workspace actions"
               aria-expanded={showUserMenu}
               aria-haspopup="true"
             >
@@ -442,7 +442,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               <div
                 className={`absolute right-0 mt-2 w-56 rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
                 role="menu"
-                aria-label="User menu"
+                aria-label="Profile and workspace actions"
               >
                 <div className="p-3 border-b border-border-light dark:border-border-dark">
                   <div className="flex items-center gap-3">
@@ -461,7 +461,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                   {[
                     { icon: 'person', label: 'Profile', panel: 'profile' as HeaderPanel },
                     { icon: 'settings', label: 'Settings', panel: 'settings' as HeaderPanel },
-                    { icon: 'help', label: 'Help & Support', panel: 'help' as HeaderPanel },
+                    { icon: 'help', label: 'Help and support', panel: 'help' as HeaderPanel },
                   ].map((item) => (
                     <button
                       key={item.label}
@@ -490,10 +490,11 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             />
             <input
               type="search"
-              placeholder="Search users..."
+              placeholder="martina@company.com"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
+              aria-label="Filter users by name, email, plan, or status"
               autoFocus
             />
           </form>
@@ -510,7 +511,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
           <button
             onClick={() => setActionMessage(null)}
             className="ml-1 rounded-sm p-0.5 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary/40"
-            aria-label="Dismiss message"
+            aria-label="Dismiss status message"
           >
             <Icon name="close" className="!text-sm" aria-hidden="true" />
           </button>

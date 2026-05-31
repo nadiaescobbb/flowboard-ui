@@ -39,7 +39,7 @@ const SparklineSVG = memo(({ data, color }: SparklineSVGProps) => {
       className="w-full h-full"
       viewBox="0 0 100 40"
       role="img"
-      aria-label="Trend chart"
+      aria-label="KPI trend sparkline"
       preserveAspectRatio="none"
     >
       <path
@@ -85,7 +85,7 @@ export const KPICard = memo(({ card }: KPICardProps) => {
 
           <p
             className={`mt-4 text-2xl md:text-3xl font-display font-bold tabular-nums tracking-tight ${classes.title}`}
-            aria-label={`${card.label} value`}
+            aria-label={`${card.label} is ${card.value}`}
           >
             {card.value}
           </p>

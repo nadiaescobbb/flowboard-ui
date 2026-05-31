@@ -43,7 +43,7 @@ const ChannelRow = memo(({ channel, index, labelClass, valueClass, isLight }: Ch
           aria-valuenow={channel.percentage}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`${channel.name} acquisition percentage`}
+          aria-label={`${channel.name} contributes ${channel.percentage}% of acquisition`}
         >
           <div
             className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
@@ -76,11 +76,11 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
       <div
         className={`rounded-md p-4 md:p-6 border flex items-center justify-center min-h-[300px] md:min-h-[400px] ${classes.surface}`}
         role="status"
-        aria-label="No acquisition data available"
+        aria-label="Acquisition source data is unavailable"
       >
         <div className="text-center">
-          <p className={`text-sm font-display font-semibold ${classes.title}`}>No Data Available</p>
-          <p className={`text-xs mt-1 ${classes.subtitle}`}>Acquisition sources will appear here</p>
+          <p className={`text-sm font-display font-semibold ${classes.title}`}>Acquisition data is missing</p>
+          <p className={`text-xs mt-1 ${classes.subtitle}`}>Connect source data to compare channel contribution.</p>
         </div>
       </div>
     );
@@ -96,15 +96,15 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
           Channel mix
         </p>
         <h3 id="acquisition-chart-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
-          Acquisition Sources
+          Acquisition sources
         </h3>
         <p className={`text-xs mt-1 ${classes.subtitle}`}>
-          Ranked by contribution · {totalPercentage}% allocated
+          Ranked by contribution - {totalPercentage}% allocated
         </p>
       </header>
 
       <div className="flex-1 flex flex-col justify-between">
-        <div className="space-y-6" role="list" aria-label="Acquisition channels breakdown">
+        <div className="space-y-6" role="list" aria-label="Ranked acquisition channel contribution">
           {sortedChannels.map((channel, index) => (
             <ChannelRow
               key={channel.name}
@@ -120,10 +120,10 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
         <button
           onClick={() => setShowInsight((current) => !current)}
           className={`mt-7 w-full py-2.5 border rounded-md text-sm font-display font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-primary/40 active:scale-[0.98] touch-manipulation ${classes.button}`}
-          aria-label="View detailed analytics for all acquisition sources"
+          aria-label={showInsight ? 'Hide the top acquisition source summary' : 'Show the top acquisition source summary'}
           aria-expanded={showInsight}
         >
-          {showInsight ? 'Hide Insight' : 'Show Channel Insight'}
+          {showInsight ? 'Hide insight' : 'Show channel insight'}
         </button>
 
         {showInsight && (

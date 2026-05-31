@@ -40,18 +40,18 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
           <div className="text-center p-8 max-w-md">
             <h1 className="text-2xl font-bold text-text-primary-light dark:text-white mb-2">
-              Oops! Something went wrong
+              The dashboard stopped rendering
             </h1>
             
             <p className="text-text-secondary-light dark:text-text-secondary-dark mb-6">
-              {this.state.error?.message || 'An unexpected error occurred'}
+              {this.state.error?.message || 'A rendering error interrupted the dashboard. Reload the page to restore the session.'}
             </p>
 
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
             >
-              Reload Page
+              Reload page
             </button>
           </div>
         </div>

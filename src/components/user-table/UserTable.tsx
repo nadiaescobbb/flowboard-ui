@@ -93,15 +93,15 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
       <div className={`rounded-md border overflow-hidden ${classes.surface}`}>
         <div className="p-12 text-center">
           <Icon name="group" className={`text-4xl mb-3 ${classes.subtitle}`} aria-hidden="true" />
-          <p className={`text-sm font-medium ${classes.title}`}>No Users Yet</p>
+          <p className={`text-sm font-medium ${classes.title}`}>No users have been added</p>
           <p className={`text-xs mt-1 ${classes.subtitle}`}>
-            Start by inviting your first user
+            Invite a teammate to start tracking account activity.
           </p>
           <button
             onClick={() => handleAction({ type: 'invite' })}
             className="mt-4 px-4 py-2 bg-primary text-[#fffdf8] rounded-md text-sm font-display font-semibold hover:bg-primary/90 transition-all"
           >
-            Invite User
+            Invite user
           </button>
         </div>
       </div>
@@ -120,7 +120,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
               People
             </p>
             <h3 id="users-table-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
-              Recent Users
+              Recent users
             </h3>
             <p className={`text-xs mt-1 ${classes.subtitle}`}>
               {filteredAndSortedUsers.length} of {users.length} users
@@ -132,7 +132,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-[#fffdf8] rounded-md text-sm font-display font-semibold transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
           >
             <Icon name="add" className="!text-sm" aria-hidden="true" />
-            <span>Invite User</span>
+            <span>Invite user</span>
           </button>
         </div>
 
@@ -151,11 +151,11 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             />
             <input
               type="search"
-              placeholder="Search users..."
+              placeholder="martina@company.com"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
-              aria-label="Search users"
+              aria-label="Filter users by name, email, plan, or status"
             />
           </div>
 
@@ -163,9 +163,9 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
             className={`rounded-md px-4 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
-            aria-label="Filter by status"
+            aria-label="Filter users by status"
           >
-            <option value="all">All Status</option>
+            <option value="all">All statuses</option>
             <option value="Active">Active</option>
             <option value="Trial">Trial</option>
             <option value="Away">Away</option>
@@ -178,9 +178,9 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
         {paginatedUsers.length === 0 ? (
           <div className="p-12 text-center">
             <Icon name="search_off" className={`text-4xl mb-3 ${classes.subtitle}`} />
-            <p className={`text-sm font-medium ${classes.title}`}>No users found</p>
+            <p className={`text-sm font-medium ${classes.title}`}>No users match this view</p>
             <p className={`text-xs mt-1 ${classes.subtitle}`}>
-              Try adjusting your search or filters
+              Clear the search or choose a different status to widen the list.
             </p>
           </div>
         ) : (
@@ -200,7 +200,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   Joined
                 </SortableHeader>
                 <th className="px-3 md:px-6 py-4">
-                  <span className="sr-only">Actions</span>
+                  <span className="sr-only">User actions</span>
                 </th>
               </tr>
             </thead>
@@ -213,7 +213,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                       <div
                         className={`size-9 rounded-md flex items-center justify-center overflow-hidden ${classes.isLight ? 'bg-[#ece7dc]' : 'bg-white/[0.08]'} flex-shrink-0`}
                         role="img"
-                        aria-label={`${user.name} avatar`}
+                        aria-label={`${user.name} user profile image`}
                       >
                         {user.avatar ? (
                           <img className="size-full object-cover" src={user.avatar} alt="" />
@@ -236,7 +236,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                     <span
                       className={`inline-flex px-2.5 py-1 text-[10px] font-display font-bold rounded-md uppercase tracking-[0.14em] ${getStatusColor(user.status)}`}
                       role="status"
-                      aria-label={`User status: ${user.status}`}
+                      aria-label={`${user.name} status is ${user.status}`}
                     >
                       {user.status}
                     </span>
@@ -298,16 +298,16 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   People operation
                 </p>
                 <h3 id="user-dialog-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
-                  {activeDialog.type === 'invite' && 'Invite User'}
-                  {activeDialog.type === 'view' && 'User Profile'}
-                  {activeDialog.type === 'edit' && 'Edit User'}
-                  {activeDialog.type === 'delete' && 'Delete User'}
+                  {activeDialog.type === 'invite' && 'Invite user'}
+                  {activeDialog.type === 'view' && 'User profile'}
+                  {activeDialog.type === 'edit' && 'Edit user'}
+                  {activeDialog.type === 'delete' && 'Delete user'}
                 </h3>
               </div>
               <button
                 onClick={() => setActiveDialog(null)}
                 className={`rounded-md p-2 transition-colors ${classes.subtitle} ${classes.hover}`}
-                aria-label="Close dialog"
+                aria-label="Close this dialog and return to the user table"
               >
                 <Icon name="close" aria-hidden="true" />
               </button>
@@ -323,7 +323,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   <input
                     type="email"
                     required
-                    placeholder="teammate@company.com"
+                    placeholder="martina@company.com"
                     className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}
                   />
                 </label>
@@ -332,11 +332,11 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   <select className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
                     <option>Enterprise</option>
                     <option>Professional</option>
-                    <option>Free Tier</option>
+                    <option value="Free tier">Free tier</option>
                   </select>
                 </label>
                 <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                  Send Invite
+                  Send invite
                 </button>
               </form>
             )}
@@ -359,7 +359,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   onClick={() => setActiveDialog({ type: 'edit', user: activeDialog.user })}
                   className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90"
                 >
-                  Edit Profile
+                  Edit profile
                 </button>
               </div>
             )}
@@ -390,11 +390,11 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   <select defaultValue={activeDialog.user.plan} className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
                     <option>Enterprise</option>
                     <option>Professional</option>
-                    <option>Free Tier</option>
+                    <option value="Free tier">Free tier</option>
                   </select>
                 </label>
                 <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                  Save User
+                  Save user
                 </button>
               </form>
             )}
@@ -402,14 +402,14 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             {activeDialog.type === 'delete' && activeDialog.user && (
               <div className="mt-6">
                 <p className={`text-sm leading-6 ${classes.subtitle}`}>
-                  This will remove <span className={`font-display font-semibold ${classes.title}`}>{activeDialog.user.name}</span> from the workspace demo data.
+                  This demo will mark <span className={`font-display font-semibold ${classes.title}`}>{activeDialog.user.name}</span> as removed from this workspace view. No account data will be deleted.
                 </p>
                 <div className="mt-5 flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={completeDialogAction}
                     className="flex-1 rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90"
                   >
-                    Confirm Delete
+                    Mark as removed
                   </button>
                   <button
                     onClick={() => setActiveDialog(null)}

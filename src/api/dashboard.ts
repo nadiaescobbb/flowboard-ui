@@ -23,7 +23,7 @@ export async function fetchDashboardData(theme: 'light' | 'dark'): Promise<Dashb
 
   // Simula posible error (10% de chance)
   if (Math.random() < 0.1) {
-    throw new Error('Failed to fetch dashboard data');
+    throw new Error('The dashboard service did not return weekly revenue data. Try loading it again.');
   }
 
   const isLight = theme === 'light';

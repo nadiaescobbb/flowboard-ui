@@ -45,13 +45,13 @@ export const Dashboard = () => {
     <div className="flex min-h-screen">
       <Sidebar onNavigate={scrollToSection} />
 
-      <main className="flex-1 min-w-0" role="main" aria-label="Dashboard content">
+      <main className="flex-1 min-w-0" role="main" aria-label="Review weekly revenue performance">
         <Header onGlobalSearch={handleGlobalSearch} />
 
         <div className="p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8">
           <section id="overview" aria-labelledby="kpi-section-title" className="scroll-mt-28">
             <h2 id="kpi-section-title" className="sr-only">
-              Key Performance Indicators
+              Key performance indicators
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80">
               {data.kpiCards.map((card) => (
@@ -62,7 +62,7 @@ export const Dashboard = () => {
 
           <section id="analytics" aria-labelledby="charts-section-title" className="scroll-mt-28">
             <h2 id="charts-section-title" className="sr-only">
-              Analytics Charts
+              Analytics charts
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
               <RevenueChart data={data.revenueData} />
@@ -72,7 +72,7 @@ export const Dashboard = () => {
 
           <section id="users" aria-labelledby="users-section-title" className="scroll-mt-28">
             <h2 id="users-section-title" className="sr-only">
-              Recent Users
+              Recent users
             </h2>
             <UserTable users={data.users} externalSearchQuery={globalUserSearch} />
           </section>
@@ -131,7 +131,7 @@ export const Dashboard = () => {
                   onClick={() => setSupportMessage('Support ticket opened for the revenue operations team.')}
                   className="mt-5 rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
                 >
-                  Open Support Ticket
+                  Open support ticket
                 </button>
               </div>
             </div>

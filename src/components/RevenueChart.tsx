@@ -105,8 +105,8 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
     return (
       <div className={`lg:col-span-2 rounded-md p-6 border flex items-center justify-center min-h-[400px] ${classes.surface}`} role="status">
         <div className="text-center">
-          <p className={`text-sm font-display font-semibold ${classes.title}`}>No Revenue Data</p>
-          <p className={`text-xs mt-1 ${classes.subtitle}`}>Revenue data will appear here</p>
+          <p className={`text-sm font-display font-semibold ${classes.title}`}>Revenue data is missing</p>
+          <p className={`text-xs mt-1 ${classes.subtitle}`}>Connect revenue data to review weekly movement.</p>
         </div>
       </div>
     );
@@ -125,7 +125,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
             Operating signal
           </p>
           <h3 id="revenue-chart-title" className={`mt-1 text-xl md:text-2xl font-display font-bold ${classes.title}`}>
-            Revenue Over Time
+            Revenue over time
           </h3>
           <p className={`text-sm mt-1 ${classes.subtitle}`}>
             {stats.growth >= 0 ? 'Up' : 'Down'} {Math.abs(stats.growth).toFixed(1)}% from first period. Average ${stats.average.toFixed(0)}k.
@@ -135,15 +135,15 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="rounded-md border border-border-light dark:border-border-dark px-3 py-2">
             <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>Peak</p>
-            <p className={`font-display font-bold ${classes.title}`}>{stats.peak?.month} · ${stats.peak?.value}k</p>
+            <p className={`font-display font-bold ${classes.title}`}>{stats.peak?.month} - ${stats.peak?.value}k</p>
           </div>
           <div className="rounded-md border border-border-light dark:border-border-dark px-3 py-2">
             <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>Lowest</p>
-            <p className={`font-display font-bold ${classes.title}`}>{stats.low?.month} · ${stats.low?.value}k</p>
+            <p className={`font-display font-bold ${classes.title}`}>{stats.low?.month} - ${stats.low?.value}k</p>
           </div>
         </div>
 
-        <div className="flex gap-2" role="tablist" aria-label="Select time range">
+        <div className="flex gap-2" role="tablist" aria-label="Change the revenue chart time range">
           {(['monthly', 'weekly'] as TimeRange[]).map((range) => (
             <button
               key={range}
@@ -169,7 +169,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
           preserveAspectRatio="none"
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setHoveredIndex(null)}
-          aria-label="Revenue trend chart"
+          aria-label="Revenue movement across the selected time range"
         >
           <defs>
             <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">

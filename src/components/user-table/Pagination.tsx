@@ -35,7 +35,7 @@ export const Pagination = ({
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
           className={`p-2 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed ${buttonClass}`}
-          aria-label="Previous page"
+          aria-label="Show the previous users page"
         >
           <Icon name="chevron_left" aria-hidden="true" />
         </button>
@@ -56,7 +56,7 @@ export const Pagination = ({
                   className={`px-2 md:px-3 py-1.5 rounded-md text-xs md:text-sm font-display font-semibold transition-all ${
                     currentPage === page ? activeButtonClass : buttonClass
                   } hover:scale-105`}
-                  aria-label={`Page ${page}`}
+                  aria-label={`Show users page ${page}`}
                   aria-current={currentPage === page ? 'page' : undefined}
                 >
                   {page}
@@ -80,7 +80,7 @@ export const Pagination = ({
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
           className={`p-2 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed ${buttonClass}`}
-          aria-label="Next page"
+          aria-label="Show the next users page"
         >
           <Icon name="chevron_right" aria-hidden="true" />
         </button>

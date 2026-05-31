@@ -17,11 +17,11 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
         </div>
 
         <h2 className={`text-xl font-bold mb-2 ${classes.title}`}>
-          Oops! Something went wrong
+          Dashboard data did not load
         </h2>
 
         <p className={`text-sm mb-6 ${classes.subtitle}`}>
-          {error.message || 'Failed to load dashboard data'}
+          {error.message || 'The dashboard could not load KPI, revenue, acquisition, or user data.'}
         </p>
 
         {onRetry && (
@@ -29,7 +29,7 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
             onClick={onRetry}
             className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all"
           >
-            Try Again
+            Try again
           </button>
         )}
       </div>

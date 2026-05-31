@@ -11,7 +11,7 @@ import {
 export const kpiCardsLight: KPICard[] = [
   {
     id: createKPIId('kpi-revenue-light'),
-    label: 'Total Revenue',
+    label: 'Total revenue',
     value: '$124,500',
     change: '12%',
     trend: 'up',
@@ -20,7 +20,7 @@ export const kpiCardsLight: KPICard[] = [
   },
   {
     id: createKPIId('kpi-growth-light'),
-    label: 'Monthly Growth',
+    label: 'Monthly growth',
     value: '+8.4%',
     change: '8.4%',
     trend: 'up',
@@ -29,7 +29,7 @@ export const kpiCardsLight: KPICard[] = [
   },
   {
     id: createKPIId('kpi-users-light'),
-    label: 'Active Users',
+    label: 'Active users',
     value: '1,240',
     change: '5%',
     trend: 'up',
@@ -38,7 +38,7 @@ export const kpiCardsLight: KPICard[] = [
   },
   {
     id: createKPIId('kpi-conversion-light'),
-    label: 'Conversion Rate',
+    label: 'Conversion rate',
     value: '3.2%',
     change: '0.5%',
     trend: 'down',
@@ -50,7 +50,7 @@ export const kpiCardsLight: KPICard[] = [
 export const kpiCardsDark: KPICard[] = [
   {
     id: createKPIId('kpi-revenue-dark'),
-    label: 'Total Revenue',
+    label: 'Total revenue',
     value: '$124,592',
     change: '+12.5%',
     trend: 'up',
@@ -59,7 +59,7 @@ export const kpiCardsDark: KPICard[] = [
   },
   {
     id: createKPIId('kpi-users-dark'),
-    label: 'Active Users',
+    label: 'Active users',
     value: '12,842',
     change: '+5.4%',
     trend: 'up',
@@ -68,7 +68,7 @@ export const kpiCardsDark: KPICard[] = [
   },
   {
     id: createKPIId('kpi-mrr-dark'),
-    label: 'MRR Growth',
+    label: 'MRR growth',
     value: '24.3%',
     change: '+2.1%',
     trend: 'up',
@@ -77,7 +77,7 @@ export const kpiCardsDark: KPICard[] = [
   },
   {
     id: createKPIId('kpi-conversion-dark'),
-    label: 'Conversion Rate',
+    label: 'Conversion rate',
     value: '3.18%',
     change: '-0.4%',
     trend: 'down',
@@ -100,7 +100,7 @@ export const usersLight: User[] = [
     id: createUserId('user-rafael-moreno'),
     name: 'Rafael Moreno',
     email: 'rafael.moreno@lumaops.io',
-    plan: 'Pro Monthly',
+    plan: 'Pro monthly',
     status: 'Trial',
     joinDate: 'Oct 14, 2023',
     initials: 'RM',
@@ -109,7 +109,7 @@ export const usersLight: User[] = [
     id: createUserId('user-lucia-torres'),
     name: 'Lucia Torres',
     email: 'lucia.torres@atelierdata.co',
-    plan: 'Free Tier',
+    plan: 'Free tier',
     status: 'Cancelled',
     joinDate: 'Sep 28, 2023',
     initials: 'LT',
@@ -118,7 +118,7 @@ export const usersLight: User[] = [
     id: createUserId('user-diego-silva'),
     name: 'Diego Silva',
     email: 'diego.silva@brightline.dev',
-    plan: 'Pro Yearly',
+    plan: 'Pro yearly',
     status: 'Active',
     joinDate: 'Oct 10, 2023',
     initials: 'DS',
@@ -149,7 +149,7 @@ export const usersDark: User[] = [
     id: createUserId('user-lucia-torres'),
     name: 'Lucia Torres',
     email: 'lucia.torres@atelierdata.co',
-    plan: 'Free Tier',
+    plan: 'Free tier',
     status: 'Away',
     joinDate: '1 hour ago',
     avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCrgEprxCB-aQL2wppJZn90pJIjIu-Z0ng3tQq-KxcpbodDhHQvGdx-vakjFrPFJGjURy3ORc-fZQY4kMDUxnfcXwrNqXJVK85z4CLiPEL8Ig5wH89RTqHQmly_iLyuSmnX60fRrCW2kav-Iv2yC48Yf6tlPoVhYxeQIVwEPCFPBhwLXTNoSE7ABaTzupKDcDvqK5dIeyreNXlbywANlULpRu2zlMQ1g3CQsXyRR_hQzOBZPcYGrBNqjVh09SlsLOPztAQVD1YsUUI',
@@ -158,17 +158,17 @@ export const usersDark: User[] = [
 ];
 
 export const acquisitionChannelsLight: AcquisitionChannel[] = [
-  { name: 'Organic Search', percentage: createPercentage(42), opacity: 1 },
-  { name: 'Social Media', percentage: createPercentage(28), opacity: 0.7 },
-  { name: 'Direct Visit', percentage: createPercentage(18), opacity: 0.5 },
-  { name: 'Paid Ads', percentage: createPercentage(12), opacity: 0.3 },
+  { name: 'Organic search', percentage: createPercentage(42), opacity: 1 },
+  { name: 'Social media', percentage: createPercentage(28), opacity: 0.7 },
+  { name: 'Direct visit', percentage: createPercentage(18), opacity: 0.5 },
+  { name: 'Paid ads', percentage: createPercentage(12), opacity: 0.3 },
 ];
 
 export const acquisitionChannelsDark: AcquisitionChannel[] = [
-  { name: 'Direct Search', percentage: createPercentage(42), opacity: 1 },
-  { name: 'Social Media', percentage: createPercentage(28), opacity: 0.6 },
-  { name: 'Paid Advertisements', percentage: createPercentage(18), opacity: 0.4 },
-  { name: 'Referral Programs', percentage: createPercentage(12), opacity: 0.2 },
+  { name: 'Direct search', percentage: createPercentage(42), opacity: 1 },
+  { name: 'Social media', percentage: createPercentage(28), opacity: 0.6 },
+  { name: 'Paid advertisements', percentage: createPercentage(18), opacity: 0.4 },
+  { name: 'Referral programs', percentage: createPercentage(12), opacity: 0.2 },
 ];
 
 export const revenueDataLight: RevenueDataPoint[] = [
