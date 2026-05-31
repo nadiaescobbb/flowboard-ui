@@ -52,6 +52,7 @@ The practical problem it solves is not business analytics itself. The real probl
 - Theme state lives in React context, with reusable class mapping for light and dark surfaces.
 - Vitest covers validators, formatters, Result helpers, chart math, and user table interactions. Coverage thresholds track the pure utility layer at 80%+.
 - Accessibility is treated as part of the implementation: aria labels, roles, keyboard paths, and reduced motion support.
+- Playwright covers the theme toggle as an end-to-end browser flow.
 
 ---
 
@@ -141,7 +142,7 @@ The interface includes action feedback for demo flows like invite, edit, profile
 | Mock data behind an API boundary | Keeps the frontend architecture inspectable while preserving a backend swap path. | Connect `fetchDashboardData()` to a real endpoint. |
 | No authentication flow | The case study focuses on dashboard architecture, not identity management. | Add an auth provider and route protection without changing the data layer. |
 | Demo-only mutations | Actions show visible UI feedback while avoiding fake persistence. | Add create, update, and delete flows with optimistic updates. |
-| No E2E tests yet | Vitest covers pure utilities and user table interactions, but not full browser flows. | Add Playwright coverage for table, theme, and error recovery. |
+| Limited E2E coverage | Playwright covers the theme toggle, while table and error flows remain in unit/component scope. | Add Playwright coverage for search, filters, pagination, and error recovery. |
 | Custom SVG charting | The project exposes coordinate and rendering logic directly. | Use Recharts, Visx, or ECharts if production chart complexity grows. |
 | Small dataset | The dataset is sized for interaction design and state coverage. | Add virtualization when the user list becomes large. |
 
@@ -169,20 +170,22 @@ npm run build
 npm run test:run
 npm run lint
 npm run coverage
+npm run e2e
 ```
 
 The most important checks are:
 
 - TypeScript compilation through `npm run build`;
 - Vitest unit tests through `npm run test:run`;
-- linting through `npm run lint`.
+- linting through `npm run lint`;
+- Playwright browser coverage through `npm run e2e`.
 
 ---
 
 ## What I Would Add Next
 
 - Replace the mock API with a small real backend or Supabase table.
-- Add Playwright tests for theme switching, dashboard loading, and error recovery.
+- Add Playwright tests for search, filters, pagination, dashboard loading, and error recovery.
 - Add MSW for API-level mocks in component and hook tests.
 - Add a mutation flow for inviting or editing a user.
 - Add chart empty states and richer accessibility descriptions.
