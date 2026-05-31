@@ -1,19 +1,15 @@
 import {
-  kpiCardsLight,
-  kpiCardsDark,
-  usersLight,
-  usersDark,
-  acquisitionChannelsLight,
-  acquisitionChannelsDark,
-  revenueDataLight,
-  revenueDataDark,
+  kpiCardsDark as kpiCards,
+  usersDark as users,
+  acquisitionChannelsDark as acquisitionChannels,
+  revenueDataDark as revenueData,
 } from '../data/mockData';
 
 interface DashboardData {
-  kpiCards: typeof kpiCardsLight;
-  users: typeof usersLight;
-  channels: typeof acquisitionChannelsLight;
-  revenueData: typeof revenueDataLight;
+  kpiCards: typeof kpiCards;
+  users: typeof users;
+  channels: typeof acquisitionChannels;
+  revenueData: typeof revenueData;
   theme: 'light' | 'dark';
 }
 
@@ -34,13 +30,11 @@ export async function fetchDashboardData(
     throw new Error('The dashboard service did not return weekly revenue data. Try loading it again.');
   }
 
-  const isLight = theme === 'light';
-
   return {
-    kpiCards: isLight ? kpiCardsLight : kpiCardsDark,
-    users: isLight ? usersLight : usersDark,
-    channels: isLight ? acquisitionChannelsLight : acquisitionChannelsDark,
-    revenueData: isLight ? revenueDataLight : revenueDataDark,
+    kpiCards,
+    users,
+    channels: acquisitionChannels,
+    revenueData,
     theme,
   };
 }
