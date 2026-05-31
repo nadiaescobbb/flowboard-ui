@@ -39,7 +39,7 @@ const SparklineSVG = memo(({ data, color }: SparklineSVGProps) => {
       className="w-full h-full"
       viewBox="0 0 100 40"
       role="img"
-      aria-label="KPI trend sparkline"
+      aria-label="KPI trend preview"
       preserveAspectRatio="none"
     >
       <path

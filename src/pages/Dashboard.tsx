@@ -83,7 +83,7 @@ export const Dashboard = () => {
                 Revenue workspace
               </p>
               <h2 id="revenue-section-title" className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
-                Pipeline actions
+                Revenue actions
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">
                 Segment revenue by channel, review MRR risk, and prepare the next weekly operator brief.
@@ -128,10 +128,10 @@ export const Dashboard = () => {
                   </div>
                 )}
                 <button
-                  onClick={() => setSupportMessage('Support ticket opened for the revenue operations team.')}
+                  onClick={() => setSupportMessage('Support ticket prepared in this demo. No request was sent.')}
                   className="mt-5 rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
                 >
-                  Open support ticket
+                  Prepare support ticket
                 </button>
               </div>
             </div>

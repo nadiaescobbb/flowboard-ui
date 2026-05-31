@@ -123,7 +123,7 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
           aria-label={showInsight ? 'Hide the top acquisition source summary' : 'Show the top acquisition source summary'}
           aria-expanded={showInsight}
         >
-          {showInsight ? 'Hide insight' : 'Show channel insight'}
+          {showInsight ? 'Hide top source summary' : 'Show top source summary'}
         </button>
 
         {showInsight && (

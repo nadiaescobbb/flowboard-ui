@@ -101,7 +101,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             onClick={() => handleAction({ type: 'invite' })}
             className="mt-4 px-4 py-2 bg-primary text-[#fffdf8] rounded-md text-sm font-display font-semibold hover:bg-primary/90 transition-all"
           >
-            Invite user
+            Invite teammate
           </button>
         </div>
       </div>
@@ -132,7 +132,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-[#fffdf8] rounded-md text-sm font-display font-semibold transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
           >
             <Icon name="add" className="!text-sm" aria-hidden="true" />
-            <span>Invite user</span>
+            <span>Invite teammate</span>
           </button>
         </div>
 
@@ -298,7 +298,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   People operation
                 </p>
                 <h3 id="user-dialog-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
-                  {activeDialog.type === 'invite' && 'Invite user'}
+                  {activeDialog.type === 'invite' && 'Invite teammate'}
                   {activeDialog.type === 'view' && 'User profile'}
                   {activeDialog.type === 'edit' && 'Edit user'}
                   {activeDialog.type === 'delete' && 'Delete user'}
@@ -336,7 +336,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   </select>
                 </label>
                 <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                  Send invite
+                  Prepare invite
                 </button>
               </form>
             )}
@@ -394,7 +394,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   </select>
                 </label>
                 <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                  Save user
+                  Save user changes
                 </button>
               </form>
             )}
@@ -402,7 +402,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
             {activeDialog.type === 'delete' && activeDialog.user && (
               <div className="mt-6">
                 <p className={`text-sm leading-6 ${classes.subtitle}`}>
-                  This demo will mark <span className={`font-display font-semibold ${classes.title}`}>{activeDialog.user.name}</span> as removed from this workspace view. No account data will be deleted.
+                  This demo marks <span className={`font-display font-semibold ${classes.title}`}>{activeDialog.user.name}</span> as removed from this view. No account data is deleted.
                 </p>
                 <div className="mt-5 flex flex-col sm:flex-row gap-3">
                   <button

@@ -20,13 +20,13 @@ const currentUser = {
 const notifications = [
   {
     id: 1,
-    title: 'Martina Alvarez joined Enterprise',
+    title: 'Martina Alvarez joined the enterprise plan',
     detail: 'New account owner added from Northwind Labs. Review onboarding milestones.',
     time: '2 min ago',
   },
   {
     id: 2,
-    title: 'Rafael Moreno renewed Professional',
+    title: 'Rafael Moreno renewed the professional plan',
     detail: 'The invoice cleared and the subscription is active for the next billing cycle.',
     time: '1 hour ago',
   },
@@ -188,7 +188,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 </div>
                 <div>
                   <p className={`text-base font-display font-bold ${classes.title}`}>{currentUser.name}</p>
-                  <p className={`text-xs ${classes.subtitle}`}>Signed in user - {currentUser.status}</p>
+                  <p className={`text-xs ${classes.subtitle}`}>Signed in user - {currentUser.status.toLowerCase()}</p>
                 </div>
               </div>
               {[
@@ -208,7 +208,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
           {activePanel === 'settings' && (
             <form className="space-y-4" onSubmit={(event) => {
               event.preventDefault();
-              setActionMessage('Workspace settings saved.');
+              setActionMessage('Workspace settings saved in this demo view.');
               setActivePanel(null);
             }}>
               {['Weekly digest', 'Payment alerts', 'New user alerts'].map((setting) => (
@@ -226,7 +226,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
           {activePanel === 'help' && (
             <form className="space-y-4" onSubmit={(event) => {
               event.preventDefault();
-              setActionMessage('Support ticket created.');
+              setActionMessage('Support ticket prepared in this demo. No request was sent.');
               setActivePanel(null);
             }}>
               <label className="block">
@@ -242,7 +242,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 <textarea className={`mt-2 min-h-28 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`} defaultValue="Need help reviewing this week's dashboard." />
               </label>
               <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
-                Send request
+                Prepare support request
               </button>
             </form>
           )}

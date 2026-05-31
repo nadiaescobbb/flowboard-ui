@@ -65,7 +65,7 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
             role="menuitem"
           >
             <Icon name="edit" className="!text-base" aria-hidden="true" />
-            <span>Edit user</span>
+            <span>Edit user details</span>
           </button>
           <div className={`my-1 border-t ${classes.divider}`}></div>
           <button
@@ -77,7 +77,7 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
             role="menuitem"
           >
             <Icon name="delete" className="!text-base" aria-hidden="true" />
-            <span>Delete user</span>
+            <span>Review removal</span>
           </button>
         </div>
       )}

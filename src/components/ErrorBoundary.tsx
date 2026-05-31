@@ -44,14 +44,14 @@ export class ErrorBoundary extends Component<Props, State> {
             </h1>
             
             <p className="text-text-secondary-light dark:text-text-secondary-dark mb-6">
-              {this.state.error?.message || 'A rendering error interrupted the dashboard. Reload the page to restore the session.'}
+              {this.state.error?.message || 'A rendering error interrupted the dashboard. Reload to restore the dashboard view.'}
             </p>
 
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
             >
-              Reload page
+              Reload dashboard
             </button>
           </div>
         </div>
