@@ -2,7 +2,9 @@ import {
   KPICard,
   User,
   AcquisitionChannel,
+  DashboardData,
   RevenueDataPoint,
+  RevenueDataSeries,
   Result,
   ok,
   err,
@@ -65,6 +67,7 @@ export const validateUser: TypeGuard<User> = (v): v is User => {
   if (!isString(v.plan)) return false;
   if (!isUserStatus(v.status)) return false;
   if (!isString(v.joinDate)) return false;
+  if (!isString(v.joinedAt) || Number.isNaN(Date.parse(v.joinedAt))) return false;
   if (!isString(v.initials)) return false;
   if (v.avatar !== undefined && !isString(v.avatar)) return false;
   return true;
@@ -87,6 +90,31 @@ export const validateRevenueDataPoint: TypeGuard<RevenueDataPoint> = (
   if (!isObject(v)) return false;
   if (!isString(v.month) || v.month.length === 0) return false;
   if (!isNumber(v.value) || v.value < 0) return false;
+  return true;
+};
+
+export const validateRevenueDataSeries: TypeGuard<RevenueDataSeries> = (
+  v
+): v is RevenueDataSeries => {
+  if (!isObject(v)) return false;
+  if (!Array.isArray(v.weekly)) return false;
+  if (!Array.isArray(v.monthly)) return false;
+  if (!v.weekly.every(validateRevenueDataPoint)) return false;
+  if (!v.monthly.every(validateRevenueDataPoint)) return false;
+  return true;
+};
+
+export const validateDashboardData: TypeGuard<DashboardData> = (
+  v
+): v is DashboardData => {
+  if (!isObject(v)) return false;
+  if (!Array.isArray(v.kpiCards)) return false;
+  if (!Array.isArray(v.users)) return false;
+  if (!Array.isArray(v.channels)) return false;
+  if (!validateRevenueDataSeries(v.revenueData)) return false;
+  if (!validateArrayOf(v.kpiCards, validateKPICard).ok) return false;
+  if (!validateArrayOf(v.users, validateUser).ok) return false;
+  if (!validateArrayOf(v.channels, validateAcquisitionChannel).ok) return false;
   return true;
 };
 
@@ -197,6 +225,7 @@ export const createMockUser = (overrides: Partial<User> = {}): User => ({
   plan: 'Pro',
   status: 'Active',
   joinDate: '2024-01-01',
+  joinedAt: '2024-01-01T00:00:00.000Z',
   initials: 'TU',
   ...overrides,
 });

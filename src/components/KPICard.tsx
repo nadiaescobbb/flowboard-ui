@@ -8,14 +8,10 @@ interface KPICardProps {
 }
 
 const ICON_MAP: Record<string, string> = {
-  'kpi-revenue-light': 'payments',
-  'kpi-growth-light': 'trending_up',
-  'kpi-users-light': 'group',
-  'kpi-conversion-light': 'ads_click',
-  'kpi-revenue-dark': 'payments',
-  'kpi-users-dark': 'group',
-  'kpi-mrr-dark': 'query_stats',
-  'kpi-conversion-dark': 'ads_click',
+  'kpi-revenue': 'payments',
+  'kpi-users': 'group',
+  'kpi-mrr': 'query_stats',
+  'kpi-conversion': 'ads_click',
 };
 
 interface SparklineSVGProps {

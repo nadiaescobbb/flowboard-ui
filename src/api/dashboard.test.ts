@@ -11,7 +11,8 @@ describe('fetchDashboardData', () => {
     expect(result.value.kpiCards.length).toBeGreaterThan(0);
     expect(result.value.users.length).toBeGreaterThan(0);
     expect(result.value.channels.length).toBeGreaterThan(0);
-    expect(result.value.revenueData.length).toBeGreaterThan(0);
+    expect(result.value.revenueData.weekly.length).toBeGreaterThan(0);
+    expect(result.value.revenueData.monthly.length).toBeGreaterThan(0);
   });
 
   it('returns an error Result when the dashboard fetch fails', async () => {

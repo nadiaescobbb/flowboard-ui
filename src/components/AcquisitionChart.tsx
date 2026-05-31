@@ -3,7 +3,7 @@ import { AcquisitionChannel } from '../types';
 import { useThemeClasses } from '../hooks/useThemeClasses';
 
 interface AcquisitionChartProps {
-  channels: AcquisitionChannel[];
+  channels: readonly AcquisitionChannel[];
 }
 
 interface ChannelRowProps {

@@ -1,17 +1,12 @@
 import {
-  kpiCardsDark as kpiCards,
-  usersDark as users,
-  acquisitionChannelsDark as acquisitionChannels,
-  revenueDataDark as revenueData,
+  acquisitionChannels as channels,
+  kpiCards,
+  monthlyRevenueData,
+  users,
+  weeklyRevenueData,
 } from '../data/mockData';
-import { err, ok, Result } from '../types';
-
-interface DashboardData {
-  kpiCards: typeof kpiCards;
-  users: typeof users;
-  channels: typeof acquisitionChannels;
-  revenueData: typeof revenueData;
-}
+import { DashboardData, Result, err, ok } from '../types';
+import { validateDashboardData } from '../utils';
 
 interface FetchDashboardDataOptions {
   shouldFail?: boolean;
@@ -23,16 +18,25 @@ export async function fetchDashboardData(
 ): Promise<Result<DashboardData>> {
   const { shouldFail = false, delayMs = 1500 } = options;
 
-  await new Promise(resolve => setTimeout(resolve, delayMs));
+  await new Promise((resolve) => setTimeout(resolve, delayMs));
 
   if (shouldFail) {
     return err(new Error('The dashboard service did not return weekly revenue data. Try loading it again.'));
   }
 
-  return ok({
+  const dashboardData: DashboardData = {
     kpiCards,
     users,
-    channels: acquisitionChannels,
-    revenueData,
-  });
+    channels,
+    revenueData: {
+      weekly: weeklyRevenueData,
+      monthly: monthlyRevenueData,
+    },
+  };
+
+  if (!validateDashboardData(dashboardData)) {
+    return err(new Error('The dashboard service returned data that does not match the expected dashboard schema.'));
+  }
+
+  return ok(dashboardData);
 }

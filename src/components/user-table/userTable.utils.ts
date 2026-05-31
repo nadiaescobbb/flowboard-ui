@@ -23,8 +23,8 @@ export const filterAndSortUsers = (
   });
 
   return [...filtered].sort((a, b) => {
-    let aValue: string | number = a[sortField];
-    let bValue: string | number = b[sortField];
+    let aValue: string | number = sortField === 'joinDate' ? Date.parse(a.joinedAt) : a[sortField];
+    let bValue: string | number = sortField === 'joinDate' ? Date.parse(b.joinedAt) : b[sortField];
 
     if (typeof aValue === 'string') {
       aValue = aValue.toLowerCase();

@@ -50,8 +50,8 @@ The practical problem it solves is not business analytics itself. The real probl
 - API access is isolated in `src/api/dashboard.ts`, so mock data can be replaced without touching UI components.
 - TanStack Query handles loading, error, retry, cache, and refetch states through the same path a real backend would use.
 - Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time.
-- Runtime validation guards invalid values before they enter the UI layer.
-- Custom SVG chart utilities expose the coordinate and path-generation logic instead of hiding it behind a chart library.
+- Runtime validation checks the API payload before data enters the UI layer.
+- Custom SVG chart utilities power the revenue chart directly instead of sitting beside the component unused.
 - Result helpers make API failures explicit before the hook adapts them to TanStack Query.
 - The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
 - Theme state lives in React context, with reusable class mapping for light and dark surfaces.
@@ -136,15 +136,11 @@ IDs like `UserId` and `KPIId` are branded types. This prevents accidental ID mix
 
 ### Runtime Validation
 
-Values such as `Percentage` are validated when they are created. Invalid domain values fail early instead of leaking into chart math or UI rendering.
-
-### Discriminated Unions
-
-`AsyncState<T>` is defined as a reusable utility type for explicit async state modeling. It is not the dashboard's runtime state layer because TanStack Query handles loading, retry, cache, and error states more effectively for this app.
+Values such as `Percentage` are validated when they are created, and `fetchDashboardData()` validates the composed dashboard payload before returning `ok`. Invalid domain values fail early instead of leaking into chart math or UI rendering.
 
 ### Custom SVG Utilities
 
-The revenue chart uses custom utility functions for point normalization and SVG path creation. This is intentionally lower level than using a chart library, because the goal was to show coordinate and rendering logic.
+The revenue chart uses shared utility functions for point normalization and SVG path creation. This is intentionally lower level than using a chart library, because the goal was to show coordinate and rendering logic in code that the component actually uses.
 
 ### Accessibility
 

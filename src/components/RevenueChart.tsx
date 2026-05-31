@@ -1,9 +1,17 @@
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
-import { RevenueDataPoint } from '../types';
+import { RevenueDataPoint, RevenueDataSeries } from '../types';
 import { useThemeClasses } from '../hooks/useThemeClasses';
+import {
+  buildAreaPath,
+  buildSvgPath,
+  formatCompactNumber,
+  formatCurrency,
+  formatPercentage,
+  normalizeDataPoints,
+} from '../utils';
 
 interface RevenueChartProps {
-  data: RevenueDataPoint[];
+  data: RevenueDataSeries;
 }
 
 type TimeRange = 'weekly' | 'monthly';
@@ -11,35 +19,20 @@ type TimeRange = 'weekly' | 'monthly';
 const chartWidth = 800;
 const chartHeight = 260;
 
-const generatePath = (data: RevenueDataPoint[], width: number, height: number): string => {
-  if (!data || data.length === 0) return '';
-
-  const maxValue = Math.max(...data.map((d) => d.value));
-  const minValue = Math.min(...data.map((d) => d.value));
-  const valueRange = maxValue - minValue || 1;
-
-  const points = data.map((point, index) => {
-    const x = (index / (data.length - 1)) * width;
-    const normalizedValue = (point.value - minValue) / valueRange;
-    const y = height - normalizedValue * height * 0.78 - height * 0.11;
-    return { x, y };
-  });
-
-  let path = `M ${points[0].x} ${points[0].y}`;
-
-  for (let i = 0; i < points.length - 1; i++) {
-    const current = points[i];
-    const next = points[i + 1];
-    const controlPointX = (current.x + next.x) / 2;
-    path += ` C ${controlPointX} ${current.y}, ${controlPointX} ${next.y}, ${next.x} ${next.y}`;
+const getSeriesStats = (data: readonly RevenueDataPoint[]) => {
+  if (data.length === 0) {
+    return { average: 0, growth: 0, peak: null as RevenueDataPoint | null, low: null as RevenueDataPoint | null };
   }
 
-  return path;
-};
+  const total = data.reduce((sum, point) => sum + point.value, 0);
+  const average = total / data.length;
+  const growth = data.length > 1
+    ? ((data[data.length - 1].value - data[0].value) / data[0].value) * 100
+    : 0;
+  const peak = data.reduce((best, item) => (item.value > best.value ? item : best), data[0]);
+  const low = data.reduce((worst, item) => (item.value < worst.value ? item : worst), data[0]);
 
-const generateAreaPath = (linePath: string, height: number): string => {
-  if (!linePath) return '';
-  return `${linePath} V ${height} H 0 Z`;
+  return { average, growth, peak, low };
 };
 
 export const RevenueChart = memo(({ data }: RevenueChartProps) => {
@@ -48,23 +41,15 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const chartRef = useRef<SVGSVGElement>(null);
+  const activeData = timeRange === 'weekly' ? data.weekly : data.monthly;
 
   const { linePath, areaPath, points } = useMemo(() => {
-    const line = generatePath(data, chartWidth, chartHeight);
-    const area = generateAreaPath(line, chartHeight);
-    const maxValue = Math.max(...data.map((d) => d.value));
-    const minValue = Math.min(...data.map((d) => d.value));
-    const valueRange = maxValue - minValue || 1;
-
-    const pts = data.map((point, index) => {
-      const x = (index / (data.length - 1)) * chartWidth;
-      const normalizedValue = (point.value - minValue) / valueRange;
-      const y = chartHeight - normalizedValue * chartHeight * 0.78 - chartHeight * 0.11;
-      return { x, y, value: point.value, month: point.month };
-    });
+    const pts = normalizeDataPoints(activeData, chartWidth, chartHeight, 0.11);
+    const line = buildSvgPath(pts);
+    const area = buildAreaPath(line, chartHeight, chartWidth);
 
     return { linePath: line, areaPath: area, points: pts };
-  }, [data]);
+  }, [activeData]);
 
   const handleMouseMove = useCallback((event: React.MouseEvent<SVGSVGElement>) => {
     if (!chartRef.current) return;
@@ -87,21 +72,9 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
     setTooltipPosition({ x: event.clientX - rect.left, y: event.clientY - rect.top });
   }, [points]);
 
-  const stats = useMemo(() => {
-    if (!data || data.length === 0) return { average: 0, growth: 0, peak: null as RevenueDataPoint | null, low: null as RevenueDataPoint | null };
+  const stats = useMemo(() => getSeriesStats(activeData), [activeData]);
 
-    const total = data.reduce((sum, point) => sum + point.value, 0);
-    const average = total / data.length;
-    const growth = data.length > 1
-      ? ((data[data.length - 1].value - data[0].value) / data[0].value) * 100
-      : 0;
-    const peak = data.reduce((best, item) => (item.value > best.value ? item : best), data[0]);
-    const low = data.reduce((worst, item) => (item.value < worst.value ? item : worst), data[0]);
-
-    return { average, growth, peak, low };
-  }, [data]);
-
-  if (!data || data.length === 0) {
+  if (!activeData || activeData.length === 0) {
     return (
       <div className={`lg:col-span-2 rounded-md p-6 border flex items-center justify-center min-h-[400px] ${classes.surface}`} role="status">
         <div className="text-center">
@@ -113,6 +86,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
   }
 
   const hoveredPoint = hoveredIndex !== null ? points[hoveredIndex] : null;
+  const growthLabel = formatPercentage(Math.abs(stats.growth)).replace('+', '');
 
   return (
     <article
@@ -128,18 +102,22 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
             Revenue over time
           </h3>
           <p className={`text-sm mt-1 ${classes.subtitle}`}>
-            {stats.growth >= 0 ? 'Up' : 'Down'} {Math.abs(stats.growth).toFixed(1)}% from first period. Average ${stats.average.toFixed(0)}k.
+            {stats.growth >= 0 ? 'Up' : 'Down'} {growthLabel} from first period. Average {formatCurrency(stats.average * 1000)}.
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="rounded-md border border-border-light dark:border-border-dark px-3 py-2">
             <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>Peak</p>
-            <p className={`font-display font-bold ${classes.title}`}>{stats.peak?.month} - ${stats.peak?.value}k</p>
+            <p className={`font-display font-bold ${classes.title}`}>
+              {stats.peak?.month} - {formatCompactNumber((stats.peak?.value ?? 0) * 1000)}
+            </p>
           </div>
           <div className="rounded-md border border-border-light dark:border-border-dark px-3 py-2">
             <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>Lowest</p>
-            <p className={`font-display font-bold ${classes.title}`}>{stats.low?.month} - ${stats.low?.value}k</p>
+            <p className={`font-display font-bold ${classes.title}`}>
+              {stats.low?.month} - {formatCompactNumber((stats.low?.value ?? 0) * 1000)}
+            </p>
           </div>
         </div>
 
@@ -147,7 +125,10 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
           {(['monthly', 'weekly'] as TimeRange[]).map((range) => (
             <button
               key={range}
-              onClick={() => setTimeRange(range)}
+              onClick={() => {
+                setTimeRange(range);
+                setHoveredIndex(null);
+              }}
               className={`px-3 py-1.5 rounded-md text-xs font-display font-semibold border transition-all focus:outline-none focus:ring-2 focus:ring-primary/40 ${
                 timeRange === range ? classes.buttonActive : classes.button
               }`}
@@ -202,7 +183,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
 
           {points.map((point, index) => (
             <circle
-              key={index}
+              key={point.label}
               cx={point.x}
               cy={point.y}
               r={hoveredIndex === index ? 6 : 3.5}
@@ -238,17 +219,17 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
             }}
           >
             <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>
-              {hoveredPoint.month}
+              {hoveredPoint.label}
             </p>
             <p className={`text-lg font-display font-bold ${classes.title} mt-1`}>
-              ${hoveredPoint.value}k
+              {formatCurrency(hoveredPoint.value * 1000)}
             </p>
           </div>
         )}
       </div>
 
       <div className="flex justify-between mt-3 px-1">
-        {data.map((point, index) => (
+        {activeData.map((point, index) => (
           <span
             key={point.month}
             className={`text-[11px] font-display font-semibold transition-colors ${

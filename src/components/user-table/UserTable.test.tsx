@@ -1,5 +1,3 @@
-// @vitest-environment jsdom
-
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { ThemeProvider } from '../../contexts/ThemeContext';
@@ -14,6 +12,7 @@ const users: User[] = [
     plan: 'Enterprise',
     status: 'Active',
     joinDate: '2 mins ago',
+    joinedAt: '2026-05-30T22:33:00.000Z',
     initials: 'MA',
   },
   {
@@ -23,6 +22,7 @@ const users: User[] = [
     plan: 'Professional',
     status: 'Trial',
     joinDate: '14 mins ago',
+    joinedAt: '2026-05-30T22:21:00.000Z',
     initials: 'RM',
   },
   {
@@ -32,6 +32,7 @@ const users: User[] = [
     plan: 'Free tier',
     status: 'Away',
     joinDate: '1 hour ago',
+    joinedAt: '2026-05-30T21:35:00.000Z',
     initials: 'LT',
   },
   {
@@ -41,6 +42,7 @@ const users: User[] = [
     plan: 'Professional',
     status: 'Active',
     joinDate: '1 day ago',
+    joinedAt: '2026-05-29T22:35:00.000Z',
     initials: 'DS',
   },
   {
@@ -50,6 +52,7 @@ const users: User[] = [
     plan: 'Enterprise',
     status: 'Cancelled',
     joinDate: '2 days ago',
+    joinedAt: '2026-05-28T22:35:00.000Z',
     initials: 'AG',
   },
   {
@@ -59,6 +62,7 @@ const users: User[] = [
     plan: 'Free tier',
     status: 'Active',
     joinDate: '3 days ago',
+    joinedAt: '2026-05-27T22:35:00.000Z',
     initials: 'JV',
   },
 ];
@@ -111,7 +115,7 @@ describe('UserTable', () => {
     fireEvent.click(screen.getByRole('button', { name: /show the next users page/i }));
 
     expect(screen.getByText('Showing 6 to 6 of 6')).toBeInTheDocument();
-    expect(screen.getByText('Diego Silva')).toBeInTheDocument();
+    expect(screen.getByText('Julian Vega')).toBeInTheDocument();
     expect(screen.queryByText('Martina Alvarez')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /show users page 2/i })).toHaveAttribute('aria-current', 'page');
   });
