@@ -1,8 +1,8 @@
-# FlowBoard Analytics Dashboard
+# FlowBoard
 
-> Frontend architecture case study built with React, TypeScript, TanStack Query, Vite, Tailwind CSS, and Vitest.
+> A frontend architecture case study for a revenue dashboard designed to survive a backend swap.
 
-[Live Demo](https://flowboard-rouge.vercel.app) | [GitHub](https://github.com/nadiaescobbb/flowboard-dashboard)
+[View the live demo](https://flowboard-rouge.vercel.app) | [Read the source code](https://github.com/nadiaescobbb/flowboard-dashboard)
 
 ---
 
@@ -43,15 +43,15 @@ The practical problem it solves is not business analytics itself. The real probl
 
 ## What It Demonstrates
 
-- React component composition for dashboard screens.
-- TypeScript strict mode and branded domain types.
-- TanStack Query for server-state flow, even with mocked data.
-- A separated API layer in `src/api/dashboard.ts`.
-- Custom SVG chart utilities for path generation and normalization.
-- User table search, filtering, sorting, pagination, and action feedback.
-- Theme handling with React context and reusable theme class mapping.
-- Unit tests for validators, formatters, Result helpers, and chart utilities.
-- Explicit loading and error UI.
+- API access is isolated in `src/api/dashboard.ts`, so mock data can be replaced without touching UI components.
+- TanStack Query handles loading, error, retry, cache, and refetch states through the same path a real backend would use.
+- Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time.
+- Custom SVG chart utilities expose the coordinate and path-generation logic instead of hiding it behind a chart library.
+- `AsyncState<T>` and Result helpers make success, loading, and failure states explicit.
+- The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
+- Theme state lives in React context, with reusable class mapping for light and dark surfaces.
+- Unit tests cover validators, formatters, Result helpers, and chart math with an 80%+ coverage threshold.
+- Accessibility is treated as part of the implementation: aria labels, roles, keyboard paths, and reduced motion support.
 
 ---
 
@@ -134,16 +134,16 @@ The interface includes action feedback for demo flows like invite, edit, profile
 
 ---
 
-## Honest Limitations
+## Scope and Next Steps
 
-| Limitation | Why it exists | Production next step |
+| Current scope | Why it is scoped this way | Next production step |
 |---|---|---|
-| Mock data only | Portfolio scope | Connect the API layer to a real endpoint |
-| No authentication | Not the goal of this case study | Add auth provider and route protection |
-| No backend mutations | Demo actions only | Add create/update/delete flows with optimistic updates |
-| No E2E tests yet | Initial test scope focused on pure utilities | Add Playwright for table, theme, and error flows |
-| No chart library | Custom SVG was intentional practice | Use Recharts, Visx, or ECharts for complex production charts |
-| Small dataset | Enough for UI behavior | Add virtualization for large user lists |
+| Mock data behind an API boundary | Keeps the frontend architecture inspectable while preserving a backend swap path. | Connect `fetchDashboardData()` to a real endpoint. |
+| No authentication flow | The case study focuses on dashboard architecture, not identity management. | Add an auth provider and route protection without changing the data layer. |
+| Demo-only mutations | Actions show visible UI feedback while avoiding fake persistence. | Add create, update, and delete flows with optimistic updates. |
+| Unit tests only | The first test layer covers validators, formatters, Result helpers, and chart math. | Add Playwright coverage for table, theme, and error flows. |
+| Custom SVG charting | The project exposes coordinate and rendering logic directly. | Use Recharts, Visx, or ECharts if production chart complexity grows. |
+| Small dataset | The dataset is sized for interaction design and state coverage. | Add virtualization when the user list becomes large. |
 
 ---
 
