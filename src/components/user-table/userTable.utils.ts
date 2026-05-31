@@ -15,7 +15,8 @@ export const filterAndSortUsers = (
       query.length === 0 ||
       user.name.toLowerCase().includes(query) ||
       user.email.toLowerCase().includes(query) ||
-      user.plan.toLowerCase().includes(query);
+      user.plan.toLowerCase().includes(query) ||
+      user.status.toLowerCase().includes(query);
 
     const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
 

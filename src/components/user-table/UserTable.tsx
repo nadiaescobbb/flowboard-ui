@@ -54,6 +54,17 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
     }
   }, [externalSearchQuery]);
 
+  useEffect(() => {
+    if (!activeDialog) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActiveDialog(null);
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [activeDialog]);
+
   const handleAction = useCallback((action: UserTableAction) => {
     setLastAction(action);
     setActiveDialog(action);

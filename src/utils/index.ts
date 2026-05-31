@@ -11,9 +11,6 @@ import {
   TypeGuard,
   UserStatus,
   TrendDirection,
-  createUserId,
-  createKPIId,
-  createPercentage,
 } from '../types';
 
 // ============================================================
@@ -104,18 +101,27 @@ export const validateRevenueDataSeries: TypeGuard<RevenueDataSeries> = (
   return true;
 };
 
-export const validateDashboardData: TypeGuard<DashboardData> = (
-  v
-): v is DashboardData => {
-  if (!isObject(v)) return false;
-  if (!Array.isArray(v.kpiCards)) return false;
-  if (!Array.isArray(v.users)) return false;
-  if (!Array.isArray(v.channels)) return false;
-  if (!validateRevenueDataSeries(v.revenueData)) return false;
-  if (!validateArrayOf(v.kpiCards, validateKPICard).ok) return false;
-  if (!validateArrayOf(v.users, validateUser).ok) return false;
-  if (!validateArrayOf(v.channels, validateAcquisitionChannel).ok) return false;
-  return true;
+export const validateDashboardData = (v: unknown): Result<DashboardData> => {
+  if (!isObject(v)) return err(new TypeError('Dashboard payload must be an object'));
+  if (!validateRevenueDataSeries(v.revenueData)) {
+    return err(new TypeError('Dashboard payload has invalid revenueData'));
+  }
+
+  const kpiCards = validateArrayOf(v.kpiCards, validateKPICard);
+  if (!kpiCards.ok) return err(new TypeError(`Dashboard payload has invalid kpiCards: ${kpiCards.error.message}`));
+
+  const users = validateArrayOf(v.users, validateUser);
+  if (!users.ok) return err(new TypeError(`Dashboard payload has invalid users: ${users.error.message}`));
+
+  const channels = validateArrayOf(v.channels, validateAcquisitionChannel);
+  if (!channels.ok) return err(new TypeError(`Dashboard payload has invalid channels: ${channels.error.message}`));
+
+  return ok({
+    kpiCards: kpiCards.value,
+    users: users.value,
+    channels: channels.value,
+    revenueData: v.revenueData,
+  });
 };
 
 
@@ -177,7 +183,7 @@ export const normalizeDataPoints = (
   const values = data.map((d) => d.value);
   const max = Math.max(...values);
   const min = Math.min(...values);
-  const range = max - min || 1; // evita división por cero
+  const range = max - min || 1;
 
   return data.map((point, index) => ({
     x: data.length === 1 ? width / 2 : (index / (data.length - 1)) * width,
@@ -205,36 +211,3 @@ export const buildAreaPath = (linePath: string, height: number, width: number): 
   if (!linePath) return '';
   return `${linePath} L ${width} ${height} L 0 ${height} Z`;
 };
-
-
-export const createMockKPICard = (overrides: Partial<KPICard> = {}): KPICard => ({
-  id: createKPIId('test-kpi-1'),
-  label: 'Test Metric',
-  value: '$1,000',
-  change: '+5%',
-  trend: 'up',
-  chartData: [10, 20, 15, 25, 30],
-  chartColor: '#137fec',
-  ...overrides,
-});
-
-export const createMockUser = (overrides: Partial<User> = {}): User => ({
-  id: createUserId('test-user-1'),
-  name: 'Test User',
-  email: 'test@example.com',
-  plan: 'Pro',
-  status: 'Active',
-  joinDate: '2024-01-01',
-  joinedAt: '2024-01-01T00:00:00.000Z',
-  initials: 'TU',
-  ...overrides,
-});
-
-export const createMockChannel = (
-  overrides: Partial<AcquisitionChannel> = {}
-): AcquisitionChannel => ({
-  name: 'Test Channel',
-  percentage: createPercentage(42),
-  opacity: 1,
-  ...overrides,
-});

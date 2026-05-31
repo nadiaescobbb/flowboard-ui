@@ -34,9 +34,8 @@ export async function fetchDashboardData(
     },
   };
 
-  if (!validateDashboardData(dashboardData)) {
-    return err(new Error('The dashboard service returned data that does not match the expected dashboard schema.'));
-  }
+  const validation = validateDashboardData(dashboardData);
+  if (!validation.ok) return err(validation.error);
 
-  return ok(dashboardData);
+  return ok(validation.value);
 }

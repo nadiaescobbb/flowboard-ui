@@ -56,7 +56,7 @@ The practical problem it solves is not business analytics itself. The real probl
 - The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
 - Theme state lives in React context, with reusable class mapping for light and dark surfaces.
 - Vitest covers validators, formatters, Result helpers, chart math, and user table interactions. Coverage thresholds track the pure utility layer at 80%+.
-- Accessibility is treated as part of the implementation: aria labels, roles, keyboard paths, and reduced motion support.
+- Accessibility is treated as part of the implementation: aria labels, live status messaging, reduced motion support, and keyboard dismissal for dialogs.
 - Playwright covers the theme toggle as an end-to-end browser flow.
 
 ---
@@ -144,7 +144,7 @@ The revenue chart uses shared utility functions for point normalization and SVG 
 
 ### Accessibility
 
-Interactive controls use descriptive `aria-label` values, status messages use live roles, and the theme toggle is covered by an end-to-end browser test. Accessibility is treated as part of the implementation, not a polish pass.
+Interactive controls use descriptive `aria-label` values, status messages use live roles, and dialogs can be dismissed with Escape. The theme toggle is covered by an end-to-end browser test.
 
 ### Honest UI Actions
 

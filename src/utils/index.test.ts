@@ -11,13 +11,12 @@ import {
   normalizeDataPoints,
   buildSvgPath,
   buildAreaPath,
-  createMockKPICard,
-  createMockUser,
-  createMockChannel,
   isUserStatus,
   isTrendDirection,
+  validateDashboardData,
 } from '../utils';
 import { ok, err, createPercentage, createKPIId } from '../types';
+import { createMockChannel, createMockKPICard, createMockUser } from '../test/factories';
 
 // ============================================================
 // TYPE GUARDS
@@ -222,6 +221,35 @@ describe('validateArrayOf', () => {
     const result = validateArrayOf(items, validateKPICard);
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.message).toContain('index 1');
+  });
+});
+
+describe('validateDashboardData', () => {
+  const dashboardData = {
+    kpiCards: [createMockKPICard()],
+    users: [createMockUser()],
+    channels: [createMockChannel()],
+    revenueData: {
+      weekly: [{ month: 'MON', value: 100 }],
+      monthly: [{ month: 'Jan', value: 400 }],
+    },
+  };
+
+  it('returns a typed Result for a valid dashboard payload', () => {
+    const result = validateDashboardData(dashboardData);
+
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value.users[0].name).toBe('Test user');
+  });
+
+  it('returns a specific error for an invalid dashboard section', () => {
+    const result = validateDashboardData({
+      ...dashboardData,
+      users: [{ ...createMockUser(), joinedAt: 'not-a-date' }],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.message).toContain('invalid users');
   });
 });
 

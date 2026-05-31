@@ -35,7 +35,6 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
         className={`p-1.5 rounded-md transition-colors ${classes.subtitle} hover:text-primary hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/40`}
         aria-label={`Open actions for ${user.name}`}
         aria-expanded={isOpen}
-        aria-haspopup="true"
       >
         <Icon name="more_horiz" aria-hidden="true" />
       </button>
@@ -43,7 +42,6 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
       {isOpen && (
         <div
           className={`absolute right-0 mt-2 w-48 rounded-md border shadow-lg z-10 py-1 ${classes.surface}`}
-          role="menu"
         >
           <button
             onClick={() => {
@@ -51,7 +49,6 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
               setIsOpen(false);
             }}
             className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${classes.subtitle} ${classes.hover}`}
-            role="menuitem"
           >
             <Icon name="person" className="!text-base" aria-hidden="true" />
             <span>View profile</span>
@@ -62,7 +59,6 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
               setIsOpen(false);
             }}
             className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${classes.subtitle} ${classes.hover}`}
-            role="menuitem"
           >
             <Icon name="edit" className="!text-base" aria-hidden="true" />
             <span>Edit user details</span>
@@ -74,7 +70,6 @@ export const UserMenu = memo(({ user, onEdit, onDelete, onViewProfile }: UserMen
               setIsOpen(false);
             }}
             className="w-full flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-primary/10 transition-colors"
-            role="menuitem"
           >
             <Icon name="delete" className="!text-base" aria-hidden="true" />
             <span>Review removal</span>

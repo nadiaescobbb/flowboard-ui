@@ -9,10 +9,13 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const isTheme = (value: unknown): value is Theme =>
+  value === 'light' || value === 'dark';
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('flowboard-theme') as Theme;
-    if (savedTheme) return savedTheme;
+    const savedTheme = localStorage.getItem('flowboard-theme');
+    if (isTheme(savedTheme)) return savedTheme;
     
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';

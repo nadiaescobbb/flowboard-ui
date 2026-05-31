@@ -106,6 +106,19 @@ describe('UserTable', () => {
     expect(screen.getByText('1 of 6 users')).toBeInTheDocument();
   });
 
+  it('includes status in text search', () => {
+    renderUserTable();
+
+    fireEvent.change(screen.getByRole('searchbox', {
+      name: /filter users by name, email, plan, or status/i,
+    }), {
+      target: { value: 'away' },
+    });
+
+    expect(screen.getByText('Lucia Torres')).toBeInTheDocument();
+    expect(screen.queryByText('Martina Alvarez')).not.toBeInTheDocument();
+  });
+
   it('paginates users with accessible page controls', () => {
     renderUserTable();
 
@@ -132,8 +145,21 @@ describe('UserTable', () => {
     expect(screen.getByText('Invite prepared for a new workspace user. No email was sent because this is a demo flow.')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /open actions for martina alvarez/i }));
-    fireEvent.click(screen.getByRole('menuitem', { name: /view profile/i }));
+    fireEvent.click(screen.getByRole('button', { name: /view profile/i }));
 
     expect(screen.getByRole('dialog', { name: /user profile/i })).toBeInTheDocument();
+  });
+
+  it('closes the user dialog with Escape', () => {
+    renderUserTable();
+
+    fireEvent.click(screen.getByRole('button', { name: /open actions for martina alvarez/i }));
+    fireEvent.click(screen.getByRole('button', { name: /view profile/i }));
+
+    expect(screen.getByRole('dialog', { name: /user profile/i })).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    expect(screen.queryByRole('dialog', { name: /user profile/i })).not.toBeInTheDocument();
   });
 });

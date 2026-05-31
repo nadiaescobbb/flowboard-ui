@@ -347,7 +347,6 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               className={`p-2 rounded-md transition-colors relative ${classes.subtitle} hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50`}
               aria-label="Open revenue operations notifications"
               aria-expanded={showNotifications}
-              aria-haspopup="true"
             >
               <Icon name="notifications" aria-hidden="true" />
               {unreadCount > 0 && (
@@ -364,7 +363,6 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             {showNotifications && (
               <div
                 className={`absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
-                role="menu"
                 aria-label="Recent revenue operations updates"
               >
                 <div className="p-4 border-b border-border-light dark:border-border-dark flex items-start justify-between gap-3">
@@ -416,7 +414,6 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-md p-1 -m-1"
               aria-label="Open profile and workspace actions"
               aria-expanded={showUserMenu}
-              aria-haspopup="true"
             >
               <div className="text-right hidden sm:block">
                 <p className={`text-sm font-display font-semibold leading-none ${classes.title}`}>
@@ -441,7 +438,6 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             {showUserMenu && (
               <div
                 className={`absolute right-0 mt-2 w-56 rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
-                role="menu"
                 aria-label="Profile and workspace actions"
               >
                 <div className="p-3 border-b border-border-light dark:border-border-dark">
@@ -467,7 +463,6 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                       key={item.label}
                       onClick={() => openPanel(item.panel)}
                       className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${classes.subtitle} ${classes.hover}`}
-                      role="menuitem"
                     >
                       <Icon name={item.icon} className="!text-lg" aria-hidden="true" />
                       <span>{item.label}</span>
