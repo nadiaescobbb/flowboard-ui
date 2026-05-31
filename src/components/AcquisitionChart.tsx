@@ -57,6 +57,9 @@ const ChannelRow = memo(({ channel, index, labelClass, valueClass, isLight }: Ch
 
 ChannelRow.displayName = 'ChannelRow';
 
+export const getAllocationLabel = (totalPercentage: number): string =>
+  `${totalPercentage}% ${totalPercentage === 100 ? 'allocated' : 'reported'}`;
+
 export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
   const classes = useThemeClasses();
   const [showInsight, setShowInsight] = useState(false);
@@ -99,7 +102,7 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
           Acquisition sources
         </h3>
         <p className={`text-xs mt-1 ${classes.subtitle}`}>
-          Ranked by contribution - {totalPercentage}% allocated
+          Ranked by contribution - {getAllocationLabel(totalPercentage)}
         </p>
       </header>
 

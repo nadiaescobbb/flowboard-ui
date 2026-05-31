@@ -49,8 +49,8 @@ The practical problem it solves is not business analytics itself. The real probl
 
 - API access is isolated in `src/api/dashboard.ts`, so mock data can be replaced without touching UI components.
 - TanStack Query handles loading, error, retry, cache, and refetch states through the same path a real backend would use.
-- Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time.
-- Runtime validation checks the API payload before data enters the UI layer.
+- Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time, such as passing a KPI id where a user id is expected.
+- Runtime validation happens separately: `Percentage` validates when values are created, and the API payload is checked before data enters the UI layer.
 - Custom SVG chart utilities power the revenue chart directly instead of sitting beside the component unused.
 - Result helpers make API failures explicit before the hook adapts them to TanStack Query.
 - The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
@@ -132,11 +132,11 @@ The app uses TanStack Query because dashboards almost always become server-state
 
 ### Branded Types
 
-IDs like `UserId` and `KPIId` are branded types. This prevents accidental ID mixups at compile time while keeping runtime data simple.
+IDs like `UserId` and `KPIId` are branded types. They prevent accidental ID mixups at compile time while runtime validators handle invalid values separately.
 
 ### Runtime Validation
 
-Values such as `Percentage` are validated when they are created, and `fetchDashboardData()` validates the composed dashboard payload before returning `ok`. Invalid domain values fail early instead of leaking into chart math or UI rendering.
+Values such as `Percentage` are validated when they are created, and `fetchDashboardData()` validates the composed dashboard payload before returning `ok`. This keeps compile-time branding and runtime validation as separate responsibilities.
 
 ### Custom SVG Utilities
 

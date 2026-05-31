@@ -19,15 +19,16 @@ type TimeRange = 'weekly' | 'monthly';
 const chartWidth = 800;
 const chartHeight = 260;
 
-const getSeriesStats = (data: readonly RevenueDataPoint[]) => {
+export const getSeriesStats = (data: readonly RevenueDataPoint[]) => {
   if (data.length === 0) {
     return { average: 0, growth: 0, peak: null as RevenueDataPoint | null, low: null as RevenueDataPoint | null };
   }
 
   const total = data.reduce((sum, point) => sum + point.value, 0);
   const average = total / data.length;
-  const growth = data.length > 1
-    ? ((data[data.length - 1].value - data[0].value) / data[0].value) * 100
+  const firstValue = data[0].value;
+  const growth = data.length > 1 && firstValue !== 0
+    ? ((data[data.length - 1].value - firstValue) / firstValue) * 100
     : 0;
   const peak = data.reduce((best, item) => (item.value > best.value ? item : best), data[0]);
   const low = data.reduce((worst, item) => (item.value < worst.value ? item : worst), data[0]);
