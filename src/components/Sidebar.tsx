@@ -54,7 +54,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
           transition-transform duration-300 ease-in-out
           z-[70]
           ${classes.isLight ? 'bg-surface-light border-border-light shadow-[24px_0_70px_rgba(20,20,19,0.16)]' : 'bg-[#141413] border-border-dark shadow-[24px_0_90px_rgba(0,0,0,0.75)]'}
-          overflow-y-auto
+          overflow-y-auto no-scrollbar
         `}
         role="navigation"
         aria-label="Main navigation"

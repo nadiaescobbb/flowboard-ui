@@ -142,6 +142,15 @@ select:focus {
   font-variant-numeric: tabular-nums;
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   input[type="text"],
   input[type="search"],

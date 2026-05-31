@@ -110,6 +110,16 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
     setActionMessage(`Users filtered by "${query}".`);
   };
 
+  useEffect(() => {
+    if (!actionMessage) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setActionMessage(null);
+    }, 3200);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [actionMessage]);
+
   const openPanel = (panel: HeaderPanel) => {
     setActivePanel(panel);
     setShowNotifications(false);
@@ -492,10 +502,18 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
       {actionMessage && (
         <div
-          className="absolute right-4 top-[5.5rem] max-w-sm rounded-md border border-primary/20 bg-primary/10 px-3 py-2 text-xs text-primary shadow-sm"
+          className={`fixed right-4 top-24 z-[95] flex max-w-[calc(100vw-2rem)] items-center gap-2 rounded-md border px-3 py-2 text-xs shadow-[0_18px_50px_rgba(0,0,0,0.28)] ${classes.isLight ? 'border-primary/20 bg-surface-light text-primary' : 'border-primary/25 bg-[#1b1a18] text-primary'}`}
           role="status"
         >
-          {actionMessage}
+          <Icon name="check_circle" className="!text-base" aria-hidden="true" />
+          <span>{actionMessage}</span>
+          <button
+            onClick={() => setActionMessage(null)}
+            className="ml-1 rounded-sm p-0.5 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary/40"
+            aria-label="Dismiss message"
+          >
+            <Icon name="close" className="!text-sm" aria-hidden="true" />
+          </button>
         </div>
       )}
 
