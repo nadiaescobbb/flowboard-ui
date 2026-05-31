@@ -17,12 +17,20 @@ interface DashboardData {
   theme: 'light' | 'dark';
 }
 
-export async function fetchDashboardData(theme: 'light' | 'dark'): Promise<DashboardData> {
-  // Simula delay de red (como una API real)
-  await new Promise(resolve => setTimeout(resolve, 1500));
+interface FetchDashboardDataOptions {
+  shouldFail?: boolean;
+  delayMs?: number;
+}
 
-  // Simula posible error (10% de chance)
-  if (Math.random() < 0.1) {
+export async function fetchDashboardData(
+  theme: 'light' | 'dark',
+  options: FetchDashboardDataOptions = {}
+): Promise<DashboardData> {
+  const { shouldFail = false, delayMs = 1500 } = options;
+
+  await new Promise(resolve => setTimeout(resolve, delayMs));
+
+  if (shouldFail) {
     throw new Error('The dashboard service did not return weekly revenue data. Try loading it again.');
   }
 
