@@ -4,6 +4,10 @@
 
 [View the live demo](https://flowboard-rouge.vercel.app) | [Read the source code](https://github.com/nadiaescobbb/flowboard-dashboard)
 
+**Focus areas:** TypeScript, React, testing, accessible design, dashboard architecture.
+
+**Suggested GitHub topics:** `typescript`, `react`, `testing`, `accessible-design`, `dashboard`.
+
 ---
 
 ## Why This Exists
@@ -46,6 +50,7 @@ The practical problem it solves is not business analytics itself. The real probl
 - API access is isolated in `src/api/dashboard.ts`, so mock data can be replaced without touching UI components.
 - TanStack Query handles loading, error, retry, cache, and refetch states through the same path a real backend would use.
 - Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time.
+- Runtime validation guards invalid values before they enter the UI layer.
 - Custom SVG chart utilities expose the coordinate and path-generation logic instead of hiding it behind a chart library.
 - `AsyncState<T>` and Result helpers make success, loading, and failure states explicit.
 - The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
@@ -65,7 +70,7 @@ The practical problem it solves is not business analytics itself. The real probl
 | Build | Vite | Fast local workflow |
 | Server state | TanStack Query | Loading, error, retry, and cache behavior |
 | Styling | Tailwind CSS | Utility-first layout and theme speed |
-| Tests | Vitest | Fast unit tests close to the Vite stack |
+| Tests | Vitest + Playwright | Unit, component, and browser coverage for critical dashboard behavior |
 | Deploy | Vercel | Simple static deployment |
 
 ---
@@ -125,9 +130,21 @@ The app uses TanStack Query because dashboards almost always become server-state
 
 IDs like `UserId` and `KPIId` are branded types. This prevents accidental ID mixups at compile time while keeping runtime data simple.
 
+### Runtime Validation
+
+Values such as `Percentage` are validated when they are created. Invalid domain values fail early instead of leaking into chart math or UI rendering.
+
+### Discriminated Unions
+
+`AsyncState<T>` models idle, loading, success, and error states explicitly. That makes async UI states easier to audit and prevents silent fallthrough when a new state is introduced.
+
 ### Custom SVG Utilities
 
 The revenue chart uses custom utility functions for point normalization and SVG path creation. This is intentionally lower level than using a chart library, because the goal was to show coordinate and rendering logic.
+
+### Accessibility
+
+Interactive controls use descriptive `aria-label` values, status messages use live roles, and the theme toggle is covered by an end-to-end browser test. Accessibility is treated as part of the implementation, not a polish pass.
 
 ### Honest UI Actions
 
@@ -163,22 +180,64 @@ http://localhost:5173
 
 ---
 
-## Verification
+## Testing
 
 ```bash
-npm run build
 npm run test:run
-npm run lint
+npm run e2e
 npm run coverage
+npm run lint
+npm run build
+```
+
+### Unit and Component Tests
+
+Run the Vitest suite:
+
+```bash
+npm run test:run
+```
+
+What it covers:
+
+- runtime validators such as `createPercentage`;
+- formatters and Result helpers;
+- chart math and SVG utility behavior;
+- user table search, status filters, pagination, empty states, dialogs, and demo action feedback.
+
+Run coverage thresholds:
+
+```bash
+npm run coverage
+```
+
+Coverage thresholds currently track the pure utility layer at 80%+ while component tests cover user-visible behavior.
+
+### Playwright E2E
+
+Run the browser test:
+
+```bash
 npm run e2e
 ```
 
-The most important checks are:
+What it covers:
 
-- TypeScript compilation through `npm run build`;
-- Vitest unit tests through `npm run test:run`;
-- linting through `npm run lint`;
-- Playwright browser coverage through `npm run e2e`.
+- theme toggle behavior in Chromium;
+- persistence through `localStorage`;
+- data stability across light and dark themes.
+
+Playwright starts the Vite dev server automatically through `playwright.config.ts`.
+
+### CI Checks
+
+GitHub Actions runs these checks on `push` to `main` and on pull requests:
+
+- `npm ci`;
+- `npm run lint`;
+- `npm run coverage`;
+- `npm run build`;
+- `npm run e2e`.
 
 ---
 
