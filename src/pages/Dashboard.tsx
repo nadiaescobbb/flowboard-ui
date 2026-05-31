@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { Header } from '../components/Header';
 import { KPICard } from '../components/KPICard';
@@ -10,6 +11,22 @@ import { useDashboardData } from '../hooks/useDashboardData';
 
 export const Dashboard = () => {
   const { data, isLoading, error, refetch } = useDashboardData();
+  const [globalUserSearch, setGlobalUserSearch] = useState('');
+  const [supportMessage, setSupportMessage] = useState<string | null>(null);
+
+  const scrollToSection = useCallback((sectionId: string) => {
+    requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  }, []);
+
+  const handleGlobalSearch = useCallback((query: string) => {
+    setGlobalUserSearch(query);
+    scrollToSection('users');
+  }, [scrollToSection]);
 
   // Loading state
   if (isLoading) {
@@ -26,13 +43,13 @@ export const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Sidebar onNavigate={scrollToSection} />
 
       <main className="flex-1 min-w-0" role="main" aria-label="Dashboard content">
-        <Header />
+        <Header onGlobalSearch={handleGlobalSearch} />
 
         <div className="p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8">
-          <section aria-labelledby="kpi-section-title">
+          <section id="overview" aria-labelledby="kpi-section-title" className="scroll-mt-28">
             <h2 id="kpi-section-title" className="sr-only">
               Key Performance Indicators
             </h2>
@@ -43,7 +60,7 @@ export const Dashboard = () => {
             </div>
           </section>
 
-          <section aria-labelledby="charts-section-title">
+          <section id="analytics" aria-labelledby="charts-section-title" className="scroll-mt-28">
             <h2 id="charts-section-title" className="sr-only">
               Analytics Charts
             </h2>
@@ -53,11 +70,71 @@ export const Dashboard = () => {
             </div>
           </section>
 
-          <section aria-labelledby="users-section-title">
+          <section id="users" aria-labelledby="users-section-title" className="scroll-mt-28">
             <h2 id="users-section-title" className="sr-only">
               Recent Users
             </h2>
-            <UserTable users={data.users} />
+            <UserTable users={data.users} externalSearchQuery={globalUserSearch} />
+          </section>
+
+          <section id="revenue" aria-labelledby="revenue-section-title" className="scroll-mt-28">
+            <div className="rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80 p-5 md:p-6">
+              <p className="text-[10px] font-display font-semibold uppercase tracking-[0.26em] text-text-secondary-light dark:text-text-secondary-dark">
+                Revenue workspace
+              </p>
+              <h2 id="revenue-section-title" className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
+                Pipeline actions
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">
+                Segment revenue by channel, review MRR risk, and prepare the next weekly operator brief.
+              </p>
+            </div>
+          </section>
+
+          <section id="settings" aria-labelledby="settings-section-title" className="scroll-mt-28">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+              <div className="rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80 p-5 md:p-6">
+                <p className="text-[10px] font-display font-semibold uppercase tracking-[0.26em] text-text-secondary-light dark:text-text-secondary-dark">
+                  Settings
+                </p>
+                <h2 id="settings-section-title" className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
+                  Workspace controls
+                </h2>
+                <div className="mt-5 space-y-3">
+                  {['Weekly email summary', 'Revenue anomaly alerts', 'Team access review'].map((item) => (
+                    <label key={item} className="flex items-center justify-between gap-4 rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                      <span className="text-sm font-display font-semibold text-text-primary-light dark:text-text-primary-dark">
+                        {item}
+                      </span>
+                      <input type="checkbox" defaultChecked className="size-4 accent-primary" />
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div id="support" className="rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80 p-5 md:p-6 scroll-mt-28">
+                <p className="text-[10px] font-display font-semibold uppercase tracking-[0.26em] text-text-secondary-light dark:text-text-secondary-dark">
+                  Support
+                </p>
+                <h2 className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
+                  Help desk
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">
+                  Submit a dashboard issue, request a reporting export, or send a note to the revenue operations team.
+                </p>
+                {supportMessage && (
+                  <div className="mt-4 rounded-md border border-primary/20 bg-primary/10 px-3 py-2 text-xs text-primary" role="status">
+                    {supportMessage}
+                  </div>
+                )}
+                <button
+                  onClick={() => setSupportMessage('Support ticket opened for the revenue operations team.')}
+                  className="mt-5 rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                >
+                  Open Support Ticket
+                </button>
+              </div>
+            </div>
           </section>
         </div>
       </main>

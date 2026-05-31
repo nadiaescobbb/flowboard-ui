@@ -2,23 +2,28 @@ import React, { useState } from 'react';
 import { Icon } from './Icon';
 import { useThemeClasses } from '../hooks/useThemeClasses';
 
-export const Sidebar = () => {
+interface SidebarProps {
+  onNavigate?: (sectionId: string) => void;
+}
+
+export const Sidebar = ({ onNavigate }: SidebarProps) => {
   const classes = useThemeClasses();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('Dashboard');
 
   const navItems = [
-    { icon: 'dashboard', label: 'Dashboard' },
-    { icon: 'bar_chart', label: 'Analytics' },
-    { icon: 'group', label: 'Users' },
-    { icon: 'payments', label: 'Revenue' },
-    { icon: 'settings', label: 'Settings' },
+    { icon: 'dashboard', label: 'Dashboard', sectionId: 'overview' },
+    { icon: 'bar_chart', label: 'Analytics', sectionId: 'analytics' },
+    { icon: 'group', label: 'Users', sectionId: 'users' },
+    { icon: 'payments', label: 'Revenue', sectionId: 'revenue' },
+    { icon: 'settings', label: 'Settings', sectionId: 'settings' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, label: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, label: string, sectionId: string) => {
     e.preventDefault();
     setActiveSection(label);
     setMobileMenuOpen(false);
+    onNavigate?.(sectionId);
   };
 
   return (
@@ -83,7 +88,7 @@ export const Sidebar = () => {
           {navItems.map((item, index) => (
             <a
               key={item.label}
-              href="#"
+              href={`#${item.sectionId}`}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-md transition-all ${
                 activeSection === item.label
                   ? classes.isLight
@@ -96,7 +101,7 @@ export const Sidebar = () => {
                     }`
               }`}
               aria-current={activeSection === item.label ? 'page' : undefined}
-              onClick={(e) => handleNavClick(e, item.label)}
+              onClick={(e) => handleNavClick(e, item.label, item.sectionId)}
             >
               <span className={`text-[10px] tabular-nums ${classes.subtitle}`}>
                 {String(index + 1).padStart(2, '0')}
@@ -130,6 +135,7 @@ export const Sidebar = () => {
               e.preventDefault();
               setActiveSection('Support');
               setMobileMenuOpen(false);
+              onNavigate?.('support');
             }}
           >
             <Icon name="help" className="!text-[20px]" aria-hidden="true" />

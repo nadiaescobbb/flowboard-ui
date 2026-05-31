@@ -9,10 +9,11 @@ import { SortField, StatusFilter, UserTableAction } from './types';
 import { filterAndSortUsers, getUserActionMessage } from './userTable.utils';
 
 interface UserTableProps {
-  users: User[];
+  users: readonly User[];
+  externalSearchQuery?: string;
 }
 
-export const UserTable = memo(({ users }: UserTableProps) => {
+export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) => {
   const classes = useThemeClasses();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<SortField>('joinDate');
@@ -20,6 +21,7 @@ export const UserTable = memo(({ users }: UserTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [lastAction, setLastAction] = useState<UserTableAction | null>(null);
+  const [activeDialog, setActiveDialog] = useState<UserTableAction | null>(null);
   const itemsPerPage = 5;
 
   const handleSort = useCallback((field: SortField) => {
@@ -46,9 +48,23 @@ export const UserTable = memo(({ users }: UserTableProps) => {
     setCurrentPage(1);
   }, [searchQuery, statusFilter]);
 
+  useEffect(() => {
+    if (externalSearchQuery !== undefined) {
+      setSearchQuery(externalSearchQuery);
+    }
+  }, [externalSearchQuery]);
+
   const handleAction = useCallback((action: UserTableAction) => {
     setLastAction(action);
+    setActiveDialog(action);
   }, []);
+
+  const completeDialogAction = useCallback(() => {
+    if (activeDialog) {
+      setLastAction(activeDialog);
+    }
+    setActiveDialog(null);
+  }, [activeDialog]);
 
   const getStatusColor = useCallback((status: User['status']): string => {
     const colors: Record<User['status'], string> = {
@@ -263,6 +279,150 @@ export const UserTable = memo(({ users }: UserTableProps) => {
         activeButtonClass={classes.buttonActive}
         onPageChange={setCurrentPage}
       />
+
+      {activeDialog && (
+        <div
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/60 px-4 py-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="user-dialog-title"
+          onMouseDown={() => setActiveDialog(null)}
+        >
+          <section
+            className={`w-full max-w-lg max-h-[calc(100vh-3rem)] overflow-y-auto rounded-md border p-5 md:p-6 ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+                  People operation
+                </p>
+                <h3 id="user-dialog-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
+                  {activeDialog.type === 'invite' && 'Invite User'}
+                  {activeDialog.type === 'view' && 'User Profile'}
+                  {activeDialog.type === 'edit' && 'Edit User'}
+                  {activeDialog.type === 'delete' && 'Delete User'}
+                </h3>
+              </div>
+              <button
+                onClick={() => setActiveDialog(null)}
+                className={`rounded-md p-2 transition-colors ${classes.subtitle} ${classes.hover}`}
+                aria-label="Close dialog"
+              >
+                <Icon name="close" aria-hidden="true" />
+              </button>
+            </div>
+
+            {activeDialog.type === 'invite' && (
+              <form className="mt-6 space-y-4" onSubmit={(event) => {
+                event.preventDefault();
+                completeDialogAction();
+              }}>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Email</span>
+                  <input
+                    type="email"
+                    required
+                    placeholder="teammate@company.com"
+                    className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}
+                  />
+                </label>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Plan</span>
+                  <select className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
+                    <option>Enterprise</option>
+                    <option>Professional</option>
+                    <option>Free Tier</option>
+                  </select>
+                </label>
+                <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
+                  Send Invite
+                </button>
+              </form>
+            )}
+
+            {activeDialog.type === 'view' && activeDialog.user && (
+              <div className="mt-6 space-y-3">
+                {[
+                  ['Name', activeDialog.user.name],
+                  ['Email', activeDialog.user.email],
+                  ['Status', activeDialog.user.status],
+                  ['Plan', activeDialog.user.plan],
+                  ['Joined', activeDialog.user.joinDate],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                    <p className={`text-[10px] uppercase tracking-[0.2em] ${classes.subtitle}`}>{label}</p>
+                    <p className={`mt-1 text-sm font-display font-semibold ${classes.title}`}>{value}</p>
+                  </div>
+                ))}
+                <button
+                  onClick={() => setActiveDialog({ type: 'edit', user: activeDialog.user })}
+                  className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90"
+                >
+                  Edit Profile
+                </button>
+              </div>
+            )}
+
+            {activeDialog.type === 'edit' && activeDialog.user && (
+              <form className="mt-6 space-y-4" onSubmit={(event) => {
+                event.preventDefault();
+                completeDialogAction();
+              }}>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Name</span>
+                  <input
+                    defaultValue={activeDialog.user.name}
+                    className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}
+                  />
+                </label>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Status</span>
+                  <select defaultValue={activeDialog.user.status} className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
+                    <option>Active</option>
+                    <option>Trial</option>
+                    <option>Away</option>
+                    <option>Cancelled</option>
+                  </select>
+                </label>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Plan</span>
+                  <select defaultValue={activeDialog.user.plan} className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
+                    <option>Enterprise</option>
+                    <option>Professional</option>
+                    <option>Free Tier</option>
+                  </select>
+                </label>
+                <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
+                  Save User
+                </button>
+              </form>
+            )}
+
+            {activeDialog.type === 'delete' && activeDialog.user && (
+              <div className="mt-6">
+                <p className={`text-sm leading-6 ${classes.subtitle}`}>
+                  This will remove <span className={`font-display font-semibold ${classes.title}`}>{activeDialog.user.name}</span> from the workspace demo data.
+                </p>
+                <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={completeDialogAction}
+                    className="flex-1 rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90"
+                  >
+                    Confirm Delete
+                  </button>
+                  <button
+                    onClick={() => setActiveDialog(null)}
+                    className={`flex-1 rounded-md border px-4 py-2 text-sm font-display font-semibold ${classes.button}`}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
+        </div>
+      )}
     </article>
   );
 });

@@ -1,16 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from './Icon';
 import { useThemeClasses } from '../hooks/useThemeClasses';
 
-export const Header = () => {
+type HeaderPanel = 'profile' | 'settings' | 'help' | 'notifications';
+
+interface HeaderProps {
+  onGlobalSearch: (query: string) => void;
+}
+
+const notifications = [
+  { id: 1, title: 'New user registered', detail: 'Sarah Jenkins joined the Enterprise plan.', time: '2 min ago' },
+  { id: 2, title: 'Payment received', detail: 'Stripe confirmed a Professional renewal.', time: '1 hour ago' },
+  { id: 3, title: 'Server update completed', detail: 'The analytics worker finished without errors.', time: '3 hours ago' },
+];
+
+export const Header = ({ onGlobalSearch }: HeaderProps) => {
   const classes = useThemeClasses();
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [activePanel, setActivePanel] = useState<HeaderPanel | null>(null);
+  const [readNotificationIds, setReadNotificationIds] = useState<number[]>([3]);
   const notificationRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const unreadCount = useMemo(
+    () => notifications.filter((notification) => !readNotificationIds.includes(notification.id)).length,
+    [readNotificationIds]
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -26,21 +45,57 @@ export const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActivePanel(null);
+        setShowNotifications(false);
+        setShowUserMenu(false);
+        setShowMobileSearch(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, []);
+
+  const handleSearch = (event: FormEvent) => {
+    event.preventDefault();
     const query = searchQuery.trim();
-    setActionMessage(
-      query
-        ? `Search submitted for "${query}". In production this would query dashboard entities.`
-        : 'Search is ready. Enter a term to find users, reports, or metrics.'
-    );
+
+    if (!query) {
+      setActionMessage('Type a name, email, plan, or status to filter users.');
+      return;
+    }
+
+    onGlobalSearch(query);
+    setShowMobileSearch(false);
+    setActionMessage(`Users filtered by "${query}".`);
   };
 
-  const handleMenuAction = (message: string) => {
-    setActionMessage(message);
+  const openPanel = (panel: HeaderPanel) => {
+    setActivePanel(panel);
     setShowNotifications(false);
     setShowUserMenu(false);
+
+    if (panel === 'notifications') {
+      setReadNotificationIds(notifications.map((notification) => notification.id));
+    }
   };
+
+  const openNotification = (notificationId: number) => {
+    setReadNotificationIds((currentIds) =>
+      currentIds.includes(notificationId) ? currentIds : [...currentIds, notificationId]
+    );
+    openPanel('notifications');
+  };
+
+  const panelTitle = {
+    profile: 'Profile',
+    settings: 'Workspace Settings',
+    help: 'Help & Support',
+    notifications: 'Notifications',
+  }[activePanel ?? 'profile'];
 
   return (
     <header
@@ -78,7 +133,7 @@ export const Header = () => {
               type="search"
               placeholder="Search metrics, people, segments..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(event) => setSearchQuery(event.target.value)}
               className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
               aria-label="Search dashboard"
             />
@@ -87,9 +142,10 @@ export const Header = () => {
 
         <div className="flex items-center gap-2 md:gap-4">
           <button
-            onClick={() => setShowMobileSearch(!showMobileSearch)}
+            onClick={() => setShowMobileSearch((isOpen) => !isOpen)}
             className={`lg:hidden p-2 rounded-md transition-colors ${classes.subtitle} hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50`}
             aria-label="Search"
+            aria-expanded={showMobileSearch}
           >
             <Icon name="search" aria-hidden="true" />
           </button>
@@ -100,29 +156,37 @@ export const Header = () => {
               ['ARR', '$1.49m'],
               ['Target', '+8.2%'],
             ].map(([label, value]) => (
-              <div key={label} className="px-4 py-2">
+              <button
+                key={label}
+                onClick={() => setActionMessage(`${label} metric selected for the weekly brief.`)}
+                className={`px-4 py-2 text-left transition-colors ${classes.hover}`}
+              >
                 <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>
                   {label}
                 </p>
                 <p className={`text-sm font-display font-bold ${classes.title}`}>{value}</p>
-              </div>
+              </button>
             ))}
           </div>
 
           <div className="relative hidden sm:block" ref={notificationRef}>
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
+              onClick={() => setShowNotifications((isOpen) => !isOpen)}
               className={`p-2 rounded-md transition-colors relative ${classes.subtitle} hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50`}
               aria-label="Notifications"
               aria-expanded={showNotifications}
               aria-haspopup="true"
             >
               <Icon name="notifications" aria-hidden="true" />
-              <span
-                className="absolute top-2 right-2.5 size-2 bg-primary rounded-full border-2 border-surface-light dark:border-surface-dark"
-                role="status"
-                aria-label="You have unread notifications"
-              ></span>
+              {unreadCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 min-w-5 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold text-[#fffdf8]"
+                  role="status"
+                  aria-label={`${unreadCount} unread notifications`}
+                >
+                  {unreadCount}
+                </span>
+              )}
             </button>
 
             {showNotifications && (
@@ -131,36 +195,44 @@ export const Header = () => {
                 role="menu"
                 aria-label="Notifications menu"
               >
-                <div className="p-4 border-b border-border-light dark:border-border-dark">
-                  <h3 className={`font-display font-semibold text-sm md:text-base ${classes.title}`}>
-                    Notifications
-                  </h3>
-                  <p className={`text-xs mt-0.5 ${classes.subtitle}`}>3 operational updates</p>
+                <div className="p-4 border-b border-border-light dark:border-border-dark flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className={`font-display font-semibold text-sm md:text-base ${classes.title}`}>
+                      Notifications
+                    </h3>
+                    <p className={`text-xs mt-0.5 ${classes.subtitle}`}>{unreadCount} unread updates</p>
+                  </div>
+                  <button
+                    onClick={() => openPanel('notifications')}
+                    className="text-xs font-display font-semibold text-primary hover:text-primary/80"
+                  >
+                    View all
+                  </button>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
-                  {[
-                    { id: 1, title: 'New user registered', time: '2 min ago', unread: true },
-                    { id: 2, title: 'Payment received', time: '1 hour ago', unread: true },
-                    { id: 3, title: 'Server update completed', time: '3 hours ago', unread: false },
-                  ].map((notification) => (
-                    <button
-                      key={notification.id}
-                      className={`w-full p-4 text-left transition-colors border-b last:border-b-0 border-border-light dark:border-border-dark ${classes.hover} ${notification.unread ? 'bg-primary/5' : ''}`}
-                      onClick={() => handleMenuAction(`Opened notification: ${notification.title}.`)}
-                    >
-                      <div className="flex items-start gap-3">
-                        {notification.unread && (
-                          <span className="size-2 bg-primary rounded-full mt-2 flex-shrink-0" aria-label="Unread"></span>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm font-display font-semibold ${classes.title} truncate`}>
-                            {notification.title}
-                          </p>
-                          <p className={`text-xs mt-1 ${classes.subtitle}`}>{notification.time}</p>
+                  {notifications.map((notification) => {
+                    const unread = !readNotificationIds.includes(notification.id);
+
+                    return (
+                      <button
+                        key={notification.id}
+                        className={`w-full p-4 text-left transition-colors border-b last:border-b-0 border-border-light dark:border-border-dark ${classes.hover} ${unread ? 'bg-primary/5' : ''}`}
+                        onClick={() => openNotification(notification.id)}
+                      >
+                        <div className="flex items-start gap-3">
+                          {unread && (
+                            <span className="size-2 bg-primary rounded-full mt-2 flex-shrink-0" aria-label="Unread"></span>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-display font-semibold ${classes.title} truncate`}>
+                              {notification.title}
+                            </p>
+                            <p className={`text-xs mt-1 ${classes.subtitle}`}>{notification.time}</p>
+                          </div>
                         </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -168,7 +240,7 @@ export const Header = () => {
 
           <div className="relative hidden md:block" ref={userMenuRef}>
             <button
-              onClick={() => setShowUserMenu(!showUserMenu)}
+              onClick={() => setShowUserMenu((isOpen) => !isOpen)}
               className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-md p-1 -m-1"
               aria-label="User menu"
               aria-expanded={showUserMenu}
@@ -203,13 +275,13 @@ export const Header = () => {
 
                 <div className="py-2">
                   {[
-                    { icon: 'person', label: 'Profile', message: 'Profile settings selected.' },
-                    { icon: 'settings', label: 'Settings', message: 'Workspace settings selected.' },
-                    { icon: 'help', label: 'Help & Support', message: 'Support center selected.' },
+                    { icon: 'person', label: 'Profile', panel: 'profile' as HeaderPanel },
+                    { icon: 'settings', label: 'Settings', panel: 'settings' as HeaderPanel },
+                    { icon: 'help', label: 'Help & Support', panel: 'help' as HeaderPanel },
                   ].map((item) => (
                     <button
                       key={item.label}
-                      onClick={() => handleMenuAction(item.message)}
+                      onClick={() => openPanel(item.panel)}
                       className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${classes.subtitle} ${classes.hover}`}
                       role="menuitem"
                     >
@@ -234,9 +306,9 @@ export const Header = () => {
             />
             <input
               type="search"
-              placeholder="Search..."
+              placeholder="Search users..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(event) => setSearchQuery(event.target.value)}
               className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
               autoFocus
             />
@@ -250,6 +322,111 @@ export const Header = () => {
           role="status"
         >
           {actionMessage}
+        </div>
+      )}
+
+      {activePanel && (
+        <div
+          className="fixed inset-0 z-[120] flex items-start justify-end bg-black/60 px-4 py-4 md:py-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="header-panel-title"
+          onMouseDown={() => setActivePanel(null)}
+        >
+          <section
+            className={`h-full w-full max-w-md overflow-y-auto rounded-md border p-5 md:p-6 ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+                  FlowBoard
+                </p>
+                <h2 id="header-panel-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
+                  {panelTitle}
+                </h2>
+              </div>
+              <button
+                onClick={() => setActivePanel(null)}
+                className={`rounded-md p-2 transition-colors ${classes.subtitle} ${classes.hover}`}
+                aria-label="Close panel"
+              >
+                <Icon name="close" aria-hidden="true" />
+              </button>
+            </div>
+
+            {activePanel === 'profile' && (
+              <div className="mt-6 space-y-4">
+                {[
+                  ['Name', 'Alex Rivera'],
+                  ['Email', 'alex@flowboard.com'],
+                  ['Role', 'Admin'],
+                  ['Access', 'Revenue, Users, Settings'],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                    <p className={`text-[10px] uppercase tracking-[0.2em] ${classes.subtitle}`}>{label}</p>
+                    <p className={`mt-1 text-sm font-display font-semibold ${classes.title}`}>{value}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activePanel === 'settings' && (
+              <form className="mt-6 space-y-4" onSubmit={(event) => {
+                event.preventDefault();
+                setActionMessage('Workspace settings saved.');
+                setActivePanel(null);
+              }}>
+                {['Weekly digest', 'Payment alerts', 'New user alerts'].map((setting) => (
+                  <label key={setting} className="flex items-center justify-between gap-4 rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                    <span className={`text-sm font-display font-semibold ${classes.title}`}>{setting}</span>
+                    <input type="checkbox" defaultChecked className="size-4 accent-primary" />
+                  </label>
+                ))}
+                <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
+                  Save Settings
+                </button>
+              </form>
+            )}
+
+            {activePanel === 'help' && (
+              <form className="mt-6 space-y-4" onSubmit={(event) => {
+                event.preventDefault();
+                setActionMessage('Support ticket created.');
+                setActivePanel(null);
+              }}>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Topic</span>
+                  <select className={`mt-2 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`}>
+                    <option>Dashboard data issue</option>
+                    <option>Export request</option>
+                    <option>Access problem</option>
+                  </select>
+                </label>
+                <label className="block">
+                  <span className={`text-xs font-display font-semibold ${classes.subtitle}`}>Message</span>
+                  <textarea className={`mt-2 min-h-28 w-full rounded-md border px-3 py-2 text-sm ${classes.input}`} defaultValue="Need help reviewing this week's dashboard." />
+                </label>
+                <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-display font-semibold text-[#fffdf8] hover:bg-primary/90">
+                  Send Request
+                </button>
+              </form>
+            )}
+
+            {activePanel === 'notifications' && (
+              <div className="mt-6 space-y-3">
+                {notifications.map((notification) => (
+                  <article key={notification.id} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className={`text-sm font-display font-semibold ${classes.title}`}>{notification.title}</h3>
+                      <span className={`text-[11px] ${classes.subtitle}`}>{notification.time}</span>
+                    </div>
+                    <p className={`mt-2 text-sm leading-6 ${classes.subtitle}`}>{notification.detail}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
         </div>
       )}
     </header>

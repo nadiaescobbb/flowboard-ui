@@ -41,10 +41,10 @@ export const getUserActionMessage = (type: UserAction, user?: User): string => {
   const subject = user ? user.name : 'a new user';
 
   const messages: Record<UserAction, string> = {
-    invite: 'Invite flow queued for a new user. In production this would open an invitation modal.',
-    view: `Profile preview selected for ${subject}.`,
-    edit: `Edit flow selected for ${subject}.`,
-    delete: `Delete confirmation selected for ${subject}.`,
+    invite: 'Invite sent for a new workspace user.',
+    view: `Profile opened for ${subject}.`,
+    edit: `Changes saved for ${subject}.`,
+    delete: `${subject} was removed from the workspace view.`,
   };
 
   return messages[type];
