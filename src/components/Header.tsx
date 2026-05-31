@@ -8,10 +8,33 @@ interface HeaderProps {
   onGlobalSearch: (query: string) => void;
 }
 
+const currentUser = {
+  name: 'Nadia Escobar',
+  email: 'nadia@flowboard.io',
+  role: 'Admin',
+  status: 'Online',
+  initials: 'NE',
+};
+
 const notifications = [
-  { id: 1, title: 'New user registered', detail: 'Sarah Jenkins joined the Enterprise plan.', time: '2 min ago' },
-  { id: 2, title: 'Payment received', detail: 'Stripe confirmed a Professional renewal.', time: '1 hour ago' },
-  { id: 3, title: 'Server update completed', detail: 'The analytics worker finished without errors.', time: '3 hours ago' },
+  {
+    id: 1,
+    title: 'Martina Alvarez joined Enterprise',
+    detail: 'New account owner added from Northwind Labs. Review onboarding milestones.',
+    time: '2 min ago',
+  },
+  {
+    id: 2,
+    title: 'Rafael Moreno renewed Professional',
+    detail: 'The invoice cleared and the subscription is active for the next billing cycle.',
+    time: '1 hour ago',
+  },
+  {
+    id: 3,
+    title: 'Revenue sync completed',
+    detail: 'The analytics worker processed acquisition, MRR, and user activity without errors.',
+    time: '3 hours ago',
+  },
 ];
 
 export const Header = ({ onGlobalSearch }: HeaderProps) => {
@@ -248,17 +271,21 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
             >
               <div className="text-right hidden sm:block">
                 <p className={`text-sm font-display font-semibold leading-none ${classes.title}`}>
-                  Alex Rivera
+                  {currentUser.name}
                 </p>
-                <p className={`text-[11px] mt-1 ${classes.subtitle}`}>Admin</p>
+                <div className="mt-1 flex items-center justify-end gap-1.5">
+                  <span className="size-1.5 rounded-full bg-olive" aria-hidden="true"></span>
+                  <p className={`text-[11px] ${classes.subtitle}`}>{currentUser.role}</p>
+                </div>
               </div>
 
               <div
-                className="size-9 rounded-md bg-primary/15 border border-primary/25 flex items-center justify-center text-primary"
+                className="relative size-10 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-xs font-bold"
                 role="img"
-                aria-label="Alex Rivera profile"
+                aria-label={`${currentUser.name} user profile`}
               >
-                <Icon name="person" className="!text-lg" aria-hidden="true" />
+                {currentUser.initials}
+                <span className="absolute -right-1 -bottom-1 size-3 rounded-full border-2 border-[#141413] bg-olive" aria-hidden="true"></span>
               </div>
             </button>
 
@@ -269,8 +296,16 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 aria-label="User menu"
               >
                 <div className="p-3 border-b border-border-light dark:border-border-dark">
-                  <p className={`text-sm font-display font-semibold ${classes.title}`}>Alex Rivera</p>
-                  <p className={`text-xs ${classes.subtitle}`}>alex@flowboard.com</p>
+                  <div className="flex items-center gap-3">
+                    <div className="relative size-10 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-xs font-bold">
+                      {currentUser.initials}
+                      <span className="absolute -right-1 -bottom-1 size-3 rounded-full border-2 border-[#1b1a18] bg-olive" aria-hidden="true"></span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className={`text-sm font-display font-semibold ${classes.title}`}>{currentUser.name}</p>
+                      <p className={`text-xs truncate ${classes.subtitle}`}>{currentUser.email}</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="py-2">
@@ -327,14 +362,14 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
       {activePanel && (
         <div
-          className="fixed inset-0 z-[120] flex items-start justify-end bg-black/60 px-4 py-4 md:py-6"
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
           aria-labelledby="header-panel-title"
           onMouseDown={() => setActivePanel(null)}
         >
           <section
-            className={`h-full w-full max-w-md overflow-y-auto rounded-md border p-5 md:p-6 ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
+            className={`w-full max-w-xl max-h-[min(720px,calc(100vh-2rem))] overflow-y-auto rounded-md border p-5 md:p-6 shadow-[0_28px_90px_rgba(0,0,0,0.45)] ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
@@ -342,7 +377,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
                   FlowBoard
                 </p>
-                <h2 id="header-panel-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
+                <h2 id="header-panel-title" className={`mt-2 text-2xl font-display font-bold leading-tight ${classes.title}`}>
                   {panelTitle}
                 </h2>
               </div>
@@ -357,10 +392,20 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
             {activePanel === 'profile' && (
               <div className="mt-6 space-y-4">
+                <div className="flex items-center gap-4 rounded-md border border-border-light dark:border-border-dark bg-primary/10 px-4 py-4">
+                  <div className="relative size-12 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-sm font-bold">
+                    {currentUser.initials}
+                    <span className="absolute -right-1 -bottom-1 size-3.5 rounded-full border-2 border-[#1b1a18] bg-olive" aria-hidden="true"></span>
+                  </div>
+                  <div>
+                    <p className={`text-base font-display font-bold ${classes.title}`}>{currentUser.name}</p>
+                    <p className={`text-xs ${classes.subtitle}`}>Signed in user · {currentUser.status}</p>
+                  </div>
+                </div>
                 {[
-                  ['Name', 'Alex Rivera'],
-                  ['Email', 'alex@flowboard.com'],
-                  ['Role', 'Admin'],
+                  ['Name', currentUser.name],
+                  ['Email', currentUser.email],
+                  ['Role', currentUser.role],
                   ['Access', 'Revenue, Users, Settings'],
                 ].map(([label, value]) => (
                   <div key={label} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
@@ -415,6 +460,9 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
             {activePanel === 'notifications' && (
               <div className="mt-6 space-y-3">
+                <p className={`text-sm leading-6 ${classes.subtitle}`}>
+                  Latest product and revenue operations updates for the active workspace.
+                </p>
                 {notifications.map((notification) => (
                   <article key={notification.id} className="rounded-md border border-border-light dark:border-border-dark px-4 py-3">
                     <div className="flex items-start justify-between gap-4">
