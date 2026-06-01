@@ -38,7 +38,7 @@ const ChannelRow = memo(({ channel, index, labelClass, valueClass, isLight }: Ch
           </span>
         </div>
         <div
-          className={`h-1.5 w-full overflow-hidden rounded-full ${isLight ? 'bg-[#e8e6dc]' : 'bg-white/[0.08]'}`}
+          className={`h-1.5 w-full overflow-hidden rounded-full ${isLight ? 'bg-[#ded4c3]' : 'bg-white/[0.08]'}`}
           role="progressbar"
           aria-valuenow={channel.percentage}
           aria-valuemin={0}
@@ -95,10 +95,10 @@ export const AcquisitionChart = memo(({ channels }: AcquisitionChartProps) => {
       aria-labelledby="acquisition-chart-title"
     >
       <header className="mb-7">
-        <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+        <p className={`editorial-label ${classes.subtitle}`}>
           Channel mix
         </p>
-        <h3 id="acquisition-chart-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
+        <h3 id="acquisition-chart-title" className={`mt-1 text-xl font-display font-extrabold ${classes.title}`}>
           Acquisition sources
         </h3>
         <p className={`text-xs mt-1 ${classes.subtitle}`}>

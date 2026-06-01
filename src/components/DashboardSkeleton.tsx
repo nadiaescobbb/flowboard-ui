@@ -11,10 +11,10 @@ export function DashboardSkeleton() {
       {/* Sidebar Skeleton */}
       <aside className={`hidden md:flex w-64 flex-shrink-0 flex-col border-r ${classes.surface}`}>
         <div className="p-6 flex items-center gap-3">
-          <div className="size-8 bg-gray-300 dark:bg-gray-700 rounded-lg animate-pulse" />
+          <div className="size-8 bg-[#ded4c3] dark:bg-white/[0.12] rounded-md animate-pulse" />
           <div className="flex-1">
-            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse mb-2" />
-            <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded animate-pulse w-20" />
+          <div className="h-4 bg-[#ded4c3] dark:bg-white/[0.12] rounded animate-pulse mb-2" />
+          <div className="h-3 bg-[#ded4c3] dark:bg-white/[0.12] rounded animate-pulse w-20" />
           </div>
         </div>
       </aside>
@@ -23,10 +23,10 @@ export function DashboardSkeleton() {
         {/* Header Skeleton */}
         <header className={`h-16 border-b ${classes.surface}`}>
           <div className="h-full px-8 flex items-center justify-between">
-            <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded animate-pulse w-32" />
+            <div className="h-6 bg-[#ded4c3] dark:bg-white/[0.12] rounded animate-pulse w-32" />
             <div className="flex gap-4">
-              <div className="size-9 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse" />
-              <div className="size-9 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse" />
+              <div className="size-9 bg-[#ded4c3] dark:bg-white/[0.12] rounded-md animate-pulse" />
+              <div className="size-9 bg-[#ded4c3] dark:bg-white/[0.12] rounded-md animate-pulse" />
             </div>
           </div>
         </header>

@@ -30,7 +30,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
     <>
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className={`md:hidden fixed top-4 left-4 z-[80] p-2 rounded-md ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'} border shadow-lg`}
+        className={`md:hidden fixed top-4 left-4 z-[80] p-2 rounded-md ${classes.isLight ? 'bg-[#fffaf0] border-border-light' : 'bg-[#1b1915] border-border-dark'} border shadow-lg`}
         aria-label={mobileMenuOpen ? 'Close navigation and return to the dashboard' : 'Open navigation to choose a dashboard section'}
         aria-expanded={mobileMenuOpen}
       >
@@ -53,7 +53,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
           w-60 flex-shrink-0 flex-col border-r
           transition-transform duration-300 ease-in-out
           z-[70]
-          ${classes.isLight ? 'bg-surface-light border-border-light shadow-[24px_0_70px_rgba(20,20,19,0.16)]' : 'bg-[#141413] border-border-dark shadow-[24px_0_90px_rgba(0,0,0,0.75)]'}
+          ${classes.isLight ? 'bg-[#fffaf0]/92 border-border-light shadow-[24px_0_70px_rgba(21,19,15,0.13)]' : 'bg-[#15130f]/96 border-border-dark shadow-[24px_0_90px_rgba(0,0,0,0.75)]'}
           overflow-y-auto no-scrollbar
         `}
         role="navigation"
@@ -62,7 +62,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
         <div className="px-6 py-7 mt-12 md:mt-0">
           <div className="flex items-center gap-3">
             <div
-              className="size-9 rounded-md border border-primary/25 bg-primary/15 flex items-center justify-center text-primary"
+              className="size-9 rounded-md border border-primary/30 bg-primary/12 flex items-center justify-center text-primary shadow-[inset_0_0_0_1px_rgba(255,250,240,0.08)]"
               role="img"
               aria-label="FlowBoard revenue intelligence workspace"
             >
@@ -73,7 +73,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
               <h1 className={`text-lg font-bold leading-tight ${classes.title}`}>
                 FlowBoard
               </h1>
-              <p className={`text-[10px] font-semibold uppercase tracking-[0.28em] ${classes.subtitle}`}>
+              <p className={`editorial-label !text-[9px] ${classes.subtitle}`}>
                 Revenue intelligence
               </p>
             </div>
@@ -92,11 +92,11 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-md transition-all ${
                 activeSection === item.label
                   ? classes.isLight
-                    ? 'bg-primary/10 text-primary'
+                    ? 'bg-primary/10 text-primary border-l-2 border-primary'
                     : 'sidebar-item-active'
                   : `${classes.subtitle} ${
                       classes.isLight
-                        ? 'hover:bg-[#f3f0e7] hover:text-text-primary-light'
+                        ? 'hover:bg-[#f4ecdd] hover:text-text-primary-light'
                         : 'hover:text-text-primary-dark hover:bg-white/5'
                     }`
               }`}
@@ -107,14 +107,14 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
                 {String(index + 1).padStart(2, '0')}
               </span>
               <Icon name={item.icon} className="!text-[20px]" aria-hidden="true" />
-              <span className="text-sm font-semibold">{item.label}</span>
+              <span className="text-sm font-display font-semibold">{item.label}</span>
             </a>
           ))}
         </nav>
 
         <div className="p-4 border-t border-border-light dark:border-border-dark space-y-3">
-          <div className={`rounded-md border px-3 py-3 ${classes.isLight ? 'border-border-light bg-[#f6f1e7]' : 'border-border-dark bg-white/[0.03]'}`}>
-            <p className={`text-[10px] font-semibold uppercase tracking-[0.24em] ${classes.subtitle}`}>
+          <div className={`rounded-md border px-3 py-3 ${classes.isLight ? 'border-border-light bg-[#f4ecdd]' : 'border-border-dark bg-white/[0.035]'}`}>
+            <p className={`editorial-label !text-[9px] ${classes.subtitle}`}>
               Health
             </p>
             <p className={`mt-1 text-sm font-display font-semibold ${classes.title}`}>
@@ -128,7 +128,7 @@ export const Sidebar = ({ onNavigate }: SidebarProps) => {
               classes.subtitle
             } ${
               classes.isLight
-                ? 'hover:text-text-primary-light hover:bg-[#f3f0e7]'
+                ? 'hover:text-text-primary-light hover:bg-[#f4ecdd]'
                 : 'hover:text-text-primary-dark hover:bg-white/5'
             }`}
             onClick={(e) => {

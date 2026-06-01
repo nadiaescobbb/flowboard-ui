@@ -56,7 +56,6 @@ export const users: User[] = [
     status: 'Active',
     joinDate: '2 mins ago',
     joinedAt: '2026-05-30T22:33:00.000Z',
-    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQxGWe2ZmdgK78zfBV6KvJ_8HcepPpGhh7nN2DMmliYn5PWiazRqvoq7L5pDUWvIbusQ50x73JWzUyMQUvK849hkHGGfOWBeiMjR05oLhK8Esrna-2CAVUNw7zIFRjGYWWNINyaQGRBPJoaXWGCtDAR_AdnrIBOYdNxT6GhMBjoIWFGvRGvHKb8wz3MFRgN8RN0sW-Kc2YonbcXTvKz0i4afz8FTFYnqKJjNqtqogYtYSbVGZDs-KzpZCITqEFt712tGOypfgYals',
     initials: 'MA',
   },
   {
@@ -77,7 +76,6 @@ export const users: User[] = [
     status: 'Away',
     joinDate: '1 hour ago',
     joinedAt: '2026-05-30T21:35:00.000Z',
-    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCrgEprxCB-aQL2wppJZn90pJIjIu-Z0ng3tQq-KxcpbodDhHQvGdx-vakjFrPFJGjURy3ORc-fZQY4kMDUxnfcXwrNqXJVK85z4CLiPEL8Ig5wH89RTqHQmly_iLyuSmnX60fRrCW2kav-Iv2yC48Yf6tlPoVhYxeQIVwEPCFPBhwLXTNoSE7ABaTzupKDcDvqK5dIeyreNXlbywANlULpRu2zlMQ1g3CQsXyRR_hQzOBZPcYGrBNqjVh09SlsLOPztAQVD1YsUUI',
     initials: 'LT',
   },
 ];

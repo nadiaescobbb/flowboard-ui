@@ -8,23 +8,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#d97757",
-        blue: "#6a9bcc",
-        olive: "#788c5d",
+        primary: "#c76f4f",
+        blue: "#6f8fa5",
+        olive: "#76865a",
 
-        "background-light": "#faf9f5",
-        "background-dark": "#141413",
+        "background-light": "#fbf7ee",
+        "background-dark": "#15130f",
 
-        "surface-light": "#fffdf8",
-        "surface-dark": "#1b1a18",
+        "surface-light": "#fffaf0",
+        "surface-dark": "#1b1915",
 
-        "border-light": "#e8e6dc",
+        "border-light": "#ded4c3",
         "border-dark": "rgba(250,249,245,0.12)",
 
-        "text-primary-light": "#141413",
-        "text-secondary-light": "#7b786f",
-        "text-primary-dark": "#faf9f5",
-        "text-secondary-dark": "#b0aea5",
+        "text-primary-light": "#15130f",
+        "text-secondary-light": "#716a5d",
+        "text-primary-dark": "#fbf7ee",
+        "text-secondary-dark": "#b9b0a1",
       },
 
       fontFamily: {

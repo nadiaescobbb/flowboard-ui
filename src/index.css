@@ -1,21 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --ink: #141413;
-  --paper: #faf9f5;
-  --paper-soft: #f1efe6;
-  --line: #e8e6dc;
-  --muted: #7b786f;
-  --accent: #d97757;
-  --blue: #6a9bcc;
-  --green: #788c5d;
-  --dark-surface: #1b1a18;
+  --ink: #15130f;
+  --paper: #fbf7ee;
+  --paper-soft: #f2eadc;
+  --paper-pressed: #ebe1cf;
+  --line: #ded4c3;
+  --line-strong: #cdbfa8;
+  --muted: #716a5d;
+  --accent: #c76f4f;
+  --accent-strong: #a9573d;
+  --blue: #6f8fa5;
+  --green: #76865a;
+  --dark-surface: #1b1915;
+  --dark-surface-raised: #211f1a;
   --dark-line: rgba(250, 249, 245, 0.12);
+  --dark-line-strong: rgba(250, 249, 245, 0.2);
 }
 
 * {
@@ -40,15 +44,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background:
-    radial-gradient(circle at top left, rgba(217, 119, 87, 0.12), transparent 32rem),
-    linear-gradient(135deg, var(--paper) 0%, #f6f1e7 100%);
+    linear-gradient(rgba(21, 19, 15, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21, 19, 15, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at top left, rgba(199, 111, 79, 0.13), transparent 30rem),
+    linear-gradient(135deg, var(--paper) 0%, #f4ecdd 100%);
+  background-size: 32px 32px, 32px 32px, auto, auto;
 }
 
 .dark body {
   background:
-    radial-gradient(circle at top left, rgba(217, 119, 87, 0.14), transparent 34rem),
-    radial-gradient(circle at bottom right, rgba(106, 155, 204, 0.08), transparent 30rem),
+    linear-gradient(rgba(250, 247, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 247, 238, 0.026) 1px, transparent 1px),
+    radial-gradient(circle at top left, rgba(199, 111, 79, 0.16), transparent 34rem),
+    radial-gradient(circle at bottom right, rgba(118, 134, 90, 0.12), transparent 32rem),
     var(--ink);
+  background-size: 36px 36px, 36px 36px, auto, auto;
 }
 
 #root {
@@ -77,11 +87,11 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  border-color: #141413;
+  border-color: #15130f;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #d97757, #788c5d);
+  background: linear-gradient(180deg, #c76f4f, #76865a);
 }
 
 h1,
@@ -97,11 +107,6 @@ select,
   font-family: 'Poppins', Arial, sans-serif;
 }
 
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
 .active-nav {
   background-color: rgba(217, 119, 87, 0.12);
   color: var(--accent);
@@ -113,13 +118,47 @@ select,
 }
 
 .sidebar-item-active {
-  background: rgba(217, 119, 87, 0.13);
+  background: rgba(199, 111, 79, 0.14);
   color: var(--accent);
   border-left: 2px solid var(--accent);
 }
 
 .chart-glow {
-  filter: drop-shadow(0 10px 20px rgba(217, 119, 87, 0.18));
+  filter: drop-shadow(0 10px 20px rgba(199, 111, 79, 0.18));
+}
+
+.editorial-label {
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.work-surface {
+  position: relative;
+}
+
+.work-surface::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, rgba(255, 253, 248, 0.08), transparent 38%),
+    linear-gradient(180deg, transparent, rgba(21, 19, 15, 0.025));
+}
+
+.work-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dark .work-surface::before {
+  background:
+    linear-gradient(135deg, rgba(250, 247, 238, 0.055), transparent 42%),
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.12));
 }
 
 input:focus,

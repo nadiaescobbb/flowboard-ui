@@ -155,13 +155,13 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
       <section
         key={activePanel}
         ref={panelRef}
-        className={`w-full max-w-xl max-h-[min(720px,calc(100vh-2rem))] overflow-y-auto rounded-md border shadow-[0_28px_90px_rgba(0,0,0,0.45)] ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
+        className={`w-full max-w-xl max-h-[min(720px,calc(100vh-2rem))] overflow-y-auto rounded-md border shadow-[0_28px_90px_rgba(0,0,0,0.45)] ${classes.isLight ? 'bg-[#fffaf0] border-border-light' : 'bg-[#1b1915] border-border-dark'}`}
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <div className={`sticky top-0 z-10 border-b px-5 py-5 md:px-6 ${classes.isLight ? 'bg-surface-light/95 border-border-light' : 'bg-[#1b1a18]/95 border-border-dark'} backdrop-blur-xl`}>
+        <div className={`sticky top-0 z-10 border-b px-5 py-5 md:px-6 ${classes.isLight ? 'bg-[#fffaf0]/95 border-border-light' : 'bg-[#1b1915]/95 border-border-dark'} backdrop-blur-xl`}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+              <p className={`editorial-label ${classes.subtitle}`}>
                 FlowBoard
               </p>
               <h2 id="header-panel-title" className={`mt-2 text-2xl font-display font-bold leading-tight ${classes.title}`}>
@@ -184,7 +184,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               <div className="flex items-center gap-4 rounded-md border border-border-light dark:border-border-dark bg-primary/10 px-4 py-4">
                 <div className="relative size-12 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-sm font-bold">
                   {currentUser.initials}
-                  <span className="absolute -right-1 -bottom-1 size-3.5 rounded-full border-2 border-[#1b1a18] bg-olive" aria-hidden="true"></span>
+                  <span className="absolute -right-1 -bottom-1 size-3.5 rounded-full border-2 border-[#1b1915] bg-olive" aria-hidden="true"></span>
                 </div>
                 <div>
                   <p className={`text-base font-display font-bold ${classes.title}`}>{currentUser.name}</p>
@@ -271,7 +271,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
   return (
     <>
     <header
-      className={`sticky top-0 z-40 min-h-20 border-b backdrop-blur-xl ${classes.surface}`}
+      className={`sticky top-0 z-40 min-h-20 border-b backdrop-blur-xl ${classes.isLight ? 'bg-[#fbf7ee]/82 border-border-light' : 'bg-[#15130f]/84 border-border-dark'}`}
       role="banner"
     >
       <div className="px-4 md:px-8 py-4 flex items-center justify-between gap-4">
@@ -279,10 +279,10 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
           <div className="w-10 md:hidden"></div>
 
           <div className="min-w-0">
-            <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.28em] ${classes.subtitle}`}>
+            <p className={`editorial-label ${classes.subtitle}`}>
               Weekly brief
             </p>
-            <h2 className={`text-lg md:text-2xl font-display font-bold leading-tight ${classes.title}`}>
+            <h2 className={`text-lg md:text-[1.65rem] font-display font-extrabold leading-tight ${classes.title}`}>
               Revenue intelligence
             </h2>
           </div>
@@ -306,7 +306,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               placeholder="martina@company.com"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
-              className={`w-full rounded-md pl-10 pr-4 py-2 text-sm border focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
+              className={`w-full rounded-md pl-10 pr-4 py-2.5 text-sm border focus:ring-2 focus:ring-primary/40 transition-all ${classes.input}`}
               aria-label="Filter the user table by name, email, plan, or status"
             />
           </form>
@@ -333,7 +333,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
                 onClick={() => setActionMessage(`${label} metric selected for the weekly brief.`)}
                 className={`px-4 py-2 text-left transition-colors ${classes.hover}`}
               >
-                <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>
+                <p className={`editorial-label !text-[9px] !tracking-[0.2em] ${classes.subtitle}`}>
                   {label}
                 </p>
                 <p className={`text-sm font-display font-bold ${classes.title}`}>{value}</p>
@@ -362,7 +362,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
             {showNotifications && (
               <div
-                className={`absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
+                className={`absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-[#fffaf0] border-border-light shadow-[0_24px_70px_rgba(21,19,15,0.18)]' : 'bg-[#1b1915] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
                 aria-label="Recent revenue operations updates"
               >
                 <div className="p-4 border-b border-border-light dark:border-border-dark flex items-start justify-between gap-3">
@@ -426,25 +426,25 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
               </div>
 
               <div
-                className="relative size-10 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-xs font-bold"
+                className="relative size-10 rounded-md bg-primary/14 border border-primary/35 flex items-center justify-center text-primary font-display text-xs font-bold"
                 role="img"
                 aria-label={`${currentUser.name} user profile`}
               >
                 {currentUser.initials}
-                <span className="absolute -right-1 -bottom-1 size-3 rounded-full border-2 border-[#141413] bg-olive" aria-hidden="true"></span>
+                <span className="absolute -right-1 -bottom-1 size-3 rounded-full border-2 border-[#15130f] bg-olive" aria-hidden="true"></span>
               </div>
             </button>
 
             {showUserMenu && (
               <div
-                className={`absolute right-0 mt-2 w-56 rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-surface-light border-border-light shadow-[0_24px_70px_rgba(20,20,19,0.18)]' : 'bg-[#1b1a18] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
+                className={`absolute right-0 mt-2 w-56 rounded-md border overflow-hidden z-[90] ${classes.isLight ? 'bg-[#fffaf0] border-border-light shadow-[0_24px_70px_rgba(21,19,15,0.18)]' : 'bg-[#1b1915] border-border-dark shadow-[0_28px_80px_rgba(0,0,0,0.58)]'}`}
                 aria-label="Profile and workspace actions"
               >
                 <div className="p-3 border-b border-border-light dark:border-border-dark">
                   <div className="flex items-center gap-3">
                     <div className="relative size-10 rounded-md bg-primary/15 border border-primary/35 flex items-center justify-center text-primary font-display text-xs font-bold">
                       {currentUser.initials}
-                      <span className="absolute -right-1 -bottom-1 size-3 rounded-full border-2 border-[#1b1a18] bg-olive" aria-hidden="true"></span>
+                      <span className="absolute -right-1 -bottom-1 size-3 rounded-full border-2 border-[#1b1915] bg-olive" aria-hidden="true"></span>
                     </div>
                     <div className="min-w-0">
                       <p className={`text-sm font-display font-semibold ${classes.title}`}>{currentUser.name}</p>
@@ -476,7 +476,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
       </div>
 
       {showMobileSearch && (
-        <div className="lg:hidden fixed inset-x-0 top-20 p-4 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark z-20">
+        <div className="lg:hidden fixed inset-x-0 top-20 p-4 bg-[#fbf7ee] dark:bg-[#15130f] border-b border-border-light dark:border-border-dark z-20">
           <form onSubmit={handleSearch} className="relative">
             <Icon
               name="search"
@@ -498,7 +498,7 @@ export const Header = ({ onGlobalSearch }: HeaderProps) => {
 
       {actionMessage && (
         <div
-          className={`fixed right-4 top-24 z-[95] flex max-w-[calc(100vw-2rem)] items-center gap-2 rounded-md border px-3 py-2 text-xs shadow-[0_18px_50px_rgba(0,0,0,0.28)] ${classes.isLight ? 'border-primary/20 bg-surface-light text-primary' : 'border-primary/25 bg-[#1b1a18] text-primary'}`}
+          className={`fixed right-4 top-24 z-[95] flex max-w-[calc(100vw-2rem)] items-center gap-2 rounded-md border px-3 py-2 text-xs shadow-[0_18px_50px_rgba(0,0,0,0.28)] ${classes.isLight ? 'border-primary/20 bg-[#fffaf0] text-primary' : 'border-primary/25 bg-[#1b1915] text-primary'}`}
           role="status"
         >
           <Icon name="check_circle" className="!text-base" aria-hidden="true" />

@@ -26,7 +26,7 @@ function AppContent() {
 
       <button
         onClick={toggleTheme}
-        className="fixed bottom-5 left-5 md:bottom-7 md:left-7 z-[95] size-11 border border-primary/25 bg-primary text-[#fffdf8] rounded-lg shadow-[0_16px_40px_rgba(217,119,87,0.24)] hover:-translate-y-0.5 active:scale-95 transition-all touch-manipulation"
+        className="fixed bottom-5 left-5 md:bottom-7 md:left-7 z-[95] size-11 border border-primary/25 bg-primary text-[#fffaf0] rounded-md shadow-[0_16px_40px_rgba(199,111,79,0.24)] hover:-translate-y-0.5 active:scale-95 transition-all touch-manipulation"
         aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       >
         <Icon name={theme === 'light' ? 'dark_mode' : 'light_mode'} />

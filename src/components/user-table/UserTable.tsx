@@ -96,7 +96,7 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
   }, [classes.isLight]);
 
   const tableHeadClass = classes.isLight
-    ? 'bg-[#f6f1e7] text-text-secondary-light'
+    ? 'bg-[#f4ecdd] text-text-secondary-light'
     : 'bg-white/[0.03] text-text-secondary-dark';
 
   if (users.length === 0) {
@@ -127,10 +127,10 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
       <header className="p-4 md:p-5 border-b border-border-light dark:border-border-dark">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
           <div>
-            <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+            <p className={`editorial-label ${classes.subtitle}`}>
               People
             </p>
-            <h3 id="users-table-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
+            <h3 id="users-table-title" className={`mt-1 text-xl font-display font-extrabold ${classes.title}`}>
               Recent users
             </h3>
             <p className={`text-xs mt-1 ${classes.subtitle}`}>
@@ -222,14 +222,16 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
                   <td className="px-3 md:px-6 py-3.5">
                     <div className="flex items-center gap-3">
                       <div
-                        className={`size-9 rounded-md flex items-center justify-center overflow-hidden ${classes.isLight ? 'bg-[#ece7dc]' : 'bg-white/[0.08]'} flex-shrink-0`}
+                  className={`size-9 rounded-md flex items-center justify-center overflow-hidden ${classes.isLight ? 'bg-[#eadfce]' : 'bg-white/[0.08]'} flex-shrink-0`}
                         role="img"
                         aria-label={`${user.name} user profile image`}
                       >
                         {user.avatar ? (
                           <img className="size-full object-cover" src={user.avatar} alt="" />
                         ) : (
-                          <Icon name="person" className="text-slate-400 !text-lg" aria-hidden="true" />
+                          <span className="font-display text-[11px] font-bold text-primary">
+                            {user.initials}
+                          </span>
                         )}
                       </div>
                       <div className="min-w-0">
@@ -300,15 +302,15 @@ export const UserTable = memo(({ users, externalSearchQuery }: UserTableProps) =
           onMouseDown={() => setActiveDialog(null)}
         >
           <section
-            className={`w-full max-w-lg max-h-[calc(100vh-3rem)] overflow-y-auto rounded-md border p-5 md:p-6 ${classes.isLight ? 'bg-surface-light border-border-light' : 'bg-[#1b1a18] border-border-dark'}`}
+            className={`w-full max-w-lg max-h-[calc(100vh-3rem)] overflow-y-auto rounded-md border p-5 md:p-6 ${classes.isLight ? 'bg-[#fffaf0] border-border-light' : 'bg-[#1b1915] border-border-dark'}`}
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+                <p className={`editorial-label ${classes.subtitle}`}>
                   People operation
                 </p>
-                <h3 id="user-dialog-title" className={`mt-1 text-xl font-display font-bold ${classes.title}`}>
+                <h3 id="user-dialog-title" className={`mt-1 text-xl font-display font-extrabold ${classes.title}`}>
                   {activeDialog.type === 'invite' && 'Invite teammate'}
                   {activeDialog.type === 'view' && 'User profile'}
                   {activeDialog.type === 'edit' && 'Edit user'}

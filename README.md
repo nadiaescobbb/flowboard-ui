@@ -2,11 +2,13 @@
 
 > A frontend architecture case study exploring how analytics dashboards can evolve from mock data to production APIs without rewriting the UI.
 
-[View the live demo](https://flowboard-rouge.vercel.app) | [Read the source code](https://github.com/nadiaescobbb/flowboard-dashboard)
+[View the live demo](https://flowboard-rouge.vercel.app) | [Read the source code](https://github.com/nadiaescobbb/flowboard-ui)
 
 **Focus areas:** TypeScript, React, testing, accessible design, dashboard architecture.
 
 **Suggested GitHub topics:** `typescript`, `react`, `testing`, `accessible-design`, `dashboard`.
+
+**Visual direction:** Editorial-technical revenue software. The interface uses warm paper tones in light mode, deeper operating-console surfaces in dark mode, burnt orange for action, and olive for positive movement.
 
 ---
 

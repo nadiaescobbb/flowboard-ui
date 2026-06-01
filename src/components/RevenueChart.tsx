@@ -96,10 +96,10 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
     >
       <header className="flex flex-col xl:flex-row xl:items-start justify-between gap-5 mb-5">
         <div>
-          <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.26em] ${classes.subtitle}`}>
+          <p className={`editorial-label ${classes.subtitle}`}>
             Operating signal
           </p>
-          <h3 id="revenue-chart-title" className={`mt-1 text-xl md:text-2xl font-display font-bold ${classes.title}`}>
+          <h3 id="revenue-chart-title" className={`mt-1 text-xl md:text-2xl font-display font-extrabold ${classes.title}`}>
             Revenue over time
           </h3>
           <p className={`text-sm mt-1 ${classes.subtitle}`}>
@@ -109,13 +109,13 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
 
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="rounded-md border border-border-light dark:border-border-dark px-3 py-2">
-            <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>Peak</p>
+            <p className={`editorial-label !text-[9px] !tracking-[0.2em] ${classes.subtitle}`}>Peak</p>
             <p className={`font-display font-bold ${classes.title}`}>
               {stats.peak?.month} - {formatCompactNumber((stats.peak?.value ?? 0) * 1000)}
             </p>
           </div>
           <div className="rounded-md border border-border-light dark:border-border-dark px-3 py-2">
-            <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>Lowest</p>
+            <p className={`editorial-label !text-[9px] !tracking-[0.2em] ${classes.subtitle}`}>Lowest</p>
             <p className={`font-display font-bold ${classes.title}`}>
               {stats.low?.month} - {formatCompactNumber((stats.low?.value ?? 0) * 1000)}
             </p>
@@ -155,8 +155,9 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
         >
           <defs>
             <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#d97757" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#d97757" stopOpacity="0" />
+              <stop offset="0%" stopColor="#c76f4f" stopOpacity="0.3" />
+              <stop offset="72%" stopColor="#76865a" stopOpacity="0.06" />
+              <stop offset="100%" stopColor="#c76f4f" stopOpacity="0" />
             </linearGradient>
           </defs>
 
@@ -167,7 +168,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
               y1={(i * chartHeight) / 4}
               x2={chartWidth}
               y2={(i * chartHeight) / 4}
-              stroke={classes.isLight ? '#e8e6dc' : 'rgba(250,249,245,0.08)'}
+              stroke={classes.isLight ? '#ded4c3' : 'rgba(250,249,245,0.08)'}
               strokeWidth="1"
             />
           ))}
@@ -176,7 +177,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
           <path
             d={linePath}
             fill="none"
-            stroke="#d97757"
+            stroke="#c76f4f"
             strokeLinecap="round"
             strokeWidth="3"
             className="chart-glow"
@@ -188,8 +189,8 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
               cx={point.x}
               cy={point.y}
               r={hoveredIndex === index ? 6 : 3.5}
-              fill={hoveredIndex === index ? '#d97757' : classes.isLight ? '#faf9f5' : '#1b1a18'}
-              stroke="#d97757"
+              fill={hoveredIndex === index ? '#c76f4f' : classes.isLight ? '#fbf7ee' : '#1b1915'}
+              stroke="#c76f4f"
               strokeWidth="2"
               className="transition-all duration-200 cursor-pointer"
               opacity={hoveredIndex === null || hoveredIndex === index ? 1 : 0.4}
@@ -202,7 +203,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
               y1="0"
               x2={hoveredPoint.x}
               y2={chartHeight}
-              stroke="#d97757"
+              stroke="#c76f4f"
               strokeWidth="1"
               strokeDasharray="4 4"
               opacity="0.45"
@@ -219,7 +220,7 @@ export const RevenueChart = memo(({ data }: RevenueChartProps) => {
               transform: 'translateX(-50%)',
             }}
           >
-            <p className={`text-[10px] font-display font-semibold uppercase tracking-[0.2em] ${classes.subtitle}`}>
+            <p className={`editorial-label !text-[9px] !tracking-[0.2em] ${classes.subtitle}`}>
               {hoveredPoint.label}
             </p>
             <p className={`text-lg font-display font-bold ${classes.title} mt-1`}>

@@ -64,7 +64,7 @@ export const KPICard = memo(({ card }: KPICardProps) => {
 
   return (
     <article
-      className={`group min-h-[138px] border-y md:border-y-0 md:border-l first:md:border-l-0 border-border-light dark:border-border-dark px-5 py-5 md:px-6 lg:px-7 ${classes.hover}`}
+      className={`group min-h-[138px] border-y md:border-y-0 md:border-l first:md:border-l-0 border-border-light dark:border-border-dark px-5 py-5 md:px-6 lg:px-7 transition-colors ${classes.hover}`}
       aria-labelledby={`kpi-${card.id}-label`}
     >
       <div className="flex h-full items-start justify-between gap-5">
@@ -73,14 +73,14 @@ export const KPICard = memo(({ card }: KPICardProps) => {
             <Icon name={iconName} className={`!text-[18px] ${classes.subtitle}`} aria-hidden="true" />
             <h3
               id={`kpi-${card.id}-label`}
-              className={`max-w-[9rem] text-[11px] font-display font-semibold uppercase leading-4 tracking-[0.16em] ${classes.subtitle}`}
+              className={`editorial-label max-w-[9rem] !text-[10px] !tracking-[0.17em] leading-4 ${classes.subtitle}`}
             >
               {card.label}
             </h3>
           </div>
 
           <p
-            className={`mt-5 text-2xl md:text-3xl font-display font-bold tabular-nums ${classes.title}`}
+            className={`mt-5 text-2xl md:text-3xl font-display font-extrabold tabular-nums ${classes.title}`}
             aria-label={`${card.label} is ${card.value}`}
           >
             {card.value}
@@ -97,7 +97,7 @@ export const KPICard = memo(({ card }: KPICardProps) => {
         </div>
 
         <div className="hidden sm:block w-20 h-11 md:w-24 md:h-12 flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
-          <SparklineSVG data={card.chartData} color={isUp ? '#788c5d' : '#d97757'} />
+          <SparklineSVG data={card.chartData} color={isUp ? '#76865a' : '#c76f4f'} />
         </div>
       </div>
     </article>

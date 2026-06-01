@@ -53,7 +53,7 @@ export const Dashboard = () => {
             <h2 id="kpi-section-title" className="sr-only">
               Key performance indicators
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80">
+            <div className="work-surface grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden rounded-md border border-border-light dark:border-border-dark bg-surface-light/82 dark:bg-surface-dark/88">
               {data.kpiCards.map((card) => (
                 <KPICard key={card.id} card={card} />
               ))}
@@ -78,11 +78,11 @@ export const Dashboard = () => {
           </section>
 
           <section id="revenue" aria-labelledby="revenue-section-title" className="scroll-mt-28">
-            <div className="rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80 p-5 md:p-6">
-              <p className="text-[10px] font-display font-semibold uppercase tracking-[0.26em] text-text-secondary-light dark:text-text-secondary-dark">
+            <div className="work-surface rounded-md border border-border-light dark:border-border-dark bg-surface-light/82 dark:bg-surface-dark/88 p-5 md:p-6">
+              <p className="editorial-label text-text-secondary-light dark:text-text-secondary-dark">
                 Revenue workspace
               </p>
-              <h2 id="revenue-section-title" className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
+              <h2 id="revenue-section-title" className="mt-1 text-xl font-display font-extrabold text-text-primary-light dark:text-text-primary-dark">
                 Revenue review queue
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">
@@ -93,11 +93,11 @@ export const Dashboard = () => {
 
           <section id="settings" aria-labelledby="settings-section-title" className="scroll-mt-28">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-              <div className="rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80 p-5 md:p-6">
-                <p className="text-[10px] font-display font-semibold uppercase tracking-[0.26em] text-text-secondary-light dark:text-text-secondary-dark">
+              <div className="work-surface rounded-md border border-border-light dark:border-border-dark bg-surface-light/82 dark:bg-surface-dark/88 p-5 md:p-6">
+                <p className="editorial-label text-text-secondary-light dark:text-text-secondary-dark">
                   Settings
                 </p>
-                <h2 id="settings-section-title" className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
+                <h2 id="settings-section-title" className="mt-1 text-xl font-display font-extrabold text-text-primary-light dark:text-text-primary-dark">
                   Revenue workspace controls
                 </h2>
                 <div className="mt-5 space-y-3">
@@ -112,11 +112,11 @@ export const Dashboard = () => {
                 </div>
               </div>
 
-              <div id="support" className="rounded-md border border-border-light dark:border-border-dark bg-surface-light/80 dark:bg-surface-dark/80 p-5 md:p-6 scroll-mt-28">
-                <p className="text-[10px] font-display font-semibold uppercase tracking-[0.26em] text-text-secondary-light dark:text-text-secondary-dark">
+              <div id="support" className="work-surface rounded-md border border-border-light dark:border-border-dark bg-surface-light/82 dark:bg-surface-dark/88 p-5 md:p-6 scroll-mt-28">
+                <p className="editorial-label text-text-secondary-light dark:text-text-secondary-dark">
                   Support
                 </p>
-                <h2 className="mt-1 text-xl font-display font-bold text-text-primary-light dark:text-text-primary-dark">
+                <h2 className="mt-1 text-xl font-display font-extrabold text-text-primary-light dark:text-text-primary-dark">
                   Send a support note
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-text-secondary-light dark:text-text-secondary-dark">

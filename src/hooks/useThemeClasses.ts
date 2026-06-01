@@ -9,8 +9,8 @@ export const useThemeClasses = () => {
     
     return {
       surface: isLight
-        ? 'bg-surface-light/90 border-border-light shadow-[0_18px_60px_rgba(20,20,19,0.06)]'
-        : 'bg-surface-dark/88 border-border-dark shadow-[0_24px_80px_rgba(0,0,0,0.28)]',
+        ? 'work-surface bg-surface-light/88 border-border-light shadow-[0_18px_60px_rgba(21,19,15,0.07)]'
+        : 'work-surface bg-surface-dark/90 border-border-dark shadow-[0_24px_80px_rgba(0,0,0,0.32)]',
       
       title: isLight
         ? 'text-text-primary-light'
@@ -21,17 +21,17 @@ export const useThemeClasses = () => {
         : 'text-text-secondary-dark',
       
       input: isLight
-        ? 'bg-[#f3f0e7] text-text-primary-light placeholder:text-[#9b978b] border-border-light'
-        : 'bg-[#22211f] text-text-primary-dark placeholder:text-[#777369] border-border-dark',
+        ? 'bg-[#f4ecdd] text-text-primary-light placeholder:text-[#978d7d] border-border-light'
+        : 'bg-[#211f1a] text-text-primary-dark placeholder:text-[#83796c] border-border-dark',
       
       button: isLight
-        ? 'bg-[#f3f0e7] border-border-light text-text-primary-light hover:bg-[#ece7dc]'
-        : 'bg-[#23221f] border-border-dark text-text-primary-dark hover:bg-[#2a2925]',
+        ? 'bg-[#f4ecdd] border-border-light text-text-primary-light hover:bg-[#eadfce]'
+        : 'bg-[#211f1a] border-border-dark text-text-primary-dark hover:bg-[#29261f]',
       
       buttonActive: 'bg-primary/15 border border-primary/35 text-primary',
       
       divider: isLight ? 'bg-border-light' : 'bg-border-dark',
-      hover: isLight ? 'hover:bg-[#f6f1e7]' : 'hover:bg-white/[0.04]',
+      hover: isLight ? 'hover:bg-[#f4ecdd]' : 'hover:bg-white/[0.045]',
       
       isLight,
     };
