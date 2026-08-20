@@ -75,7 +75,8 @@ body {
 .dashboard-main {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 20px 20px 120px;
+  /* Fixed inspector offset: 180px bottom padding ensures table rows clear the fixed Portfolio Inspector panel on the 10-account dataset */
+  padding: 20px 20px 180px;
 }
 
 /* Header */
@@ -696,6 +697,7 @@ body {
 .seamless-table-container {
   border-top: 2px solid var(--border-strong);
   padding-top: 16px;
+  padding-bottom: 40px;
 }
 
 .table-header-controls {
@@ -946,6 +948,7 @@ tbody td {
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   color: #E8E5DF;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .inspector-header {

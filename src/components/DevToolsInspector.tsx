@@ -14,14 +14,22 @@ export const DevToolsInspector: React.FC = () => {
   return (
     <div className="inspector-panel">
       {/* Header */}
-      <div className="inspector-header" onClick={() => setIsInspectorOpen((o) => !o)}>
+      <div
+        className="inspector-header"
+        onClick={() => setIsInspectorOpen((o) => !o)}
+        role="button"
+        aria-expanded={isInspectorOpen}
+        title={isInspectorOpen ? 'Click to collapse panel' : 'Click to expand panel'}
+      >
         <div className="inspector-title-group">
           <span className="inspector-icon">⬡</span>
           <span className="inspector-title">Portfolio Inspector</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span className="inspector-badge">Repo Pattern + Query v5</span>
-          <span className="inspector-chevron">{isInspectorOpen ? '▾' : '▴'}</span>
+          <span className="inspector-chevron" style={{ fontSize: 12 }}>
+            {isInspectorOpen ? '▾' : '▴'}
+          </span>
         </div>
       </div>
 
