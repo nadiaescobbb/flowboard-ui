@@ -15,10 +15,17 @@ interface RevenueChartProps {
   metrics: MonthlyMetric[];
 }
 
-function ChartTooltip({ active, payload, label, tab }: any) {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  label?: string;
+  tab: MetricTab;
+}
+
+function ChartTooltip({ active, payload, label, tab }: CustomTooltipProps) {
   if (!active || !payload?.length) return null;
   const val = payload[0]?.value;
-  const fmt = tab === 'Net Churn' ? `${val}%` : formatCurrency(val as number);
+  const fmt = tab === 'Net Churn' ? `${val}%` : formatCurrency(val ?? 0);
   return (
     <div className="chart-tooltip">
       <div className="tooltip-label">{label}</div>

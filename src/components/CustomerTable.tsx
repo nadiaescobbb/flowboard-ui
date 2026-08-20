@@ -11,14 +11,17 @@ interface CustomerTableProps {
   onSearchChange: (q: string) => void;
 }
 
+type SortField = 'mrr' | 'name' | 'lastActive';
+type SortOrder = 'asc' | 'desc';
+
 export const CustomerTable: React.FC<CustomerTableProps> = ({
   customers,
   searchQuery,
   onSearchChange,
 }) => {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
-  const [sortField, setSortField] = useState<'mrr' | 'name' | 'lastActive'>('mrr');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [sortField, setSortField] = useState<SortField>('mrr');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -111,9 +114,9 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
         <select
           value={`${sortField}-${sortOrder}`}
           onChange={(e) => {
-            const [field, order] = e.target.value.split('-') as [any, any];
-            setSortField(field);
-            setSortOrder(order);
+            const parts = e.target.value.split('-') as [SortField, SortOrder];
+            setSortField(parts[0]);
+            setSortOrder(parts[1]);
           }}
           className="table-select"
           aria-label="Sort Order"

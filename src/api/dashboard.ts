@@ -34,7 +34,7 @@ export class DashboardRepository implements IDashboardRepository {
     try {
       await this.simulateNetwork(simState);
       return ok(INITIAL_KPI_SUMMARY);
-    } catch (e: any) {
+    } catch (e: unknown) {
       return err(e instanceof Error ? e : new Error(String(e)));
     }
   }
@@ -43,7 +43,7 @@ export class DashboardRepository implements IDashboardRepository {
     try {
       await this.simulateNetwork(simState);
       return ok(INITIAL_MRR_DATA);
-    } catch (e: any) {
+    } catch (e: unknown) {
       return err(e instanceof Error ? e : new Error(String(e)));
     }
   }
@@ -52,7 +52,7 @@ export class DashboardRepository implements IDashboardRepository {
     try {
       await this.simulateNetwork(simState);
       return ok(INITIAL_CHANNEL_DATA);
-    } catch (e: any) {
+    } catch (e: unknown) {
       return err(e instanceof Error ? e : new Error(String(e)));
     }
   }
@@ -66,7 +66,7 @@ export class DashboardRepository implements IDashboardRepository {
       // Runtime validation via Zod
       const validated = INITIAL_CUSTOMERS.map((c) => CustomerSchema.parse(c));
       return ok(validated);
-    } catch (e: any) {
+    } catch (e: unknown) {
       return err(e instanceof Error ? e : new Error(String(e)));
     }
   }
