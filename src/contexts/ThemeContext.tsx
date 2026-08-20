@@ -11,11 +11,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem('flowboard_theme') as Theme;
+    const saved =
+      (localStorage.getItem('flowboard-theme') as Theme) ||
+      (localStorage.getItem('flowboard_theme') as Theme);
     return saved || 'light';
   });
 
   useEffect(() => {
+    localStorage.setItem('flowboard-theme', theme);
     localStorage.setItem('flowboard_theme', theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');

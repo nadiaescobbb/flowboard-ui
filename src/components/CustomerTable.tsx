@@ -77,7 +77,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
   };
 
   return (
-    <div className="seamless-table-container">
+    <div id="users" className="seamless-table-container">
       {/* Header controls */}
       <div className="table-header-controls">
         <div className="table-title">Recent Customer Activity</div>
@@ -89,8 +89,9 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
             <path d="M11 11l3 3" stroke="var(--text-tertiary)" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
           <input
-            type="text"
+            type="search"
             placeholder="Filter accounts..."
+            aria-label="Filter accounts by name or email"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="table-search-input"

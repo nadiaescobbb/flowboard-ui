@@ -4,12 +4,12 @@ test('user search filters the dashboard table', async ({ page }) => {
   await page.goto('/');
 
   const usersSection = page.locator('#users');
-  await expect(usersSection.getByText('Martina Alvarez')).toBeVisible();
-  await expect(usersSection.getByText('Rafael Moreno')).toBeVisible();
+  await expect(usersSection.getByText('Meridian Analytics')).toBeVisible();
+  await expect(usersSection.getByText('Northgate Capital')).toBeVisible();
 
-  await page.getByRole('searchbox', { name: 'Filter users by name, email, plan, or status' }).fill('martina');
+  await page.getByPlaceholder('Filter accounts...').fill('Meridian');
 
-  await expect(usersSection.getByText('Martina Alvarez')).toBeVisible();
-  await expect(usersSection.getByText('Rafael Moreno')).not.toBeVisible();
-  await expect(usersSection.getByText('1 of 3 users')).toBeVisible();
+  await expect(usersSection.getByText('Meridian Analytics')).toBeVisible();
+  await expect(usersSection.getByText('Northgate Capital')).not.toBeVisible();
+  await expect(usersSection.getByText('Showing 1–1 of 1 accounts')).toBeVisible();
 });

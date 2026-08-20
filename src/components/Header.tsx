@@ -37,8 +37,9 @@ export const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) =
             <path d="M11 11l3 3" stroke="var(--text-tertiary)" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
           <input
-            type="text"
+            type="search"
             placeholder="Search users, transactions, or metrics..."
+            aria-label="Filter users by name, email, plan, or status"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="search-input"
@@ -74,8 +75,8 @@ export const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) =
         <button
           onClick={toggleTheme}
           className="theme-toggle-btn"
-          aria-label="Toggle dark/light theme"
-          title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
+          aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {isDark ? '☀' : '◑'}
         </button>
