@@ -1,113 +1,54 @@
-import {
-  AcquisitionChannel,
-  KPICard,
-  RevenueDataPoint,
-  User,
-  createKPIId,
-  createPercentage,
-  createUserId,
-} from '../types';
+import { Customer, MonthlyMetric, ChannelShare, KpiSummary } from '../types';
 
-export const kpiCards: KPICard[] = [
-  {
-    id: createKPIId('kpi-revenue'),
-    label: 'Total revenue',
-    value: '$124,592',
-    change: '+12.5%',
-    trend: 'up',
-    chartData: [35, 35, 15, 5],
-    chartColor: '#137fec',
-  },
-  {
-    id: createKPIId('kpi-users'),
-    label: 'Active users',
-    value: '12,842',
-    change: '+5.4%',
-    trend: 'up',
-    chartData: [30, 10, 25, 15],
-    chartColor: '#137fec',
-  },
-  {
-    id: createKPIId('kpi-mrr'),
-    label: 'MRR growth',
-    value: '24.3%',
-    change: '+2.1%',
-    trend: 'up',
-    chartData: [35, 25, 30, 10, 15, 5],
-    chartColor: '#137fec',
-  },
-  {
-    id: createKPIId('kpi-conversion'),
-    label: 'Conversion rate',
-    value: '3.18%',
-    change: '-0.4%',
-    trend: 'down',
-    chartData: [10, 25, 20, 35],
-    chartColor: '#f43f5e',
-  },
+export const INITIAL_MRR_DATA: MonthlyMetric[] = [
+  { month: 'Jan', mrr: 112000, arr: 1344000, churn: 1.8 },
+  { month: 'Feb', mrr: 118500, arr: 1422000, churn: 2.1 },
+  { month: 'Mar', mrr: 122300, arr: 1467600, churn: 1.6 },
+  { month: 'Apr', mrr: 119800, arr: 1437600, churn: 2.4 },
+  { month: 'May', mrr: 128400, arr: 1540800, churn: 1.9 },
+  { month: 'Jun', mrr: 131200, arr: 1574400, churn: 1.7 },
+  { month: 'Jul', mrr: 135600, arr: 1627200, churn: 2.0 },
+  { month: 'Aug', mrr: 140100, arr: 1681200, churn: 1.5 },
+  { month: 'Sep', mrr: 143800, arr: 1725600, churn: 1.8 },
+  { month: 'Oct', mrr: 141200, arr: 1694400, churn: 2.2 },
+  { month: 'Nov', mrr: 146900, arr: 1762800, churn: 1.6 },
+  { month: 'Dec', mrr: 148450, arr: 1781400, churn: 2.1 },
 ];
 
-export const users: User[] = [
-  {
-    id: createUserId('user-martina-alvarez'),
-    name: 'Martina Alvarez',
-    email: 'martina.alvarez@northwindlabs.com',
-    plan: 'Enterprise',
-    status: 'Active',
-    joinDate: '2 mins ago',
-    joinedAt: '2026-05-30T22:33:00.000Z',
-    initials: 'MA',
-  },
-  {
-    id: createUserId('user-rafael-moreno'),
-    name: 'Rafael Moreno',
-    email: 'rafael.moreno@lumaops.io',
-    plan: 'Professional',
-    status: 'Active',
-    joinDate: '14 mins ago',
-    joinedAt: '2026-05-30T22:21:00.000Z',
-    initials: 'RM',
-  },
-  {
-    id: createUserId('user-lucia-torres'),
-    name: 'Lucia Torres',
-    email: 'lucia.torres@atelierdata.co',
-    plan: 'Free tier',
-    status: 'Away',
-    joinDate: '1 hour ago',
-    joinedAt: '2026-05-30T21:35:00.000Z',
-    initials: 'LT',
-  },
+export const INITIAL_CHANNEL_DATA: ChannelShare[] = [
+  { name: 'Direct / Inbound', value: 54200, pct: 36.5, color: '#D9532F' },
+  { name: 'Organic Search', value: 32800, pct: 22.1, color: '#2E6B4E' },
+  { name: 'Partner Referral', value: 24600, pct: 16.6, color: '#D97706' },
+  { name: 'Paid Social', value: 19400, pct: 13.1, color: '#4A6FA5' },
+  { name: 'Product-Led Growth', value: 17450, pct: 11.7, color: '#7C6FAA' },
 ];
 
-export const acquisitionChannels: AcquisitionChannel[] = [
-  { name: 'Direct search', percentage: createPercentage(42), opacity: 1 },
-  { name: 'Social media', percentage: createPercentage(28), opacity: 0.6 },
-  { name: 'Paid advertisements', percentage: createPercentage(18), opacity: 0.4 },
-  { name: 'Referral programs', percentage: createPercentage(12), opacity: 0.2 },
+export const INITIAL_CUSTOMERS: Customer[] = [
+  { id: 'USR-00291', name: 'Meridian Analytics', email: 'ops@meridian.io', plan: 'Enterprise', mrr: 4200, status: 'Paid', lastActive: '12m ago', initials: 'MA', color: '#2E6B4E' },
+  { id: 'USR-00347', name: 'Vertex Systems', email: 'billing@vertex.co', plan: 'Pro', mrr: 890, status: 'Retrying', lastActive: '3h ago', initials: 'VS', color: '#D97706' },
+  { id: 'USR-00412', name: 'Foundry Labs', email: 'team@foundry.dev', plan: 'Enterprise', mrr: 6100, status: 'Paid', lastActive: '1h ago', initials: 'FL', color: '#4A6FA5' },
+  { id: 'USR-00158', name: 'Sable Commerce', email: 'admin@sablecommerce.com', plan: 'Pro', mrr: 450, status: 'Failed', lastActive: '2d ago', initials: 'SC', color: '#C53030' },
+  { id: 'USR-00589', name: 'Northgate Capital', email: 'finance@northgate.vc', plan: 'Enterprise', mrr: 8800, status: 'Paid', lastActive: '34m ago', initials: 'NC', color: '#2E6B4E' },
+  { id: 'USR-00633', name: 'Prismatic Studio', email: 'hello@prismatic.io', plan: 'Free', mrr: 0, status: 'Paid', lastActive: '5h ago', initials: 'PS', color: '#9B9690' },
+  { id: 'USR-00701', name: 'Cascade Data', email: 'ops@cascadedata.com', plan: 'Pro', mrr: 670, status: 'Retrying', lastActive: '18h ago', initials: 'CD', color: '#D97706' },
+  { id: 'USR-00822', name: 'Helios Robotics', email: 'dev@heliosrobotics.io', plan: 'Enterprise', mrr: 5400, status: 'Paid', lastActive: '2h ago', initials: 'HR', color: '#4A6FA5' },
+  { id: 'USR-00944', name: 'Onyx Research', email: 'contact@onyxresearch.ai', plan: 'Pro', mrr: 340, status: 'Paid', lastActive: '6h ago', initials: 'OR', color: '#2E6B4E' },
+  { id: 'USR-01012', name: 'Pelican Finance', email: 'accounts@pelican.finance', plan: 'Free', mrr: 0, status: 'Failed', lastActive: '4d ago', initials: 'PF', color: '#C53030' },
 ];
 
-export const weeklyRevenueData: RevenueDataPoint[] = [
-  { month: 'MON', value: 250 },
-  { month: 'TUE', value: 240 },
-  { month: 'WED', value: 120 },
-  { month: 'THU', value: 260 },
-  { month: 'FRI', value: 180 },
-  { month: 'SAT', value: 80 },
-  { month: 'SUN', value: 150 },
-];
-
-export const monthlyRevenueData: RevenueDataPoint[] = [
-  { month: 'Jan', value: 160 },
-  { month: 'Feb', value: 140 },
-  { month: 'Mar', value: 150 },
-  { month: 'Apr', value: 110 },
-  { month: 'May', value: 130 },
-  { month: 'Jun', value: 60 },
-  { month: 'Jul', value: 80 },
-  { month: 'Aug', value: 30 },
-  { month: 'Sep', value: 90 },
-  { month: 'Oct', value: 70 },
-  { month: 'Nov', value: 50 },
-  { month: 'Dec', value: 40 },
-];
+export const INITIAL_KPI_SUMMARY: KpiSummary = {
+  mrr: 148450,
+  mrrGrowth: 12.4,
+  arrRunRate: 1781400,
+  nrr: 108.2,
+  nrrTarget: 110.0,
+  activeSubscriptions: 3420,
+  newThisMonth: 148,
+  planBreakdown: {
+    enterprise: 312,
+    pro: 1840,
+    free: 1268,
+  },
+  churnRiskScore: 2.1,
+  flaggedAccountsCount: 14,
+};

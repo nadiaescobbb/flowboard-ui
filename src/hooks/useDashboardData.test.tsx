@@ -1,32 +1,39 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+import { describe, it, expect } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { ReactNode } from 'react';
-import { describe, expect, it } from 'vitest';
-import { useDashboardData } from './useDashboardData';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useKpiSummary, useCustomers } from './useDashboardData';
+import { SimulationProvider } from '../contexts/SimulationContext';
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
-      queries: {
-        retry: false,
-      },
+      queries: { retry: false },
     },
   });
-
-  return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>
+      <SimulationProvider>{children}</SimulationProvider>
+    </QueryClientProvider>
   );
 };
 
-describe('useDashboardData', () => {
-  it('exposes TanStack Query error state when the data layer returns err', async () => {
-    const { result } = renderHook(() => useDashboardData({ shouldFail: true, delayMs: 0 }), {
+describe('useDashboardData hooks', () => {
+  it('fetches KPI summary successfully via TanStack Query', async () => {
+    const { result } = renderHook(() => useKpiSummary(), {
       wrapper: createWrapper(),
     });
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data?.mrr).toBe(148450);
+  });
 
-    expect(result.current.error).toBeInstanceOf(Error);
-    expect((result.current.error as Error).message).toContain('dashboard service');
+  it('fetches customers list successfully via TanStack Query', async () => {
+    const { result } = renderHook(() => useCustomers(), {
+      wrapper: createWrapper(),
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data?.length).toBeGreaterThan(0);
   });
 });

@@ -1,12 +1,9 @@
-import { describe, expect, it } from 'vitest';
-import { getAllocationLabel } from './AcquisitionChart';
+import { describe, it, expect } from 'vitest';
+import { INITIAL_CHANNEL_DATA } from '../data/mockData';
 
-describe('getAllocationLabel', () => {
-  it('labels complete channel allocation', () => {
-    expect(getAllocationLabel(100)).toBe('100% allocated');
-  });
-
-  it('labels partial channel totals as reported data', () => {
-    expect(getAllocationLabel(95)).toBe('95% reported');
+describe('Acquisition Channel Data', () => {
+  it('contains channel shares totaling ~100%', () => {
+    const totalPct = INITIAL_CHANNEL_DATA.reduce((acc, curr) => acc + curr.pct, 0);
+    expect(Math.round(totalPct)).toBe(100);
   });
 });

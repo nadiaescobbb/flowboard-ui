@@ -1,41 +1,75 @@
 import {
-  acquisitionChannels as channels,
-  kpiCards,
-  monthlyRevenueData,
-  users,
-  weeklyRevenueData,
+  Customer,
+  MonthlyMetric,
+  ChannelShare,
+  KpiSummary,
+  SimulationState,
+  CustomerSchema,
+} from '../types';
+import { Result, ok, err } from '../utils/result';
+import {
+  INITIAL_CUSTOMERS,
+  INITIAL_MRR_DATA,
+  INITIAL_CHANNEL_DATA,
+  INITIAL_KPI_SUMMARY,
 } from '../data/mockData';
-import { DashboardData, Result, err, ok } from '../types';
-import { validateDashboardData } from '../utils';
 
-interface FetchDashboardDataOptions {
-  shouldFail?: boolean;
-  delayMs?: number;
+export interface IDashboardRepository {
+  getKpiSummary(simState?: SimulationState): Promise<Result<KpiSummary>>;
+  getMonthlyMetrics(simState?: SimulationState): Promise<Result<MonthlyMetric[]>>;
+  getChannelShares(simState?: SimulationState): Promise<Result<ChannelShare[]>>;
+  getCustomers(simState?: SimulationState): Promise<Result<Customer[]>>;
 }
 
-export async function fetchDashboardData(
-  options: FetchDashboardDataOptions = {}
-): Promise<Result<DashboardData>> {
-  const { shouldFail = false, delayMs = 1500 } = options;
-
-  await new Promise((resolve) => setTimeout(resolve, delayMs));
-
-  if (shouldFail) {
-    return err(new Error('The dashboard service did not return weekly revenue data. Try loading it again.'));
+export class DashboardRepository implements IDashboardRepository {
+  private async simulateNetwork(simState?: SimulationState): Promise<void> {
+    const delay = simState?.slowNetwork ? 2000 : 250;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    if (simState?.error500 || simState?.mode === 'error500') {
+      throw new Error('500 Internal Server Error: Mock API simulation failure');
+    }
   }
 
-  const dashboardData: DashboardData = {
-    kpiCards,
-    users,
-    channels,
-    revenueData: {
-      weekly: weeklyRevenueData,
-      monthly: monthlyRevenueData,
-    },
-  };
+  async getKpiSummary(simState?: SimulationState): Promise<Result<KpiSummary>> {
+    try {
+      await this.simulateNetwork(simState);
+      return ok(INITIAL_KPI_SUMMARY);
+    } catch (e: any) {
+      return err(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
 
-  const validation = validateDashboardData(dashboardData);
-  if (!validation.ok) return err(validation.error);
+  async getMonthlyMetrics(simState?: SimulationState): Promise<Result<MonthlyMetric[]>> {
+    try {
+      await this.simulateNetwork(simState);
+      return ok(INITIAL_MRR_DATA);
+    } catch (e: any) {
+      return err(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
 
-  return ok(validation.value);
+  async getChannelShares(simState?: SimulationState): Promise<Result<ChannelShare[]>> {
+    try {
+      await this.simulateNetwork(simState);
+      return ok(INITIAL_CHANNEL_DATA);
+    } catch (e: any) {
+      return err(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
+
+  async getCustomers(simState?: SimulationState): Promise<Result<Customer[]>> {
+    try {
+      await this.simulateNetwork(simState);
+      if (simState?.emptyState) {
+        return ok([]);
+      }
+      // Runtime validation via Zod
+      const validated = INITIAL_CUSTOMERS.map((c) => CustomerSchema.parse(c));
+      return ok(validated);
+    } catch (e: any) {
+      return err(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
 }
+
+export const dashboardRepository = new DashboardRepository();

@@ -1,1 +1,1 @@
-export { UserTable } from './UserTable';
+export { CustomerTable as UserTable } from '../CustomerTable';

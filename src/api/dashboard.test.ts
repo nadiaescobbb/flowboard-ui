@@ -1,27 +1,41 @@
-import { describe, expect, it } from 'vitest';
-import { fetchDashboardData } from './dashboard';
+import { describe, it, expect } from 'vitest';
+import { DashboardRepository } from './dashboard';
+import { isOk, isErr } from '../utils/result';
 
-describe('fetchDashboardData', () => {
-  it('returns dashboard data as an ok Result', async () => {
-    const result = await fetchDashboardData({ delayMs: 0 });
+describe('DashboardRepository API', () => {
+  const repo = new DashboardRepository();
 
-    expect(result.ok).toBe(true);
-    if (!result.ok) return;
-
-    expect(result.value.kpiCards.length).toBeGreaterThan(0);
-    expect(result.value.users.length).toBeGreaterThan(0);
-    expect(result.value.channels.length).toBeGreaterThan(0);
-    expect(result.value.revenueData.weekly.length).toBeGreaterThan(0);
-    expect(result.value.revenueData.monthly.length).toBeGreaterThan(0);
+  it('fetches KPI summary successfully', async () => {
+    const res = await repo.getKpiSummary({ mode: 'live', slowNetwork: false, error500: false, emptyState: false });
+    expect(isOk(res)).toBe(true);
+    if (isOk(res)) {
+      expect(res.value.mrr).toBe(148450);
+      expect(res.value.activeSubscriptions).toBe(3420);
+    }
   });
 
-  it('returns an error Result when the dashboard fetch fails', async () => {
-    const result = await fetchDashboardData({ delayMs: 0, shouldFail: true });
+  it('returns valid customer list with Zod validation', async () => {
+    const res = await repo.getCustomers({ mode: 'live', slowNetwork: false, error500: false, emptyState: false });
+    expect(isOk(res)).toBe(true);
+    if (isOk(res)) {
+      expect(res.value.length).toBeGreaterThan(0);
+      expect(res.value[0].email).toContain('@');
+    }
+  });
 
-    expect(result.ok).toBe(false);
-    if (result.ok) return;
+  it('returns error result when error500 simulation is enabled', async () => {
+    const res = await repo.getKpiSummary({ mode: 'error500', slowNetwork: false, error500: true, emptyState: false });
+    expect(isErr(res)).toBe(true);
+    if (isErr(res)) {
+      expect(res.error.message).toContain('500 Internal Server Error');
+    }
+  });
 
-    expect(result.error).toBeInstanceOf(Error);
-    expect(result.error.message).toContain('dashboard service');
+  it('returns empty list when emptyState simulation is enabled', async () => {
+    const res = await repo.getCustomers({ mode: 'live', slowNetwork: false, error500: false, emptyState: true });
+    expect(isOk(res)).toBe(true);
+    if (isOk(res)) {
+      expect(res.value.length).toBe(0);
+    }
   });
 });

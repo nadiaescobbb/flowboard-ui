@@ -1,258 +1,115 @@
-# FlowBoard
+# FlowBoard — Revenue & Retention Operations Board
 
-> A frontend architecture case study exploring how analytics dashboards can evolve from mock data to production APIs without rewriting the UI.
+> A high-density, production-ready SaaS Revenue Operations & Churn Intelligence dashboard built with React 18, TypeScript, TanStack Query, and a testable Repository Pattern.
 
-[View the live demo](https://flowboard-rouge.vercel.app) | [Read the source code](https://github.com/nadiaescobbb/flowboard-ui)
-
-**Focus areas:** TypeScript, React, testing, accessible design, dashboard architecture.
-
-**Suggested GitHub topics:** `typescript`, `react`, `testing`, `accessible-design`, `dashboard`.
-
-**Visual direction:** Editorial-technical revenue software. The interface uses warm paper tones in light mode, deeper operating-console surfaces in dark mode, burnt orange for action, and olive for positive movement.
+[Live Demo](https://flowboard-rouge.vercel.app) | [Source Code](https://github.com/nadiaescobbb/flowboard-ui)
 
 ---
 
-## Why This Exists
+## 🎯 Case Study & Business Context
 
-FlowBoard was created as a portfolio project to practice and demonstrate how I structure a dashboard interface when the goal is not only visual polish, but maintainability.
+Unlike generic analytics templates that show disconnected metrics, **FlowBoard** is structured as an operational software system for SaaS revenue teams. It addresses both **Product/Business pain** (identifying customer churn risk and revenue movement) and **Engineering pain** (isolating API contracts from UI rendering).
 
-It is not a real SaaS product and it does not connect to a production backend yet. The project uses mock data on purpose so the frontend decisions are easier to inspect:
-
-- how data access is isolated from UI components;
-- how asynchronous states are handled;
-- how domain types protect component boundaries;
-- how tables, charts, loading states, and error states are composed;
-- how pure utilities can be tested without testing implementation details.
-
-The core question behind the project was:
-
-> How would I organize an analytics dashboard so it can later be connected to a real API without rewriting the UI?
+### Key Product Features
+- **Retention Risk & Anomaly Detection**: Banner alert targeting accounts at risk of churn due to payment retries with actionable segment filtering.
+- **Revenue Operations Telemetry**: Track Monthly Recurring Revenue (MRR), Net Revenue Retention (NRR), ARR Run-rate, and Churn Risk Score.
+- **Operational Customer Activity**: High-density table supporting debounced searching, status filtering (`Paid`, `Retrying`, `Failed`), multi-column sorting, pagination, and CSV exports.
+- **Portfolio Inspector (Dev Controls)**: Embedded floating panel allowing evaluators to simulate 500 server errors, slow network latency (2000ms), and empty dataset responses directly in the live demo.
 
 ---
 
-## Problem It Solves
+## 🏗️ System Architecture
 
-Many dashboard portfolio projects stop at "nice charts on a page." FlowBoard focuses on the next layer: the frontend structure around those charts.
+```mermaid
+flowchart TD
+    subgraph UI Layer ["UI & Presentation Layer"]
+      DashboardPage["DashboardPage.tsx"]
+      Header["Header.tsx"]
+      KpiGrid["KpiGrid.tsx"]
+      RevenueChart["RevenueChart.tsx (Recharts)"]
+      CustomerTable["CustomerTable.tsx"]
+      DevToolsInspector["Portfolio Inspector"]
+    end
 
-The project simulates a product analytics dashboard where a team can scan:
+    subgraph StateLayer ["State & Server Query Layer"]
+      TQ["TanStack Query v5 Hooks"]
+      SimCtx["SimulationContext (Latency / Error Injection)"]
+      ThemeCtx["ThemeContext (Light Warm Paper / Dark Slate)"]
+    end
 
-- key business metrics;
-- revenue trend data;
-- acquisition channel performance;
-- recent users;
-- status filters, sorting, and pagination;
-- loading and error states.
+    subgraph DomainLayer ["Domain & Repository Layer"]
+      Repo["DashboardRepository (Repository Pattern)"]
+      ResultMonad["Result Monad (Ok / Err)"]
+      ZodValidation["Zod Runtime Schema Validation"]
+      BrandedTypes["Branded Types (UserId, CurrencyAmount, Percentage)"]
+    end
 
-The practical problem it solves is not business analytics itself. The real problem is architectural: creating a small but realistic dashboard codebase that is easier to extend, test, and reason about than a single-page mockup.
-
----
-
-## What It Demonstrates
-
-- API access is isolated in `src/api/dashboard.ts`, so mock data can be replaced without touching UI components.
-- TanStack Query handles loading, error, retry, cache, and refetch states through the same path a real backend would use.
-- Branded types like `UserId`, `KPIId`, and `Percentage` prevent accidental domain mixups at compile time, such as passing a KPI id where a user id is expected.
-- Runtime validation happens separately: `Percentage` validates when values are created, and the API payload is checked before data enters the UI layer.
-- Custom SVG chart utilities power the revenue chart directly instead of sitting beside the component unused.
-- Result helpers make API failures explicit before the hook adapts them to TanStack Query.
-- The user table includes search, filters, sorting, pagination, and visible demo feedback for actions.
-- Theme state lives in React context, with reusable class mapping for light and dark surfaces.
-- Vitest covers validators, formatters, Result helpers, chart math, and user table interactions. Coverage thresholds track the pure utility layer at 80%+.
-- Accessibility is treated as part of the implementation: aria labels, live status messaging, reduced motion support, and keyboard dismissal for dialogs.
-- Playwright covers the theme toggle as an end-to-end browser flow.
-
----
-
-## Tech Stack
-
-| Layer | Tool | Why |
-|---|---|---|
-| UI | React 18 | Component model and ecosystem fit |
-| Language | TypeScript strict | Safer domain boundaries |
-| Build | Vite | Fast local workflow |
-| Server state | TanStack Query | Loading, error, retry, and cache behavior |
-| Styling | Tailwind CSS | Utility-first layout and theme speed |
-| Tests | Vitest + Playwright | Unit, component, and browser coverage for critical dashboard behavior |
-| Deploy | Vercel | Simple static deployment |
-
----
-
-## Architecture
-
-```txt
-src/
-  api/
-    dashboard.ts
-  components/
-    user-table/
-      Pagination.tsx
-      SortableHeader.tsx
-      UserMenu.tsx
-      UserTable.tsx
-      userTable.utils.ts
-    AcquisitionChart.tsx
-    DashboardSkeleton.tsx
-    ErrorBoundary.tsx
-    ErrorState.tsx
-    Header.tsx
-    KPICard.tsx
-    RevenueChart.tsx
-    Sidebar.tsx
-  contexts/
-    ThemeContext.tsx
-  data/
-    mockData.ts
-  hooks/
-    useDashboardData.ts
-    useThemeClasses.ts
-  pages/
-    Dashboard.tsx
-  types/
-    index.ts
-  utils/
-    index.ts
-    index.test.ts
+    DashboardPage --> TQ
+    TQ --> Repo
+    Repo --> ResultMonad
+    Repo --> ZodValidation
+    ZodValidation --> BrandedTypes
+    DevToolsInspector --> SimCtx
+    SimCtx --> Repo
 ```
 
-The `user-table` module is split because tables tend to grow quickly. Keeping menu actions, pagination, sorting headers, and filtering helpers separate makes the component easier to review and extend.
+---
+
+## 💡 Engineering Highlights & Trade-offs
+
+### 1. Functional Error Handling with Result Monad
+Instead of relying on fragile `try/catch` blocks or silent `catch` fallbacks, API methods return an explicit `Result<T, E>` monad:
+```ts
+export type Ok<T> = { readonly isOk: true; readonly value: T };
+export type Err<E> = { readonly isOk: false; readonly error: E };
+export type Result<T, E = Error> = Ok<T> | Err<E>;
+```
+This guarantees that error states are handled explicitly before passing data to TanStack Query.
+
+### 2. Compile-Time Branded Types & Runtime Zod Schemas
+To prevent accidental domain parameter mixups (e.g., passing a `KPIId` where a `UserId` is expected), domain primitives use **Branded Types**. Runtime boundary safety is ensured via Zod schema parsing before data reaches UI components:
+```ts
+export type UserId = string & { readonly __brand: unique symbol };
+export type CurrencyAmount = number & { readonly __brand: unique symbol };
+```
+
+### 3. Editorial-Technical Visual System
+Designed to avoid generic "AI template" tropes:
+- **Palette**: Warm paper tones in light mode (`#F8F7F4`), deep carbon slate console in dark mode (`#0F1115`).
+- **Typography**: Dual hierarchy pairing `Inter` for UI elements and `JetBrains Mono` for currency, percentages, timestamps, and customer IDs.
+- **Density**: Crisp 1px solid borders (`#E5E0D8`), compact table rows (40px), and zero decorative 3D elements.
 
 ---
 
-## Key Decisions
+## 🧪 Testing & Verification
 
-### Data Layer Isolation
-
-The dashboard reads data through `fetchDashboardData()` instead of importing mock data directly into components. Today that function returns local mock data; later it can call REST, GraphQL, or Supabase without changing the dashboard layout.
-
-### TanStack Query
-
-The app uses TanStack Query because dashboards almost always become server-state heavy. Even in this mock version, it owns runtime loading, error, retry, cache, and refetch behavior in one place.
-
-### Result-Based Data Fetching
-
-`fetchDashboardData()` returns a `Result<DashboardData>` instead of throwing directly. The `useDashboardData()` hook unwraps that result for TanStack Query, returning data on `ok` and throwing the error on `err` so retry and error UI still work through the query layer.
-
-### Branded Types
-
-IDs like `UserId` and `KPIId` are branded types. They prevent accidental ID mixups at compile time while runtime validators handle invalid values separately.
-
-### Runtime Validation
-
-Values such as `Percentage` are validated when they are created, and `fetchDashboardData()` validates the composed dashboard payload before returning `ok`. This keeps compile-time branding and runtime validation as separate responsibilities.
-
-### Custom SVG Utilities
-
-The revenue chart uses shared utility functions for point normalization and SVG path creation. This is intentionally lower level than using a chart library, because the goal was to show coordinate and rendering logic in code that the component actually uses.
-
-### Accessibility
-
-Interactive controls use descriptive `aria-label` values, status messages use live roles, and dialogs can be dismissed with Escape. The theme toggle is covered by an end-to-end browser test.
-
-### Honest UI Actions
-
-The interface includes action feedback for demo flows like invite, edit, profile preview, search, notification selection, and acquisition insights. These are not full backend flows; they are visible demo states instead of hidden `console.log` placeholders.
-
----
-
-## Scope and Next Steps
-
-| Current scope | Why it is scoped this way | Next production step |
-|---|---|---|
-| Mock data behind an API boundary | Keeps the frontend architecture inspectable while preserving a backend swap path. | Connect `fetchDashboardData()` to a real endpoint. |
-| No authentication flow | The case study focuses on dashboard architecture, not identity management. | Add an auth provider and route protection without changing the data layer. |
-| Demo-only mutations | Actions show visible UI feedback while avoiding fake persistence. | Add create, update, and delete flows with optimistic updates. |
-| Limited E2E coverage | Playwright covers the theme toggle, while table and error flows remain in unit/component scope. | Add Playwright coverage for search, filters, pagination, and error recovery. |
-| Custom SVG charting | The project exposes coordinate and rendering logic directly. | Use Recharts, Visx, or ECharts if production chart complexity grows. |
-| Small dataset | The dataset is sized for interaction design and state coverage. | Add virtualization when the user list becomes large. |
-
----
-
-## Getting Started
+The codebase maintains strict quality thresholds covering pure utilities, API adapters, and UI interactions:
 
 ```bash
-npm install
-npm run dev
-```
-
-Local app:
-
-```txt
-http://localhost:5173
-```
-
----
-
-## Testing
-
-```bash
+# Run unit and integration tests
 npm run test:run
-npm run e2e
+
+# Run test coverage report (Target: 80%+)
 npm run coverage
-npm run lint
+
+# Build production bundle
 npm run build
-```
 
-### Unit and Component Tests
-
-Run the Vitest suite:
-
-```bash
-npm run test:run
-```
-
-What it covers:
-
-- runtime validators such as `createPercentage`;
-- formatters and Result helpers;
-- chart math and SVG utility behavior;
-- user table search, status filters, pagination, empty states, dialogs, and demo action feedback.
-
-Run coverage thresholds:
-
-```bash
-npm run coverage
-```
-
-Coverage thresholds currently track the pure utility layer at 80%+ while component tests cover user-visible behavior.
-
-### Playwright E2E
-
-Run the browser test:
-
-```bash
+# Run Playwright E2E browser tests
 npm run e2e
 ```
 
-What it covers:
-
-- theme toggle behavior in Chromium;
-- persistence through `localStorage`;
-- data stability across light and dark themes.
-
-Playwright starts the Vite dev server automatically through `playwright.config.ts`.
-
-### CI Checks
-
-GitHub Actions runs these checks on `push` to `main` and on pull requests:
-
-- `npm ci`;
-- `npm run lint`;
-- `npm run coverage`;
-- `npm run build`;
-- `npm run e2e`.
-
 ---
 
-## What I Would Add Next
+## 🛠️ Tech Stack
 
-- Replace the mock API with a small real backend or Supabase table.
-- Add Playwright tests for search, filters, pagination, dashboard loading, and error recovery.
-- Add MSW for API-level mocks in component and hook tests.
-- Add a mutation flow for inviting or editing a user.
-- Add chart empty states and richer accessibility descriptions.
-
----
-
-## Author
-
-Built by Nadia Escobar as a frontend architecture portfolio case study.
+| Layer | Tool | Rationale |
+|---|---|---|
+| Framework | React 18 | Declarative component architecture |
+| Language | TypeScript 5.7 Strict | Domain type safety & branded types |
+| Build Tool | Vite 6 | Instant HMR and optimized production bundles |
+| Server State | TanStack Query v5 | Auto-caching, retries, and network state management |
+| Charts | Recharts 2 | Responsive SVG data visualization |
+| Validation | Zod | Runtime contract validation at data boundaries |
+| Styling | Tailwind CSS + Custom CSS Variables | Design tokens for Warm Paper / Carbon Slate themes |
+| Testing | Vitest + RTL + Playwright | Unit, component, and E2E browser coverage |

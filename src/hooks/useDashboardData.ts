@@ -1,26 +1,64 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchDashboardData } from '../api/dashboard';
+import { dashboardRepository } from '../api/dashboard';
+import { useSimulation } from '../contexts/SimulationContext';
+import { isErr } from '../utils/result';
 
-interface UseDashboardDataOptions {
-  shouldFail?: boolean;
-  delayMs?: number;
+export function useKpiSummary() {
+  const { simState } = useSimulation();
+  return useQuery({
+    queryKey: ['kpiSummary', simState],
+    queryFn: async () => {
+      const res = await dashboardRepository.getKpiSummary(simState);
+      if (isErr(res)) {
+        throw res.error;
+      }
+      return res.value;
+    },
+    retry: 1,
+  });
 }
 
-export const useDashboardData = (options: UseDashboardDataOptions = {}) => {
-  const { shouldFail = false, delayMs } = options;
-
+export function useMonthlyMetrics() {
+  const { simState } = useSimulation();
   return useQuery({
-    queryKey: ['dashboard', shouldFail, delayMs],
+    queryKey: ['monthlyMetrics', simState],
     queryFn: async () => {
-      const result = await fetchDashboardData({ shouldFail, delayMs });
-
-      if (!result.ok) {
-        throw result.error;
+      const res = await dashboardRepository.getMonthlyMetrics(simState);
+      if (isErr(res)) {
+        throw res.error;
       }
-
-      return result.value;
+      return res.value;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutos
-    retry: shouldFail ? false : 2,
+    retry: 1,
   });
-};
+}
+
+export function useChannelShares() {
+  const { simState } = useSimulation();
+  return useQuery({
+    queryKey: ['channelShares', simState],
+    queryFn: async () => {
+      const res = await dashboardRepository.getChannelShares(simState);
+      if (isErr(res)) {
+        throw res.error;
+      }
+      return res.value;
+    },
+    retry: 1,
+  });
+}
+
+export function useCustomers() {
+  const { simState } = useSimulation();
+  return useQuery({
+    queryKey: ['customers', simState],
+    queryFn: async () => {
+      const res = await dashboardRepository.getCustomers(simState);
+      if (isErr(res)) {
+        throw res.error;
+      }
+      return res.value;
+    },
+    retry: 1,
+  });
+}

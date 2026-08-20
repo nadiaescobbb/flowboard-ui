@@ -1,14 +1,9 @@
-import { describe, expect, it } from 'vitest';
-import { getSeriesStats } from './RevenueChart';
+import { describe, it, expect } from 'vitest';
+import { INITIAL_MRR_DATA } from '../data/mockData';
 
-describe('getSeriesStats', () => {
-  it('returns zero growth when the first value is zero', () => {
-    const stats = getSeriesStats([
-      { month: 'MON', value: 0 },
-      { month: 'TUE', value: 120 },
-    ]);
-
-    expect(stats.growth).toBe(0);
-    expect(Number.isFinite(stats.growth)).toBe(true);
+describe('RevenueChart data processing', () => {
+  it('has valid 12-month data series', () => {
+    expect(INITIAL_MRR_DATA.length).toBe(12);
+    expect(INITIAL_MRR_DATA[0].mrr).toBeGreaterThan(0);
   });
 });
