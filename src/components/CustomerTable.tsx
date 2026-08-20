@@ -77,7 +77,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
   };
 
   return (
-    <div className="table-card">
+    <div className="seamless-table-container">
       {/* Header controls */}
       <div className="table-header-controls">
         <div className="table-title">Recent Customer Activity</div>

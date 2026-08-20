@@ -13,33 +13,38 @@ const mrrSparkData = [112, 118.5, 122.3, 119.8, 128.4, 131.2, 135.6, 140.1, 143.
 
 export const KpiGrid: React.FC<KpiGridProps> = ({ summary }) => {
   return (
-    <div className="kpi-grid">
-      {/* 1. Monthly Recurring Revenue */}
-      <KpiCard
-        label="Monthly Recurring Revenue"
-        value={formatCurrency(summary.mrr)}
-        trend={`+${summary.mrrGrowth}% vs last mo`}
-        trendPositive
-      >
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginTop: 4 }}>
+    <div className="kpi-hierarchy-grid">
+      {/* 1. Monthly Recurring Revenue (HERO KPI - 1.2x weight) */}
+      <div className="kpi-card kpi-card-hero">
+        <div className="kpi-card-header">
+          <span className="kpi-label">Monthly Recurring Revenue</span>
+          <span className="kpi-trend kpi-trend-pos">+{summary.mrrGrowth}% vs last mo</span>
+        </div>
+        <div style={{ margin: '4px 0 2px' }}>
+          <div className="kpi-value-hero">{formatCurrency(summary.mrr)}</div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
           <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>
             ARR run-rate:{' '}
             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
               {formatCurrency(summary.arrRunRate, true)}
             </span>
           </div>
-          <Sparkline data={mrrSparkData} color="#D9532F" />
+          <Sparkline data={mrrSparkData} color="var(--positive)" />
         </div>
-      </KpiCard>
+      </div>
 
-      {/* 2. Net Revenue Retention */}
-      <KpiCard
-        label="Net Revenue Retention"
-        value={formatPercentage(summary.nrr)}
-        subtext={`Target: ${summary.nrrTarget}% · +3.1 pts QoQ`}
-        trendPositive
-      >
-        <div style={{ marginTop: 6 }}>
+      {/* 2. Net Revenue Retention (HERO KPI - 1.2x weight) */}
+      <div className="kpi-card kpi-card-hero">
+        <div className="kpi-card-header">
+          <span className="kpi-label">Net Revenue Retention</span>
+          <span className="kpi-trend kpi-trend-pos">+3.1 pts QoQ</span>
+        </div>
+        <div style={{ margin: '4px 0 2px' }}>
+          <div className="kpi-value-hero">{formatPercentage(summary.nrr)}</div>
+          <div className="kpi-subtext">Target: {summary.nrrTarget}%</div>
+        </div>
+        <div style={{ marginTop: 4 }}>
           <ProgressBar value={summary.nrr} max={120} color="var(--positive)" />
           <div className="nrr-markers">
             <span>0%</span>
@@ -47,9 +52,9 @@ export const KpiGrid: React.FC<KpiGridProps> = ({ summary }) => {
             <span>120%</span>
           </div>
         </div>
-      </KpiCard>
+      </div>
 
-      {/* 3. Active Subscriptions */}
+      {/* 3. Active Subscriptions (SUPPORTING KPI) */}
       <KpiCard
         label="Active Subscriptions"
         value={summary.activeSubscriptions.toLocaleString()}
@@ -73,18 +78,18 @@ export const KpiGrid: React.FC<KpiGridProps> = ({ summary }) => {
         </div>
       </KpiCard>
 
-      {/* 4. Churn Risk Score */}
+      {/* 4. Churn Risk Score (SUPPORTING KPI) */}
       <KpiCard label="Churn Risk Score" value={formatPercentage(summary.churnRiskScore)}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
           <span className="risk-pill">
             <span className="risk-dot" />
             Low Risk
           </span>
-          <span style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>
-            {summary.flaggedAccountsCount} flagged accounts
+          <span style={{ fontSize: 10, color: 'var(--text-tertiary)' }}>
+            {summary.flaggedAccountsCount} flagged
           </span>
         </div>
-        <div style={{ marginTop: 8 }}>
+        <div style={{ marginTop: 6 }}>
           <ProgressBar value={summary.churnRiskScore} max={10} color="var(--positive)" />
         </div>
       </KpiCard>

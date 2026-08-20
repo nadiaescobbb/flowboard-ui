@@ -39,7 +39,7 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({ metrics }) => {
   const [dateRange, setDateRange] = useState<DateRange>('Last 30 Days');
 
   const chartKey = metricTab === 'MRR' ? 'mrr' : metricTab === 'ARR' ? 'arr' : 'churn';
-  const chartColor = metricTab === 'Net Churn' ? '#C53030' : '#D9532F';
+  const chartColor = metricTab === 'Net Churn' ? '#C53030' : '#2E6B4E';
 
   const yFormatter = (v: number) =>
     metricTab === 'Net Churn'
