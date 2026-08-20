@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { CustomerTable } from '../CustomerTable';
-import { INITIAL_CUSTOMERS } from '../../data/mockData';
+import { CustomerTable } from './CustomerTable';
+import { INITIAL_CUSTOMERS } from '../data/mockData';
 
 describe('CustomerTable Component', () => {
   it('renders customer list correctly', () => {
