@@ -881,6 +881,8 @@ tbody td {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .pagination-info {
@@ -893,6 +895,7 @@ tbody td {
   display: flex;
   gap: 4px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .page-num-btn {
@@ -942,11 +945,11 @@ tbody td {
   right: 20px;
   width: 280px;
   background: #0A0C10;
-  border: 1px solid #2A2E37;
+  border: 1px solid #363B47;
   border-radius: 6px;
   z-index: 50;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
   color: #E8E5DF;
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
@@ -955,9 +958,10 @@ tbody td {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border-bottom: 1px solid #2A2E37;
   cursor: pointer;
+  background: #11141B;
 }
 
 .inspector-title-group {
@@ -967,8 +971,9 @@ tbody td {
 }
 
 .inspector-icon {
-  font-size: 10px;
-  color: var(--positive);
+  font-size: 12px;
+  color: #3D8F67;
+  font-weight: bold;
 }
 
 .inspector-title {
