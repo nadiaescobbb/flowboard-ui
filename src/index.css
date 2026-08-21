@@ -5,6 +5,22 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
+  /* Escala Tipográfica Modular B2B */
+  --text-micro: 11px;    /* Metadata mínima, timestamps, chips de atajo y sub-labels (erradicar 9px y 10px) */
+  --text-tag: 12px;      /* Badges de estado, labels uppercase th/kpi, inputs y buscador */
+  --text-subtle: 13px;   /* Datos secundarios y botones de control */
+  --text-body: 14px;     /* Nombres principales, títulos de tabla y headers de gráficos */
+  --text-kpi-sub: 18px;  /* Métricas secundarias */
+  --text-kpi-hero: 24px; /* Métrica principal MRR (contenido y refinado) */
+
+  /* Escala de Espaciado Modular B2B */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
   /* Refactoring UI - Standardized Warm Grey Neutral Ramp (Págs. 139-141: Warm Paper H: 40deg) */
   --neutral-100: hsl(40, 20%, 96%);   /* 100: Canvas Background (Warm paper tint) */
   --neutral-200: hsl(40, 22%, 100%);  /* 200: Card Background */
@@ -188,8 +204,8 @@ body {
 }
 
 .logo-text {
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: var(--text-body);
   letter-spacing: -0.03em;
   color: var(--text-primary);
 }
@@ -216,7 +232,7 @@ body {
 .org-select {
   background: transparent;
   border: none;
-  font-size: 12px;
+  font-size: var(--text-tag);
   color: var(--text-secondary);
   font-family: var(--font-sans);
   cursor: pointer;
@@ -244,14 +260,14 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 12px;
+  font-size: var(--text-tag);
   color: var(--text-primary);
   font-family: var(--font-sans);
 }
 
 .kbd-badge {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-micro);
   color: var(--text-tertiary);
   background: var(--border);
   padding: 1px 5px;
@@ -275,7 +291,7 @@ body {
 
 .sim-mode-btn {
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: var(--text-tag);
   font-family: var(--font-mono);
   border: none;
   border-right: 1px solid var(--border);
@@ -470,17 +486,18 @@ body {
 
 .kpi-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-micro);
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-tertiary);
 }
 
 .kpi-trend {
   font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--text-micro);
+  font-weight: 500;
+  letter-spacing: 0.06em;
   padding: 2px 6px;
   border-radius: 3px;
 }
@@ -497,19 +514,19 @@ body {
 
 .kpi-value-hero {
   font-family: var(--font-mono);
-  font-size: 26px;
+  font-size: var(--text-kpi-hero);
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
 .kpi-value {
   font-family: var(--font-mono);
-  font-size: 20px;
+  font-size: var(--text-kpi-sub);
   font-weight: 600;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.2;
 }
 
@@ -563,7 +580,7 @@ body {
 }
 
 .sub-label {
-  font-size: 9px;
+  font-size: var(--text-micro);
   color: var(--text-tertiary);
   margin-top: 1px;
 }
@@ -615,7 +632,7 @@ body {
 }
 
 .chart-card-title {
-  font-size: 13px;
+  font-size: var(--text-body);
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -719,7 +736,7 @@ body {
 }
 
 .channel-title {
-  font-size: 13px;
+  font-size: var(--text-body);
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -791,7 +808,7 @@ body {
 }
 
 .table-title {
-  font-size: 14px;
+  font-size: var(--text-body);
   font-weight: 600;
   color: var(--text-primary);
   margin-right: 4px;
@@ -840,9 +857,9 @@ table {
 
 thead th {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-micro);
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-tertiary);
   background: transparent;
@@ -889,26 +906,26 @@ tbody td {
 
 .user-name {
   font-weight: 600;
-  font-size: 12px;
+  font-size: var(--text-tag);
   color: var(--text-primary);
 }
 
 .user-email {
-  font-size: 10px;
+  font-size: var(--text-micro);
   color: var(--text-tertiary);
   font-family: var(--font-mono);
 }
 
 .mrr-text {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--text-tag);
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .last-active-text {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-micro);
   color: var(--text-tertiary);
 }
 
@@ -917,9 +934,9 @@ tbody td {
   align-items: center;
   gap: 4px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-micro);
   font-weight: 500;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 2px 7px;
   border-radius: 3px;
@@ -1091,7 +1108,7 @@ tbody td {
 
 .inspector-section-label {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--text-micro);
   color: #555A66;
   letter-spacing: 0.08em;
   text-transform: uppercase;
