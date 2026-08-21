@@ -27,7 +27,7 @@ Unlike generic analytics templates that show disconnected metrics, **FlowBoard**
 - **Asymmetric Revenue Telemetry**: Weighted KPI hierarchy prioritizing Monthly Recurring Revenue (MRR) and Net Revenue Retention (NRR) over supporting subscription metrics.
 - **Ranked Channel Attribution**: Conversion breakdown rendered via horizontal progress bars for direct, effortless data scanning.
 - **Seamless Operational Customer Table**: High-density table supporting debounced searching, status filtering (`Paid`, `Retrying`, `Failed`), multi-column sorting, pagination, and CSV exports.
-- **Portfolio Inspector (Dev Controls)**: Embedded floating panel allowing evaluators to simulate 500 server errors, slow network latency (2000ms), and empty dataset responses directly in the live demo.
+- **Portfolio Inspector (Dev Controls)**: Embedded floating panel allowing evaluators to simulate 500 server errors, slow network latency (2000ms), and empty dataset responses directly in the live demo (collapsed by default).
 
 ---
 
@@ -38,7 +38,7 @@ flowchart TD
     subgraph UI Layer ["UI & Presentation Layer"]
       DashboardPage["DashboardPage.tsx"]
       Header["Header.tsx"]
-      KpiGrid["KpiGrid.tsx (Asymmetric Hierarchy)"]
+      KpiGrid["KpiGrid.tsx (Asymmetric Hierarchy + Trend Arrows)"]
       RevenueChart["RevenueChart.tsx (Recharts)"]
       ChannelBreakdown["ChannelBreakdown.tsx (Ranked Bars)"]
       CustomerTable["CustomerTable.tsx (Seamless Layout)"]
@@ -87,11 +87,13 @@ export type UserId = string & { readonly __brand: unique symbol };
 export type CurrencyAmount = number & { readonly __brand: unique symbol };
 ```
 
-### 3. Editorial-Technical Visual System
-Designed to avoid generic "AI template" tropes:
-- **Palette**: Warm paper tones in light mode (`#F8F7F4`), deep carbon slate console in dark mode (`#0F1115`).
-- **Typography**: Dual hierarchy pairing `Inter` for UI elements and `JetBrains Mono` for currency, percentages, timestamps, and customer IDs.
-- **Density**: Crisp 1px solid borders (`#E5E0D8`), compact table rows (40px), and zero decorative 3D elements.
+### 3. Systematic Refactoring UI Design System
+Built following strict *Refactoring UI* engineering & accessibility principles:
+- **Standardized 9-Step HSL Ramps (100–900)**: Closed color scales for Warm Paper neutrals (`--neutral-100` to `--neutral-900`) and data series (`--indigo-100` to `--indigo-900`), avoiding inline/random opacity tweaks.
+- **3-Tier Semantic Color Tokens**: Alerts and badges use 3 coordinated HSL shades (`--danger-surface`, `--danger-border`, `--danger-text`) to preserve visual hierarchy without heavy dark block harshness.
+- **Hue Shift & U-Curve Saturation**: Extrema shades boost saturation ($S: 70\%\text{--}85\%$) and shift Hue ($\Delta\text{Hue} \le 20^\circ$) towards bright Cyan ($198^\circ$) for light tints and deep Blue ($235^\circ$) for dark text to prevent muddy graying.
+- **Perceptual Accessibility & Redundancy**: All KPI trends feature explicit directional arrows ($\uparrow / \downarrow$) and signs (`+ / -`) for colorblind usability, paired with inverted-contrast status pills (`PAID`, `RETRYING`, `FAILED`).
+- **Color Temperature**: Warm Grey paper tint ($H: 40^\circ, S: 20\%$) in Light Mode; Cool Slate console ($H: 220^\circ, S: 22\%$) in Dark Mode.
 
 ---
 
@@ -125,5 +127,5 @@ npm run e2e
 | Server State | TanStack Query v5 | Auto-caching, retries, and network state management |
 | Charts | Recharts 2 | Responsive SVG data visualization |
 | Validation | Zod | Runtime contract validation at data boundaries |
-| Styling | Tailwind CSS + Custom CSS Variables | Design tokens for Warm Paper / Carbon Slate themes |
+| Styling | HSL Design System Variables | Design tokens for Warm Paper / Carbon Slate themes |
 | Testing | Vitest + RTL + Playwright | Unit, component, and E2E browser coverage |
