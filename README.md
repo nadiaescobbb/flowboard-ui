@@ -1,8 +1,20 @@
 # FlowBoard — Revenue & Retention Operations Board
 
-> A high-density, production-ready SaaS Revenue Operations & Churn Intelligence dashboard built with React 18, TypeScript, TanStack Query, and a testable Repository Pattern.
+> A high-density, production-ready SaaS Revenue Operations & Churn Intelligence dashboard built with React 18, TypeScript 5.7, TanStack Query v5, and a testable Repository Pattern.
 
 [Live Demo](https://flowboard-rouge.vercel.app) | [Source Code](https://github.com/nadiaescobbb/flowboard-ui)
+
+---
+
+## 📸 Visual Overview
+
+![FlowBoard Dashboard Light Theme](./images/dashboard-light.png)
+
+*Warm Paper Theme (Light Mode)*
+
+![FlowBoard Dashboard Dark Theme](./images/dashboard-dark.png)
+
+*Carbon Slate Theme (Dark Mode)*
 
 ---
 
@@ -12,8 +24,9 @@ Unlike generic analytics templates that show disconnected metrics, **FlowBoard**
 
 ### Key Product Features
 - **Retention Risk & Anomaly Detection**: Banner alert targeting accounts at risk of churn due to payment retries with actionable segment filtering.
-- **Revenue Operations Telemetry**: Track Monthly Recurring Revenue (MRR), Net Revenue Retention (NRR), ARR Run-rate, and Churn Risk Score.
-- **Operational Customer Activity**: High-density table supporting debounced searching, status filtering (`Paid`, `Retrying`, `Failed`), multi-column sorting, pagination, and CSV exports.
+- **Asymmetric Revenue Telemetry**: Weighted KPI hierarchy prioritizing Monthly Recurring Revenue (MRR) and Net Revenue Retention (NRR) over supporting subscription metrics.
+- **Ranked Channel Attribution**: Conversion breakdown rendered via horizontal progress bars for direct, effortless data scanning.
+- **Seamless Operational Customer Table**: High-density table supporting debounced searching, status filtering (`Paid`, `Retrying`, `Failed`), multi-column sorting, pagination, and CSV exports.
 - **Portfolio Inspector (Dev Controls)**: Embedded floating panel allowing evaluators to simulate 500 server errors, slow network latency (2000ms), and empty dataset responses directly in the live demo.
 
 ---
@@ -25,10 +38,11 @@ flowchart TD
     subgraph UI Layer ["UI & Presentation Layer"]
       DashboardPage["DashboardPage.tsx"]
       Header["Header.tsx"]
-      KpiGrid["KpiGrid.tsx"]
+      KpiGrid["KpiGrid.tsx (Asymmetric Hierarchy)"]
       RevenueChart["RevenueChart.tsx (Recharts)"]
-      CustomerTable["CustomerTable.tsx"]
-      DevToolsInspector["Portfolio Inspector"]
+      ChannelBreakdown["ChannelBreakdown.tsx (Ranked Bars)"]
+      CustomerTable["CustomerTable.tsx (Seamless Layout)"]
+      DevToolsInspector["DevToolsInspector.tsx (Portfolio Inspector)"]
     end
 
     subgraph StateLayer ["State & Server Query Layer"]
