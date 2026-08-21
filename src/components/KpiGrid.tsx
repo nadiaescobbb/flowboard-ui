@@ -18,7 +18,7 @@ export const KpiGrid: React.FC<KpiGridProps> = ({ summary }) => {
       <div className="kpi-card kpi-card-hero">
         <div className="kpi-card-header">
           <span className="kpi-label">Monthly Recurring Revenue</span>
-          <span className="kpi-trend kpi-trend-pos">+{summary.mrrGrowth}% vs last mo</span>
+          <span className="kpi-trend kpi-trend-pos">↑ +{summary.mrrGrowth}% vs last mo</span>
         </div>
         <div style={{ margin: '4px 0 2px' }}>
           <div className="kpi-value-hero">{formatCurrency(summary.mrr)}</div>
@@ -38,7 +38,7 @@ export const KpiGrid: React.FC<KpiGridProps> = ({ summary }) => {
       <div className="kpi-card kpi-card-hero">
         <div className="kpi-card-header">
           <span className="kpi-label">Net Revenue Retention</span>
-          <span className="kpi-trend kpi-trend-pos">+3.1 pts QoQ</span>
+          <span className="kpi-trend kpi-trend-pos">↑ +3.1 pts QoQ</span>
         </div>
         <div style={{ margin: '4px 0 2px' }}>
           <div className="kpi-value-hero">{formatPercentage(summary.nrr)}</div>
@@ -59,7 +59,7 @@ export const KpiGrid: React.FC<KpiGridProps> = ({ summary }) => {
         label="Active Subscriptions"
         value={summary.activeSubscriptions.toLocaleString()}
         subtext={`↑ ${summary.newThisMonth} new this month`}
-        trend="+4.5%"
+        trend="↑ +4.5%"
         trendPositive
       >
         <div className="subscriptions-breakdown">

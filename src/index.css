@@ -5,61 +5,130 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
-  /* Refactoring UI HSL Tokens (Light Warm Paper Palette) */
-  --bg: hsl(40, 20%, 96%);
-  --bg-card: hsl(0, 0%, 100%);
-  --bg-secondary: hsl(40, 15%, 93%);
-  --bg-tertiary: hsl(40, 12%, 89%);
-  --border: hsl(38, 18%, 87%);
-  --border-strong: hsl(38, 15%, 80%);
-  --text-primary: hsl(40, 10%, 10%);
-  --text-secondary: hsl(40, 6%, 40%);
-  --text-tertiary: hsl(40, 4%, 60%);
+  /* Refactoring UI - Standardized Warm Grey Neutral Ramp (Págs. 139-141: Warm Paper H: 40deg) */
+  --neutral-100: hsl(40, 20%, 96%);   /* 100: Canvas Background (Warm paper tint) */
+  --neutral-200: hsl(40, 22%, 100%);  /* 200: Card Background */
+  --neutral-300: hsl(40, 16%, 93%);   /* 300: Sub-box / Input Background */
+  --neutral-400: hsl(40, 14%, 89%);   /* 400: Hover Background */
+  --neutral-500: hsl(38, 16%, 86%);   /* 500 (Base): Border Light */
+  --neutral-600: hsl(38, 14%, 78%);   /* 600: Border Strong */
+  --neutral-700: hsl(40, 12%, 58%);   /* 700: Text Disabled / Tertiary */
+  --neutral-800: hsl(40, 15%, 38%);   /* 800: Text Secondary */
+  --neutral-900: hsl(40, 20%, 10%);   /* 900: Text Primary (S: 20% retains warm paper tint at extreme!) */
 
-  /* Semantic Role Tokens (HSL) */
-  --action-primary: hsl(40, 10%, 10%);
+  /* Refactoring UI - Standardized 9-Step HSL Data Series Ramp with Hue Shift & U-Curve (Págs. 133-138) */
+  --indigo-100: hsl(198, 70%, 96%);   /* 100: Hue shifted towards Cyan (198deg) + S boosted (70%) */
+  --indigo-200: hsl(202, 60%, 90%);   /* 200: Hue 202deg */
+  --indigo-300: hsl(208, 50%, 78%);   /* 300: Hue 208deg */
+  --indigo-400: hsl(212, 55%, 62%);   /* 400: Hue 212deg */
+  --indigo-500: hsl(215, 60%, 48%);   /* 500 (Base): Anchor 215deg */
+  --indigo-600: hsl(220, 68%, 38%);   /* 600: Hue shifted towards Blue (220deg) + S boosted */
+  --indigo-700: hsl(225, 75%, 28%);   /* 700: Hue 225deg */
+  --indigo-800: hsl(230, 80%, 20%);   /* 800: Hue 230deg */
+  --indigo-900: hsl(235, 85%, 14%);   /* 900: Hue 235deg + S (85%) - Rich deep blue without graying */
+
+  /* Refactoring UI - 3-Tier Semantic Danger Ramp with Hue Shift (Pág. 137) */
+  --danger-surface: hsl(358, 85%, 96%); /* 100: Hue shifted towards Magenta (358deg) */
+  --danger-border:  hsl(356, 55%, 85%); /* 300: Hue 356deg */
+  --danger-solid:   hsl(356, 68%, 46%); /* 500: Anchor Base */
+  --danger-text:    hsl(348, 80%, 30%); /* 900: Hue shifted towards Crimson (348deg) */
+
+  /* Refactoring UI - 3-Tier Semantic Warning Ramp with Hue Shift (Pág. 137) */
+  --warning-surface: hsl(45, 85%, 95%); /* 100: Hue shifted towards bright Yellow (45deg) */
+  --warning-border:  hsl(38, 65%, 82%); /* 300: Anchor 38deg */
+  --warning-solid:   hsl(38, 92%, 44%); /* 500: Anchor Base */
+  --warning-text:    hsl(24, 90%, 28%); /* 900: Hue shifted towards warm Red/Orange (24deg) - Rich amber! */
+
+  /* Refactoring UI - 3-Tier Semantic Success Ramp with Hue Shift */
+  --success-surface: hsl(142, 60%, 95%); /* 100: Hue shifted towards Mint/Cyan (142deg) */
+  --success-border:  hsl(148, 45%, 82%);
+  --success-solid:   hsl(152, 40%, 36%);
+  --success-text:    hsl(160, 60%, 22%); /* 900: Hue shifted towards Teal/Cyan (160deg) */
+
+  /* Global Token Mappings */
+  --bg: var(--neutral-100);
+  --bg-card: var(--neutral-200);
+  --bg-secondary: var(--neutral-300);
+  --bg-tertiary: var(--neutral-400);
+  --border: var(--neutral-500);
+  --border-subtle: hsl(40, 10%, 88%);
+  --border-strong: var(--neutral-600);
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-800);
+  --text-tertiary: var(--neutral-700);
+
+  --action-primary: var(--neutral-900);
   --action-primary-text: hsl(0, 0%, 100%);
-  
-  --positive: hsl(152, 40%, 36%);
-  --positive-bg: hsl(145, 30%, 95%);
 
-  --warning: hsl(38, 92%, 44%);
-  --warning-bg: hsl(45, 80%, 94%);
+  --positive: var(--success-solid);
+  --positive-bg: var(--success-surface);
+  --warning: var(--warning-solid);
+  --warning-bg: var(--warning-surface);
+  --danger: var(--danger-solid);
+  --danger-bg: var(--danger-surface);
 
-  --danger: hsl(356, 68%, 46%);
-  --danger-bg: hsl(356, 75%, 95%);
-
-  --data-series: hsl(215, 52%, 42%);
-  --data-series-bg: hsl(215, 60%, 96%);
+  --data-series: var(--indigo-600);
+  --data-series-bg: var(--indigo-100);
 }
 
 .dark {
-  /* Refactoring UI HSL Tokens (Carbon Slate Console Palette) */
-  --bg: hsl(220, 18%, 7%);
-  --bg-card: hsl(222, 18%, 10%);
-  --bg-secondary: hsl(220, 18%, 14%);
-  --bg-tertiary: hsl(220, 16%, 18%);
-  --border: hsl(220, 14%, 19%);
-  --border-strong: hsl(220, 14%, 25%);
-  --text-primary: hsl(40, 12%, 89%);
-  --text-secondary: hsl(225, 7%, 57%);
-  --text-tertiary: hsl(222, 9%, 37%);
+  /* Refactoring UI - HSL Neutral Ramp (Carbon Slate Console: 9 Shades) */
+  --neutral-50:  hsl(220, 18%, 7%);    /* Canvas Background */
+  --neutral-100: hsl(222, 18%, 10%);   /* Card Background */
+  --neutral-200: hsl(220, 18%, 14%);   /* Secondary Background */
+  --neutral-300: hsl(220, 16%, 18%);   /* Sub-box / Hover */
+  --neutral-400: hsl(220, 14%, 19%);   /* Border Light */
+  --neutral-500: hsl(220, 14%, 25%);   /* Border Strong */
+  --neutral-600: hsl(195, 15%, 58%);   /* 600: Text Tertiary (Hue rotated towards Cyan 195deg for WCAG AAA) */
+  --neutral-700: hsl(200, 18%, 70%);   /* 700: Text Secondary (Hue rotated towards Cyan 200deg) */
+  --neutral-900: hsl(40, 12%, 89%);    /* 900: Text Primary */
 
-  /* Semantic Role Tokens (HSL) */
-  --action-primary: hsl(40, 12%, 89%);
-  --action-primary-text: hsl(220, 18%, 7%);
+  /* Refactoring UI - Semantic Danger Ramp (Dark Mode Pág. 127) */
+  --danger-surface: hsl(356, 35%, 12%);
+  --danger-border:  hsl(356, 40%, 25%);
+  --danger-solid:   hsl(0, 68%, 56%);
+  --danger-text:    hsl(356, 80%, 75%);
 
-  --positive: hsl(150, 40%, 48%);
-  --positive-bg: hsl(152, 45%, 10%);
+  /* Refactoring UI - Semantic Warning Ramp (Dark Mode) */
+  --warning-surface: hsl(38, 40%, 14%);
+  --warning-border:  hsl(38, 40%, 25%);
+  --warning-solid:   hsl(35, 80%, 48%);
+  --warning-text:    hsl(35, 90%, 70%);
 
-  --warning: hsl(35, 80%, 48%);
-  --warning-bg: hsl(38, 70%, 9%);
+  /* Refactoring UI - Semantic Success Ramp (Dark Mode) */
+  --success-surface: hsl(152, 35%, 14%);
+  --success-border:  hsl(150, 40%, 22%);
+  --success-solid:   hsl(150, 40%, 48%);
+  --success-text:    hsl(150, 50%, 70%);
 
-  --danger: hsl(0, 68%, 56%);
-  --danger-bg: hsl(0, 45%, 10%);
+  /* Refactoring UI - Categorical Data Ramp (Dark Mode) */
+  --data-series-50:  hsl(215, 30%, 12%);
+  --data-series-600: hsl(215, 45%, 55%);
 
-  --data-series: hsl(215, 45%, 55%);
-  --data-series-bg: hsl(215, 30%, 12%);
+  /* Global Token Mappings (Dark Mode) */
+  --bg: var(--neutral-50);
+  --bg-card: var(--neutral-100);
+  --bg-secondary: var(--neutral-200);
+  --bg-tertiary: var(--neutral-300);
+  --border: var(--neutral-400);
+  --border-subtle: hsl(215, 15%, 20%);
+  --border-strong: var(--neutral-500);
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-700);
+  --text-tertiary: var(--neutral-600);
+
+  --action-primary: var(--neutral-900);
+  --action-primary-text: var(--neutral-50);
+
+  --positive: var(--success-solid);
+  --positive-bg: var(--success-surface);
+  --warning: var(--warning-solid);
+  --warning-bg: var(--warning-surface);
+  --danger: var(--danger-solid);
+  --danger-bg: var(--danger-surface);
+
+  --data-series: var(--data-series-600);
+  --data-series-bg: var(--data-series-50);
 }
 
 * {
@@ -263,10 +332,10 @@ body {
   cursor: pointer;
 }
 
-/* Anomaly Banner */
+/* Anomaly Banner (Refactoring UI Pág. 127 - 3-Tier Semantic Scale) */
 .anomaly-banner {
-  background: var(--danger-bg);
-  border: 1px solid var(--danger);
+  background: var(--danger-surface);
+  border: 1px solid var(--danger-border);
   border-radius: 6px;
   padding: 10px 16px;
   display: flex;
@@ -277,7 +346,7 @@ body {
 
 .anomaly-icon {
   font-size: 14px;
-  color: var(--danger);
+  color: var(--danger-text);
 }
 
 .anomaly-text {
@@ -286,13 +355,14 @@ body {
 
 .anomaly-title {
   font-weight: 600;
-  color: var(--danger);
+  color: var(--danger-text);
   font-size: 12px;
 }
 
 .anomaly-desc {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--danger-text);
+  opacity: 0.9;
 }
 
 .anomaly-actions {

@@ -30,7 +30,7 @@ export const ChannelBreakdown: React.FC<ChannelBreakdownProps> = ({ channels }) 
                     style={{
                       fontFamily: 'var(--font-mono)',
                       fontSize: 10,
-                      color: 'var(--text-tertiary)',
+                      color: 'var(--text-secondary)',
                       width: 34,
                       textAlign: 'right',
                     }}
