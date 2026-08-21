@@ -21,7 +21,7 @@ export const SimulationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     emptyState: false,
   });
 
-  const [isInspectorOpen, setIsInspectorOpen] = useState(true);
+  const [isInspectorOpen, setIsInspectorOpen] = useState(false);
 
   const setMode = (mode: SimMode) => {
     setSimState((prev) => ({
