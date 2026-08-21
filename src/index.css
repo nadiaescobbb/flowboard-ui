@@ -5,49 +5,61 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
-  /* Editorial-Technical Warm Paper Palette (Light Mode) */
-  --bg: #F8F7F4;
-  --bg-card: #FFFFFF;
-  --bg-secondary: #F1EFEA;
-  --bg-tertiary: #E8E5DF;
-  --border: #E5E0D8;
-  --border-strong: #D4CFC7;
-  --text-primary: #1A1916;
-  --text-secondary: #6B6760;
-  --text-tertiary: #9B9690;
+  /* Refactoring UI HSL Tokens (Light Warm Paper Palette) */
+  --bg: hsl(40, 20%, 96%);
+  --bg-card: hsl(0, 0%, 100%);
+  --bg-secondary: hsl(40, 15%, 93%);
+  --bg-tertiary: hsl(40, 12%, 89%);
+  --border: hsl(38, 18%, 87%);
+  --border-strong: hsl(38, 15%, 80%);
+  --text-primary: hsl(40, 10%, 10%);
+  --text-secondary: hsl(40, 6%, 40%);
+  --text-tertiary: hsl(40, 4%, 60%);
+
+  /* Semantic Role Tokens (HSL) */
+  --action-primary: hsl(40, 10%, 10%);
+  --action-primary-text: hsl(0, 0%, 100%);
   
-  /* Semantic Color Separation */
-  --action-primary: #1A1916;
-  --action-primary-text: #FFFFFF;
-  --positive: #2E6B4E;
-  --positive-bg: #EEF6F1;
-  --warning: #D97706;
-  --warning-bg: #FEF3CD;
-  --danger: #C53030;
-  --danger-bg: #FEE8E8;
+  --positive: hsl(152, 40%, 36%);
+  --positive-bg: hsl(145, 30%, 95%);
+
+  --warning: hsl(38, 92%, 44%);
+  --warning-bg: hsl(45, 80%, 94%);
+
+  --danger: hsl(356, 68%, 46%);
+  --danger-bg: hsl(356, 75%, 95%);
+
+  --data-series: hsl(215, 52%, 42%);
+  --data-series-bg: hsl(215, 60%, 96%);
 }
 
 .dark {
-  /* Carbon Operating Console Palette (Dark Mode) */
-  --bg: #0F1115;
-  --bg-card: #161920;
-  --bg-secondary: #1E222B;
-  --bg-tertiary: #252A34;
-  --border: #2A2E37;
-  --border-strong: #363B47;
-  --text-primary: #E8E5DF;
-  --text-secondary: #8A8D97;
-  --text-tertiary: #555A66;
-  
-  /* Semantic Color Separation */
-  --action-primary: #E8E5DF;
-  --action-primary-text: #0F1115;
-  --positive: #3D8F67;
-  --positive-bg: #0E2319;
-  --warning: #E08A1A;
-  --warning-bg: #271C06;
-  --danger: #D94444;
-  --danger-bg: #240E0E;
+  /* Refactoring UI HSL Tokens (Carbon Slate Console Palette) */
+  --bg: hsl(220, 18%, 7%);
+  --bg-card: hsl(222, 18%, 10%);
+  --bg-secondary: hsl(220, 18%, 14%);
+  --bg-tertiary: hsl(220, 16%, 18%);
+  --border: hsl(220, 14%, 19%);
+  --border-strong: hsl(220, 14%, 25%);
+  --text-primary: hsl(40, 12%, 89%);
+  --text-secondary: hsl(225, 7%, 57%);
+  --text-tertiary: hsl(222, 9%, 37%);
+
+  /* Semantic Role Tokens (HSL) */
+  --action-primary: hsl(40, 12%, 89%);
+  --action-primary-text: hsl(220, 18%, 7%);
+
+  --positive: hsl(150, 40%, 48%);
+  --positive-bg: hsl(152, 45%, 10%);
+
+  --warning: hsl(35, 80%, 48%);
+  --warning-bg: hsl(38, 70%, 9%);
+
+  --danger: hsl(0, 68%, 56%);
+  --danger-bg: hsl(0, 45%, 10%);
+
+  --data-series: hsl(215, 45%, 55%);
+  --data-series-bg: hsl(215, 30%, 12%);
 }
 
 * {
